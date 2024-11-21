@@ -200,10 +200,30 @@ class ParallelModule(nn.Module):
 class ClassifierModule(nn.Module):
     def __init__(self, m, channel, num_classes):
         super(ClassifierModule, self).__init__()
-        self.m = m
+        self.m = m                                  # This is a sequential module (likely a sequence of convolutional or pooling layers) 
+                                                    # that processes the input tensor before it’s fed into the linear classifier.
             
-        self.linear = nn.Linear(channel, num_classes)
+        self.linear = nn.Linear(channel, num_classes) # linear layer that maps the processed features to the number of classes 
+                                                      # input: the flattened feature vector from the previous layers
+                                                      # channel = the number of channels in the final output of the m module after processing the convolutional features
+
+    def forward(self, x):
+        res = self.m(x[-1])             # takes the last tensor in the list x. In MSDNet, x is likely a list of intermediate layer outputs, 
+                                        # and x[-1] represents the final set of features after all the layers have processed the input.
+                                        # res = self.m(x[-1]) applies the module self.m to the final output features from the previous layers.
+        res = res.view(res.size(0), -1)     # This flattens the output from the self.m module, converting it to a 2D tensor where 
+                                            # each row represents a sample in the batch. (flattened size is needed for compatibility with the linear layer)
+        out = self.linear(res)
+        return out
+
+    ''' m: This parameter is a pre-built module (such as a sequence of convolutional and pooling layers) that 
+        reduces the spatial dimensions of the features while retaining useful information. '''
         
+class MLPProbe(nn.Module):
+    def __init__(self, m, channel, num_classes):
+        super(MLPProbe, self).__init__()
+        self.m = m 
+        self.linear = nn.Linear(channel, num_classes)
 
     def forward(self, x):
         res = self.m(x[-1])
@@ -211,11 +231,78 @@ class ClassifierModule(nn.Module):
         out = self.linear(res)
         return out
 
+
+# class MLPProbe(nn.Module):
+#     def __init__(self, input_dim, output_dim): # input_dim should match the size of the intermediate layer output.
+#         super(MLPProbe, self).__init__()       # output_dim is typically the number of classes
+#         self.probe = nn.Sequential(
+#             nn.Linear(input_dim, input_dim // 2), # fully connected layer that reduces the dimensionality of the input features
+#             nn.ReLU(),                            # non-linearity
+#             nn.Linear(input_dim // 2, output_dim) # fully connected layer that maps the input_dim // 2 features to the output_dim
+#         )
+    
+#     def __init__(self, output_dim, pool_size=(4, 4)):
+#         super(MLPProbe, self).__init__()
+#         self.pool_size = pool_size
+#         self.output_dim = output_dim
+#         self.probe = None  # Initialize this after we know flattened_dim
+
+    
+#     def forward(self, x):
+#         for i, tensor in enumerate(x):
+#             print(f"Shape of tensor {i}: {tensor.shape}")
+#         return self.probe(x)
+
+#     def forward(self, x):
+#         # If x is a list, concatenate or average along a suitable dimension
+#         if isinstance(x, list):
+#             for i, tensor in enumerate(x):
+#                 print(f"Shape of tensor {i}: {tensor.shape}")
+#             # Example: Concatenate along channel dimension (dim=1) if appropriate
+#             x = [torch.nn.functional.adaptive_avg_pool2d(t, (self.common_height, self.common_width)) for t in x]
+#             x = torch.cat(x, dim=1)  # or use torch.stack if they are batch items
+
+#         # Flatten x to match input dimensions of Linear layer
+#         x = x.view(x.size(0), -1)  # Flatten for Linear layer
+
+#         # Forward through the probe layers
+#         return self.probe(x)
+
+#     def forward(self, x):
+#         # Check if x is a list of tensors
+#         if isinstance(x, list):
+#             # Apply adaptive pooling to each tensor in the list individually
+#             pooled_tensors = [torch.nn.functional.adaptive_avg_pool2d(tensor, self.pool_size) for tensor in x]
+#             # Concatenate pooled tensors along the channel dimension
+#             x = torch.cat(pooled_tensors, dim=1)
+#         else:
+#             # Apply adaptive pooling if x is a single tensor
+#             x = torch.nn.functional.adaptive_avg_pool2d(x, self.pool_size)
+        
+#         # Dynamically calculate flattened dimension for Linear layer
+#         batch_size = x.size(0)
+#         flattened_dim = x.size(1) * x.size(2) * x.size(3)
+        
+#         # Initialize `self.probe` if it hasn’t been initialized yet
+#         if self.probe is None:
+#             self.probe = nn.Sequential(
+#                 nn.Linear(flattened_dim, flattened_dim // 2),
+#                 nn.ReLU(),
+#                 nn.Linear(flattened_dim // 2, self.output_dim)
+#             )
+#             self.probe = self.probe.to(x.device)  # Ensure `probe` is on the correct device
+
+#         # Flatten x to match input dimensions of Linear layer
+#         x = x.view(batch_size, -1)
+#         return self.probe(x)
+
+
 class MSDNet(nn.Module):
     def __init__(self, args):
         super(MSDNet, self).__init__()
         self.blocks = nn.ModuleList()
         self.classifier = nn.ModuleList()
+        self.probes = nn.ModuleList()  # Add probes
         self.nBlocks = args.nBlocks
         self.steps = [args.base]
         self.args = args
@@ -240,9 +327,13 @@ class MSDNet(nn.Module):
             n_layer_curr += self.steps[i]
 
             if args.data.startswith('cifar100'):
-                self.classifier.append(
-                    self._build_classifier_cifar(nIn * args.grFactor[-1], 100))
+                self.classifier.append(self._build_classifier_cifar(nIn * args.grFactor[-1], 100))
+                
+                self.probes.append(self._build_probe_cifar(nIn * args.grFactor[-1], 100))
+                # self.probes.append(MLPProbe(nIn * args.grFactor[-1], 100))  # Add probe for CIFAR-100
+                
                 self.n_classes = 100
+            
             elif args.data.startswith('cifar10'):
                 self.classifier.append(
                     self._build_classifier_cifar(nIn * args.grFactor[-1], 10))
@@ -266,7 +357,15 @@ class MSDNet(nn.Module):
                 self._init_weights(m)
 
         for m in self.classifier:
+            if hasattr(m, '__iter__'): # checks if a module (m) has an iterable property i.e., it contains submodules
+                for _m in m:
+                    self._init_weights(_m)
+            else:
+                self._init_weights(m)
+        
+        for m in self.probes:  # Initialize probes
             if hasattr(m, '__iter__'):
+                print("Would you look at that, the module has submodules")
                 for _m in m:
                     self._init_weights(_m)
             else:
@@ -342,6 +441,15 @@ class MSDNet(nn.Module):
             nn.AvgPool2d(2),
         )
         return ClassifierModule(conv, interChannels2, num_classes)
+    
+    def _build_probe_cifar(self, nIn, num_classes):
+        interChannels1, interChannels2 = 128, 128
+        conv = nn.Sequential(
+            ConvBasic(nIn, interChannels1, kernel=3, stride=2, padding=1),
+            ConvBasic(interChannels1, interChannels2, kernel=3, stride=2, padding=1),
+            nn.AvgPool2d(2),
+        )
+        return MLPProbe(conv, interChannels2, num_classes)
 
     def _build_classifier_imagenet(self, nIn, num_classes):
         conv = nn.Sequential(
@@ -351,12 +459,30 @@ class MSDNet(nn.Module):
         )
         return ClassifierModule(conv, nIn, num_classes)
 
-    def forward(self, x):
+    # def forward(self, x):
+    #     res = []
+    #     for i in range(self.nBlocks):           # Each block self.blocks[i] is a sequence of layers that transforms x (the input or the output from the previous block)
+    #         x = self.blocks[i](x)               # The updated x is then passed to the next block in the following iteration.
+    #         res.append(self.classifier[i](x))   # res collects predictions from each intermediate classifier in the network.
+    #     return res
+
+    def forward(self, x, collect_intermediate=True):
+        # if calculate_flops:
+        #     collect_intermediate = False
+    
         res = []
+        probe_outputs = []
+
         for i in range(self.nBlocks):
             x = self.blocks[i](x)
             res.append(self.classifier[i](x))
-        return res
+            probe_outputs.append(self.probes[i](x))  # Get probe output
+            # print(f"Shape of intermediate output at block {i}: {x[-1].shape}")
+
+        if collect_intermediate:
+            return res, probe_outputs  # Return both intermediate and probe outputs
+        else:
+            return res 
 
     def predict(self, x):
         """

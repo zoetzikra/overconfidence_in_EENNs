@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_a100
+#SBATCH --gpus=1
+#SBATCH --gpus-per-node=1
+#SBATCH --job-name=RunMethod
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=00:10:00
+#SBATCH --output=RunMethod_%A_packageUpdate.out
+
+module purge
+module load 2023
+module load Anaconda3/2023.07-2
+
+# Activate your environment
+source activate MSDNet
+
+pip install torch==1.10.0+cu111 torchvision==0.11.1+cu111 torchaudio==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+
+
+python -c "
+import torch
+print(torch.__version__) 
+print(torch.version.cuda)  
+print(torch.cuda.is_available()) 
+"

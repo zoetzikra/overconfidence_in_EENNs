@@ -1,0 +1,24 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_h100
+#SBATCH --gpus=1
+#SBATCH --gpus-per-node=1
+#SBATCH --job-name=RunMethod
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=00:10:00
+#SBATCH --output=RunMethod_%A_InstallEnv.out
+
+module purge
+module load 2023
+module load Anaconda3/2023.07-2
+
+# conda create -n MSDNet python=3.7.4 
+
+# Activate your environment
+source activate MSDNet
+
+pip install -r requirements.txt
+
+conda list
+

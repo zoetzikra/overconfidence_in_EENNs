@@ -81,6 +81,15 @@ def measure_layer(layer, x):
     elif type_name in ['Linear']:
         weight_ops = layer.weight.numel() * multi_add
         bias_ops = layer.bias.numel()
+        
+        # if isinstance(x, list):
+        #     total_ops = 0
+        #     for tensor in x:
+        #         total_ops += tensor.size()[0] * (weight_ops + bias_ops)  
+        #     delta_ops = total_ops
+        # else:
+        #     # Original code
+        #     delta_ops = x.size()[0] * (weight_ops + bias_ops)
         delta_ops = x.size()[0] * (weight_ops + bias_ops)
         delta_params = get_layer_param(layer)
 

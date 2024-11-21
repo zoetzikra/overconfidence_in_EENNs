@@ -110,15 +110,15 @@ def main():
 
     if not args.compute_only_laplace:
         initial_time = time.time()
+
         for epoch in range(args.start_epoch, args.epochs):
         
             model_filename = 'checkpoint_%03d.pth.tar' % epoch
+            # Train and validate main model 
             train_loss, train_prec1, train_prec5, lr = train(train_loader, model, criterion, optimizer, epoch)
             val_loss, val_prec1, val_prec5 = validate(val_loader, model, criterion)
-
-            scores.append(('{}\t{:.3f}' + '\t{:.4f}' * 6)
-                        .format(epoch, lr, train_loss, val_loss,
-                                train_prec1, val_prec1, train_prec5, val_prec5))
+            # Update scores
+            scores.append(('{}\t{:.3f}' + '\t{:.4f}' * 6).format(epoch, lr, train_loss, val_loss, train_prec1, val_prec1, train_prec5, val_prec5))
             
             is_best = val_prec1 > best_prec1
             if is_best:
@@ -138,6 +138,14 @@ def main():
 
         print('Best val_prec1: {:.4f} at epoch {}'.format(best_prec1, best_epoch))
         print('Total training time: {}'.format(time.time() - initial_time))
+
+        # NEW:
+        # Collect intermediate predictions after main model training
+        intermed_data, final_data = collect_intermediate_predictions(model, train_loader)
+        print("New dataset has been collected")
+        # Train probes with the collected data
+        train_probes(intermed_data, final_data, model, criterion)
+
         
     # Load the best model
     model_dir = os.path.join(args.save, 'save_models')
@@ -165,6 +173,47 @@ def compute_laplace_efficient(args, model, dset_loader):
                         [U[i].detach().cpu().numpy() for i in range(len(U))], \
                         [V[i].detach().cpu().numpy() for i in range(len(V))]
     np.save(os.path.join(args.save, "effL_llla.npy"), [M_W, U, V])
+
+def collect_intermediate_predictions(model, data_loader):
+    """
+    Collects predictions from each intermediate layer and the final layer to construct
+    the computational uncertainty dataset.
+    """
+    model.eval()
+    intermediate_preds = []
+    final_preds = []
+    with torch.no_grad():
+        for inputs, _ in data_loader:
+            inputs = inputs.cuda()
+            intermed, probes = model(inputs, collect_intermediate=True)
+            
+            for i, probe_out in enumerate(probes):
+                intermediate_preds.append(intermed[i].cpu().numpy())
+                final_preds.append(intermed[-1].cpu().numpy())  # Use final prediction
+    return intermediate_preds, final_preds
+
+
+def train_probes(intermediate_data, final_data, model, criterion):
+    optimizer = torch.optim.SGD([probe.parameters() for probe in model.probes], lr=0.01)
+
+    for epoch in range(num_probe_epochs):
+        total_loss = 0
+        for intermed_pred, final_pred in zip(intermediate_data, final_data):
+            intermed_pred = torch.tensor(intermed_pred).cuda()
+            final_pred = torch.tensor(final_pred).cuda()
+
+            loss = 0
+            for probe, intermed_out in zip(model.probes, intermed_pred):
+                probe_pred = probe(intermed_out)
+                loss += criterion(probe_pred, final_pred)
+            
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+
+        print(f"Probe Training Epoch {epoch}, Loss: {total_loss}")
+
 
 def train(train_loader, model, criterion, optimizer, epoch):
     global args
@@ -198,7 +247,8 @@ def train(train_loader, model, criterion, optimizer, epoch):
         target_var = torch.autograd.Variable(target)
 
         loss = 0.0
-        output = model(input_var)
+        # output = model(input_var)
+        output, probe_outputs = model(input_var, collect_intermediate=True)  # Changed: Explicitly request intermediate outputs
         
         if not isinstance(output, list):
             output = [output]
@@ -267,7 +317,8 @@ def validate(val_loader, model, criterion):
 
             data_time.update(time.time() - end)
 
-            output = model(input_var)
+            # output = model(input_var)
+            output, probe_outputs = model(input_var, collect_intermediate=True)  # Changed: Explicitly request intermediate outputs
             if not isinstance(output, list):
                 output = [output]
 
