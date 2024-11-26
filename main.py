@@ -323,6 +323,13 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
     return losses.avg, top1[-1].avg, top5[-1].avg, running_lr
 
+def distillation_loss(student_output, teacher_output, temperature=1.0):
+    """Compute the knowledge-distillation (KD) loss."""
+    soft_targets = torch.nn.functional.softmax(teacher_output / temperature, dim=1)
+    student_log_softmax = torch.nn.functional.log_softmax(student_output / temperature, dim=1)
+    loss = -(soft_targets * student_log_softmax).sum(dim=1).mean()
+    return loss * (temperature ** 2)
+
 def train_probes(intermediate_data, final_data, model, criterion):
     """
     Train probes using collected intermediate representations
@@ -407,7 +414,9 @@ def train_probes(intermediate_data, final_data, model, criterion):
             num_probes = len(model.module.probes)
             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
                 probe_out = probe(intermed_out)
-                total_loss += criterion(probe_out, batch_final)
+                # total_loss += criterion(probe_out, batch_final)
+                # ALT: Add distillation loss
+                total_loss += distillation_loss(probe_out, batch_final, temperature=2.0)
                 
                 # Calculate accuracy
                 prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
