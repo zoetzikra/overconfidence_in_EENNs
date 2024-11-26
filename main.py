@@ -165,6 +165,7 @@ def main():
 
         # Train and validate probes
         best_val_acc = 0
+        num_probe_epochs = 10
         for epoch in range(num_probe_epochs):
             train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch)
             val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion)
@@ -374,6 +375,7 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
         probe.train()
     
     end = time.time()
+    running_lr = None
     batch_size = 64
     num_samples = final_data.size(0)
     num_batches = (num_samples + batch_size - 1) // batch_size
@@ -395,7 +397,6 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
                                 batch=batch_idx,
                                 nBatch=num_batches, 
                                 method=args.lr_type)
-        
         if running_lr is None:
             running_lr = lr
 
@@ -463,7 +464,8 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
                     data_time=data_time,
                     loss=losses,
                     top1=sum(m.avg for m in top1)/len(top1),
-                    top5=sum(m.avg for m in top5)/len(top5)))
+                    top5=sum(m.avg for m in top5)/len(top5),
+                    lr=running_lr))
 
     # Print epoch summary
     epoch_acc = sum(m.avg for m in top1)/len(top1)
