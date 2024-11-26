@@ -333,7 +333,7 @@ def train_probes(intermediate_data, final_data, model, criterion):
 
     # Create optimizer outside epoch loop with a smaller learning rate
     optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
-                               lr=args.lr * 0.1, 
+                               lr=0.001, 
                                momentum=args.momentum,
                                weight_decay=args.weight_decay)
     
@@ -403,14 +403,11 @@ def train_probes(intermediate_data, final_data, model, criterion):
             _, batch_final_indices = batch_final.max(1)
             
             # Forward pass through probes
-            total_loss = 0
+            total_loss = 0.0
+            num_probes = len(model.module.probes)
             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
                 probe_out = probe(intermed_out)
-                probe_loss = criterion(probe_out, batch_final)
-                
-                # Clip loss value for stability
-                probe_loss = torch.clamp(probe_loss, -100, 100)
-                total_loss += probe_loss
+                total_loss += criterion(probe_out, batch_final)
                 
                 # Calculate accuracy
                 prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
