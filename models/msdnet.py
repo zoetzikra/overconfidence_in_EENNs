@@ -3,7 +3,7 @@ import torch
 import math
 import pdb
 import numpy as np
-        
+
 class ConvBasic(nn.Module):
     def __init__(self, nIn, nOut, kernel=3, stride=1,
                  padding=1):

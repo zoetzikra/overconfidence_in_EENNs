@@ -20,6 +20,7 @@ from op_counter import measure_model
 from laplace import get_hessian_efficient
 
 import torch.multiprocessing
+
 torch.multiprocessing.set_sharing_strategy('file_system') 
 
 args = arg_parser.parse_args()
@@ -174,45 +175,58 @@ def compute_laplace_efficient(args, model, dset_loader):
                         [V[i].detach().cpu().numpy() for i in range(len(V))]
     np.save(os.path.join(args.save, "effL_llla.npy"), [M_W, U, V])
 
+
 def collect_intermediate_predictions(model, data_loader):
     """
     Collects predictions from each intermediate layer and the final layer to construct
     the computational uncertainty dataset.
+
+    Returns data in a format compatible with the existing classifier training structure.
     """
     model.eval()
-    intermediate_preds = []
-    final_preds = []
+    intermediate_data = [[] for _ in range(len(model.module.blocks))]  # Initialize directly
+    final_data = []
+
     with torch.no_grad():
-        for inputs, _ in data_loader:
-            inputs = inputs.cuda()
-            intermed, probes = model(inputs, collect_intermediate=True)
-            
-            for i, probe_out in enumerate(probes):
-                intermediate_preds.append(intermed[i].cpu().numpy())
-                final_preds.append(intermed[-1].cpu().numpy())  # Use final prediction
-    return intermediate_preds, final_preds
+        for i, (input, target) in enumerate(data_loader):
+            input = input.cuda()
 
+            # Initialize lists if it's the first batch
+            if i == 0:
+                print("\nDebug: Feature collection")
+                print(f"Input shape: {input.shape}")
 
-def train_probes(intermediate_data, final_data, model, criterion):
-    optimizer = torch.optim.SGD([probe.parameters() for probe in model.probes], lr=0.01)
+            # Process through blocks and collect features
+            x = input
+            for j in range(len(model.module.blocks)):
+                x = model.module.blocks[j](x)
+                intermediate_data[j].append(x[-1])  # Store the feature map that would go to classifier
+                
+                # Debug feature shapes on first batch
+                if i == 0:
+                    print(f"Block {j} feature shape: {x[-1].shape}")
+                
+            # Store final predictions (for training targets)
+            output = model.module.classifier[-1](x)  # Use last classifier's output
+            final_data.append(output)
+        
+            if i % 100 == 0:
+                print(f'Collected data from {i} batches')
 
-    for epoch in range(num_probe_epochs):
-        total_loss = 0
-        for intermed_pred, final_pred in zip(intermediate_data, final_data):
-            intermed_pred = torch.tensor(intermed_pred).cuda()
-            final_pred = torch.tensor(final_pred).cuda()
+    # Concatenate intermediate predictions from all batches
+    final_data = torch.cat(final_data, dim=0)
+    intermediate_data = [torch.cat(block_data, dim=0) for block_data in intermediate_data]
+    # SAME AS:
+    # for j in range(len(probe_outputs)):
+    #     intermediate_data[j] = torch.cat(intermediate_data[j], dim=0)
+    
+    print("\nFinal collected shapes:")
+    for i, data in enumerate(intermediate_data):
+        print(f"Block {i} features shape: {data.shape}")
+    print(f"Final data shape: {final_data.shape}")
 
-            loss = 0
-            for probe, intermed_out in zip(model.probes, intermed_pred):
-                probe_pred = probe(intermed_out)
-                loss += criterion(probe_pred, final_pred)
-            
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
-            total_loss += loss.item()
+    return intermediate_data, final_data
 
-        print(f"Probe Training Epoch {epoch}, Loss: {total_loss}")
 
 
 def train(train_loader, model, criterion, optimizer, epoch):
@@ -227,12 +241,36 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
     # switch to train mode
     model.train()
-
     end = time.time()
-
     running_lr = None
+
+    # Add debug prints for model structure
+    print("\nClassifier Training Debug Info:")
+    print(f"Number of classifiers: {len(model.module.classifier)}")
     
     for i, (input, target) in enumerate(train_loader):
+        print(f"\nInput batch shape for batch {i}: {input.shape}")
+        if i == 0:  # Only print for first batch
+
+            # Forward pass to get intermediate shapes
+            with torch.no_grad():
+                output, intermediate = model(input.cuda(), collect_intermediate=True)
+                
+                # NEW: Debug intermediate classifier inputs
+                print("\n Classifier input shapes:")
+                x = input.cuda()
+                for j in range(len(model.module.blocks)):
+                    x = model.module.blocks[j](x)
+                    classifier_input = x[-1]  # The classifier takes the last tensor from each block
+                    print(f"Block {j} classifier input shape: {classifier_input.shape}")
+                
+                # Print shapes of classifier inputs/outputs
+                print("\nClassifier output shapes:")
+                if not isinstance(output, list):
+                    output = [output]
+                for j, out in enumerate(output):
+                    print(f"Block {j} classifier output shape: {out.shape}")
+
         total_block_counts = torch.zeros(args.nBlocks)
         lr = adjust_learning_rate(optimizer, epoch, args, batch=i,
                                   nBatch=len(train_loader), method=args.lr_type)
@@ -284,6 +322,137 @@ def train(train_loader, model, criterion, optimizer, epoch):
                     loss=losses, top1=top1[-1], top5=top5[-1]))
 
     return losses.avg, top1[-1].avg, top5[-1].avg, running_lr
+
+def train_probes(intermediate_data, final_data, model, criterion):
+    """
+    Train probes using collected intermediate representations
+    """
+    global args
+    num_probe_epochs = 10  # We can make this configurable through args
+    best_acc = 0
+    
+    for epoch in range(num_probe_epochs):
+        batch_time = AverageMeter()
+        data_time = AverageMeter()
+        losses = AverageMeter()
+        top1, top5 = [], []
+        for i in range(len(model.module.probes)):
+            top1.append(AverageMeter())
+            top5.append(AverageMeter())
+
+        # switch to train mode
+        for probe in model.module.probes:
+            probe.train()
+        
+        end = time.time()
+        running_lr = None
+        batch_size = 64
+        num_samples = final_data.size(0)
+        num_batches = (num_samples + batch_size - 1) // batch_size
+        
+        # Create optimizer (could move outside epoch loop if needed)
+        optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+                                   lr=args.lr,
+                                   momentum=args.momentum,
+                                   weight_decay=args.weight_decay)
+        if epoch == 0:  # Only print debug info in first epoch
+            print("\nProbe Training Debug Info:")
+            print(f"Number of probes: {len(model.module.probes)}")
+            for i, data in enumerate(intermediate_data):
+                print(f"Shape of intermediate_data[{i}]: {data.shape}")
+            print(f"Shape of final_data: {final_data.shape}")
+
+
+        for batch_idx, start_idx in enumerate(range(0, num_samples, batch_size)):
+            end_idx = min(start_idx + batch_size, num_samples)
+            
+            # Adjust learning rate
+            lr = adjust_learning_rate(optimizer, epoch, args, 
+                                    batch=batch_idx,
+                                    nBatch=num_batches, 
+                                    method=args.lr_type)
+            
+            if running_lr is None:
+                running_lr = lr
+
+            data_time.update(time.time() - end)
+
+            # Get mini-batch of data
+            batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in intermediate_data]
+            # Only take the corresponding samples from final_data
+            batch_final = final_data[start_idx:end_idx].cuda()
+            
+            # Debug first batch of first epoch
+            if epoch == 0 and start_idx == 0:
+                print("\nFirst Batch Debug Info:")
+                print("\nBatch shapes:")
+                for i, data in enumerate(batch_intermed):
+                    print(f"Block {i} intermediate batch shape: {data[0].shape}")
+                print(f"Final batch shape: {batch_final.shape}")
+                
+                print("\nProbe processing shapes:")
+                for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+                    print(f"\nBlock {i} Probe:")
+                    print(f"  Input shape: {intermed_out[0].shape}")
+                    with torch.no_grad():
+                        probe_out = probe(intermed_out)
+                        print(f"  Output shape: {probe_out.shape}")
+
+            # Convert final predictions to class indices for accuracy computation
+            _, batch_final_indices = batch_final.max(1)
+            
+            # Forward pass through probes
+            loss = 0
+            for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+                probe_out = probe(intermed_out)
+                probe_loss = criterion(probe_out, batch_final)
+                loss += probe_loss
+                
+                # Calculate accuracy
+                prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
+                top1[i].update(prec1.item(), batch_size)
+                top5[i].update(prec5.item(), batch_size)
+
+            losses.update(loss.item(), batch_size)
+
+            # Compute gradient and do SGD step
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            # Measure elapsed time
+            batch_time.update(time.time() - end)
+            end = time.time()
+
+            # Print statistics
+            if batch_idx % args.print_freq == 0:
+                print('Probe Training Epoch: [{0}][{1}/{2}]\t'
+                      'Time {batch_time.avg:.3f}\t'
+                      'Data {data_time.avg:.3f}\t'
+                      'Loss {loss.val:.4f}\t'
+                      'Avg Acc@1 {top1:.3f}\t'
+                      'Avg Acc@5 {top5:.3f}\t'
+                      'LR {lr:.5f}'.format(
+                        epoch, batch_idx + 1, num_batches,
+                        batch_time=batch_time,
+                        data_time=data_time,
+                        loss=losses,
+                        top1=sum(m.avg for m in top1)/len(top1),
+                        top5=sum(m.avg for m in top5)/len(top5),
+                        lr=running_lr))
+
+        # Print epoch summary
+        epoch_acc = sum(m.avg for m in top1)/len(top1)
+        print(f'\nProbe Training Epoch: {epoch}\t'
+              f'Loss: {losses.avg:.4f}\t'
+              f'Acc: {epoch_acc:.4f}')
+        
+        # Save best accuracy
+        best_acc = max(best_acc, epoch_acc)
+
+    print(f'Best probe accuracy: {best_acc:.4f}')
+    return best_acc
+
 
 def validate(val_loader, model, criterion):
 
