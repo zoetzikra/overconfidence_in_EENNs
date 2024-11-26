@@ -83,6 +83,10 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
+    probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+                           lr=0.001,  # Fixed smaller learning rate
+                           momentum=args.momentum,
+                           weight_decay=args.weight_decay)
 
     if args.resume:
         checkpoint = load_checkpoint(args)
@@ -144,8 +148,33 @@ def main():
         # Collect intermediate predictions after main model training
         intermed_data, final_data = collect_intermediate_predictions(model, train_loader)
         print("New dataset has been collected")
-        # Train probes with the collected data
-        train_probes(intermed_data, final_data, model, criterion)
+
+        # Split data into train and validation sets
+        train_size = int(0.9 * len(final_data))  # 90-10 split
+        indices = torch.randperm(len(final_data)) # Shuffle indices
+
+        train_indices = indices[:train_size]
+        val_indices = indices[train_size:]
+
+        # Split intermediate data
+        train_intermediate = [data[train_indices] for data in intermed_data]
+        val_intermediate = [data[val_indices] for data in intermed_data]
+        train_final = final_data[train_indices]
+        val_final = final_data[val_indices]
+        print(f"Split sizes - Train: {len(train_final)}, Val: {len(val_final)}")
+
+        # Train and validate probes
+        best_val_acc = 0
+        for epoch in range(num_probe_epochs):
+            train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch)
+            val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion)
+            
+            print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
+            
+            # Track best validation accuracy
+            if val_acc > best_val_acc:
+                best_val_acc = val_acc
+                print(f"New best validation accuracy: {best_val_acc:.4f}")
 
         
     # Load the best model
@@ -249,7 +278,7 @@ def train(train_loader, model, criterion, optimizer, epoch):
     print(f"Number of classifiers: {len(model.module.classifier)}")
     
     for i, (input, target) in enumerate(train_loader):
-        print(f"\nInput batch shape for batch {i}: {input.shape}")
+        # print(f"\nInput batch shape for batch {i}: {input.shape}")
         if i == 0:  # Only print for first batch
 
             # Forward pass to get intermediate shapes
@@ -330,141 +359,168 @@ def distillation_loss(student_output, teacher_output, temperature=1.0):
     loss = -(soft_targets * student_log_softmax).sum(dim=1).mean()
     return loss * (temperature ** 2)
 
-def train_probes(intermediate_data, final_data, model, criterion):
-    """
-    Train probes using collected intermediate representations
-    """
-    global args
-    num_probe_epochs = 10  # We can make this configurable through args
-    best_acc = 0
+def train_probes(intermediate_data, final_data, model, criterion, optimizer, epoch):
+    """Train probes for one epoch"""
+    batch_time = AverageMeter()
+    data_time = AverageMeter()
+    losses = AverageMeter()
+    top1, top5 = [], []
+    for i in range(len(model.module.probes)):
+        top1.append(AverageMeter())
+        top5.append(AverageMeter())
 
-    # Create optimizer outside epoch loop with a smaller learning rate
-    optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
-                               lr=0.001, 
-                               momentum=args.momentum,
-                               weight_decay=args.weight_decay)
+    # switch to train mode
+    for probe in model.module.probes:
+        probe.train()
     
-    for epoch in range(num_probe_epochs):
-        batch_time = AverageMeter()
-        data_time = AverageMeter()
-        losses = AverageMeter()
-        top1, top5 = [], []
-        for i in range(len(model.module.probes)):
-            top1.append(AverageMeter())
-            top5.append(AverageMeter())
+    end = time.time()
+    batch_size = 64
+    num_samples = final_data.size(0)
+    num_batches = (num_samples + batch_size - 1) // batch_size
 
-        # switch to train mode
-        for probe in model.module.probes:
-            probe.train()
+    if epoch == 0:  # Only print debug info in first epoch
+        print("\nProbe Training Debug Info:")
+        print(f"Number of probes: {len(model.module.probes)}")
+        for i, data in enumerate(intermediate_data):
+            print(f"Shape of intermediate_data[{i}]: {data.shape}")
+        print(f"Shape of final_data: {final_data.shape}")
+
+
+    for batch_idx, start_idx in enumerate(range(0, num_samples, batch_size)):
+        end_idx = min(start_idx + batch_size, num_samples)
+        data_time.update(time.time() - end)
+
+        # Adjust learning rate
+        lr = adjust_learning_rate(optimizer, epoch, args, 
+                                batch=batch_idx,
+                                nBatch=num_batches, 
+                                method=args.lr_type)
         
+        if running_lr is None:
+            running_lr = lr
+
+        # Get mini-batch of data
+        batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in intermediate_data]
+        # Only take the corresponding samples from final_data
+        batch_final = final_data[start_idx:end_idx].cuda()
+        
+        # Debug first batch of first epoch
+        if epoch == 0 and start_idx == 0:
+            print("\nFirst Batch Debug Info:")
+            print("\nBatch shapes:")
+            for i, data in enumerate(batch_intermed):
+                print(f"Block {i} intermediate batch shape: {data[0].shape}")
+            print(f"Final batch shape: {batch_final.shape}")
+            
+            print("\nProbe processing shapes:")
+            for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+                print(f"\nBlock {i} Probe:")
+                print(f"  Input shape: {intermed_out[0].shape}")
+                with torch.no_grad():
+                    probe_out = probe(intermed_out)
+                    print(f"  Output shape: {probe_out.shape}")
+
+        # Convert final predictions to class indices for accuracy computation
+        _, batch_final_indices = batch_final.max(1)
+        
+        # Forward pass through probes
+        total_loss = 0.0
+        num_probes = len(model.module.probes)
+        for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+            probe_out = probe(intermed_out)
+            # total_loss += criterion(probe_out, batch_final)
+            # ALT: Add distillation loss
+            total_loss += distillation_loss(probe_out, batch_final, temperature=2.0)
+            
+            # Calculate accuracy
+            prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
+            top1[i].update(prec1.item(), batch_size)
+            top5[i].update(prec5.item(), batch_size)
+
+        losses.update(total_loss.item(), batch_size)
+
+        # Compute gradient and do SGD step
+        optimizer.zero_grad()
+        total_loss.backward()
+        # Add gradient clipping
+        torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
+        optimizer.step()
+
+        # Measure elapsed time
+        batch_time.update(time.time() - end)
         end = time.time()
-        running_lr = None
-        batch_size = 64
-        num_samples = final_data.size(0)
-        num_batches = (num_samples + batch_size - 1) // batch_size
-        
-        if epoch == 0:  # Only print debug info in first epoch
-            print("\nProbe Training Debug Info:")
-            print(f"Number of probes: {len(model.module.probes)}")
-            for i, data in enumerate(intermediate_data):
-                print(f"Shape of intermediate_data[{i}]: {data.shape}")
-            print(f"Shape of final_data: {final_data.shape}")
+
+        # Print statistics
+        if batch_idx % args.print_freq == 0:
+            print('Training: [{0}/{1}]\t'
+                  'Time {batch_time.avg:.3f}\t'
+                  'Data {data_time.avg:.3f}\t'
+                  'Loss {loss.val:.4f}\t'
+                  'Avg Acc@1 {top1:.3f}\t'
+                  'Avg Acc@5 {top5:.3f}'.format(
+                    batch_idx + 1, num_batches,
+                    batch_time=batch_time,
+                    data_time=data_time,
+                    loss=losses,
+                    top1=sum(m.avg for m in top1)/len(top1),
+                    top5=sum(m.avg for m in top5)/len(top5)))
+
+    # Print epoch summary
+    epoch_acc = sum(m.avg for m in top1)/len(top1)
+    print(f'\nProbe Training Epoch: {epoch}\t'
+            f'Loss: {losses.avg:.4f}\t'
+            f'Acc: {epoch_acc:.4f}')
+    
+    return losses.avg, epoch_acc
 
 
-        for batch_idx, start_idx in enumerate(range(0, num_samples, batch_size)):
+def validate_probes(val_intermediate_data, val_final_data, model, criterion):
+    """Validate probes for one epoch"""
+    batch_time = AverageMeter()
+    losses = AverageMeter()
+    top1, top5 = [], []
+    for i in range(len(model.module.probes)):
+        top1.append(AverageMeter())
+        top5.append(AverageMeter())
+    
+    # switch to eval mode
+    for probe in model.module.probes:
+        probe.eval()
+    
+    batch_size = 64
+    num_samples = val_final_data.size(0)
+    end = time.time()
+    
+    with torch.no_grad():
+        for start_idx in range(0, num_samples, batch_size):
             end_idx = min(start_idx + batch_size, num_samples)
             
-            # Adjust learning rate
-            lr = adjust_learning_rate(optimizer, epoch, args, 
-                                    batch=batch_idx,
-                                    nBatch=num_batches, 
-                                    method=args.lr_type)
+            # Get mini-batch
+            batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in val_intermediate_data]
+            batch_final = val_final_data[start_idx:end_idx].cuda()
             
-            if running_lr is None:
-                running_lr = lr
-
-            data_time.update(time.time() - end)
-
-            # Get mini-batch of data
-            batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in intermediate_data]
-            # Only take the corresponding samples from final_data
-            batch_final = final_data[start_idx:end_idx].cuda()
-            
-            # Debug first batch of first epoch
-            if epoch == 0 and start_idx == 0:
-                print("\nFirst Batch Debug Info:")
-                print("\nBatch shapes:")
-                for i, data in enumerate(batch_intermed):
-                    print(f"Block {i} intermediate batch shape: {data[0].shape}")
-                print(f"Final batch shape: {batch_final.shape}")
-                
-                print("\nProbe processing shapes:")
-                for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
-                    print(f"\nBlock {i} Probe:")
-                    print(f"  Input shape: {intermed_out[0].shape}")
-                    with torch.no_grad():
-                        probe_out = probe(intermed_out)
-                        print(f"  Output shape: {probe_out.shape}")
-
-            # Convert final predictions to class indices for accuracy computation
+            # Get class indices for accuracy computation
             _, batch_final_indices = batch_final.max(1)
             
             # Forward pass through probes
-            total_loss = 0.0
-            num_probes = len(model.module.probes)
+            total_loss = 0
             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
                 probe_out = probe(intermed_out)
-                # total_loss += criterion(probe_out, batch_final)
-                # ALT: Add distillation loss
                 total_loss += distillation_loss(probe_out, batch_final, temperature=2.0)
                 
                 # Calculate accuracy
                 prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
                 top1[i].update(prec1.item(), batch_size)
                 top5[i].update(prec5.item(), batch_size)
-
+            
             losses.update(total_loss.item(), batch_size)
-
-            # Compute gradient and do SGD step
-            optimizer.zero_grad()
-            total_loss.backward()
-            # Add gradient clipping
-            torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
-            optimizer.step()
-
+            
             # Measure elapsed time
             batch_time.update(time.time() - end)
             end = time.time()
-
-            # Print statistics
-            if batch_idx % args.print_freq == 0:
-                print('Probe Training Epoch: [{0}][{1}/{2}]\t'
-                      'Time {batch_time.avg:.3f}\t'
-                      'Data {data_time.avg:.3f}\t'
-                      'Loss {loss.val:.4f}\t'
-                      'Avg Acc@1 {top1:.3f}\t'
-                      'Avg Acc@5 {top5:.3f}\t'
-                      'LR {lr:.5f}'.format(
-                        epoch, batch_idx + 1, num_batches,
-                        batch_time=batch_time,
-                        data_time=data_time,
-                        loss=losses,
-                        top1=sum(m.avg for m in top1)/len(top1),
-                        top5=sum(m.avg for m in top5)/len(top5),
-                        lr=running_lr))
-
-        # Print epoch summary
-        epoch_acc = sum(m.avg for m in top1)/len(top1)
-        print(f'\nProbe Training Epoch: {epoch}\t'
-              f'Loss: {losses.avg:.4f}\t'
-              f'Acc: {epoch_acc:.4f}')
-        
-        # Save best accuracy
-        best_acc = max(best_acc, epoch_acc)
-
-    print(f'Best probe accuracy: {best_acc:.4f}')
-    return best_acc
-
+    
+    epoch_acc = sum(m.avg for m in top1)/len(top1)
+    return losses.avg, epoch_acc
 
 def validate(val_loader, model, criterion):
 
