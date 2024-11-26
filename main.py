@@ -330,6 +330,12 @@ def train_probes(intermediate_data, final_data, model, criterion):
     global args
     num_probe_epochs = 10  # We can make this configurable through args
     best_acc = 0
+
+    # Create optimizer outside epoch loop with a smaller learning rate
+    optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+                               lr=args.lr * 0.1, 
+                               momentum=args.momentum,
+                               weight_decay=args.weight_decay)
     
     for epoch in range(num_probe_epochs):
         batch_time = AverageMeter()
@@ -350,11 +356,6 @@ def train_probes(intermediate_data, final_data, model, criterion):
         num_samples = final_data.size(0)
         num_batches = (num_samples + batch_size - 1) // batch_size
         
-        # Create optimizer (could move outside epoch loop if needed)
-        optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
-                                   lr=args.lr,
-                                   momentum=args.momentum,
-                                   weight_decay=args.weight_decay)
         if epoch == 0:  # Only print debug info in first epoch
             print("\nProbe Training Debug Info:")
             print(f"Number of probes: {len(model.module.probes)}")
@@ -402,22 +403,27 @@ def train_probes(intermediate_data, final_data, model, criterion):
             _, batch_final_indices = batch_final.max(1)
             
             # Forward pass through probes
-            loss = 0
+            total_loss = 0
             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
                 probe_out = probe(intermed_out)
                 probe_loss = criterion(probe_out, batch_final)
-                loss += probe_loss
+                
+                # Clip loss value for stability
+                probe_loss = torch.clamp(probe_loss, -100, 100)
+                total_loss += probe_loss
                 
                 # Calculate accuracy
                 prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
                 top1[i].update(prec1.item(), batch_size)
                 top5[i].update(prec5.item(), batch_size)
 
-            losses.update(loss.item(), batch_size)
+            losses.update(total_loss.item(), batch_size)
 
             # Compute gradient and do SGD step
             optimizer.zero_grad()
-            loss.backward()
+            total_loss.backward()
+            # Add gradient clipping
+            torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
             optimizer.step()
 
             # Measure elapsed time
