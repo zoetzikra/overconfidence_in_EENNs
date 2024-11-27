@@ -1,0 +1,1152 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+---------------------
+FLOPs: 6.86M, Params: 0.30M
+---------------------
+FLOPs: 9.09M, Params: 0.56M
+---------------------
+FLOPs: 16.58M, Params: 0.91M
+---------------------
+FLOPs: 19.69M, Params: 1.23M
+---------------------
+FLOPs: 31.47M, Params: 1.60M
+---------------------
+FLOPs: 34.21M, Params: 1.90M
+---------------------
+FLOPs: 46.13M, Params: 2.29M
+---------------------
+FLOPs: 48.87M, Params: 2.59M
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+Files already downloaded and verified
+Files already downloaded and verified
+Number of training samples:  50000
+Number of test samples:  10000
+!!!!!! Load train_set_index !!!!!!
+
+Classifier Training Debug Info:
+Number of classifiers: 4
+
+ Classifier input shapes:
+Block 0 classifier input shape: torch.Size([64, 88, 8, 8])
+Block 1 classifier input shape: torch.Size([64, 136, 8, 8])
+Block 2 classifier input shape: torch.Size([64, 116, 8, 8])
+Block 3 classifier input shape: torch.Size([64, 116, 8, 8])
+
+Classifier output shapes:
+Block 0 classifier output shape: torch.Size([64, 100])
+Block 1 classifier output shape: torch.Size([64, 100])
+Block 2 classifier output shape: torch.Size([64, 100])
+Block 3 classifier output shape: torch.Size([64, 100])
+Epoch: [0][1/704]	Time 1.597	Data 1.281	Loss 18.53	Acc@1 0.0	Acc@5 4.7
+Epoch: [0][11/704]	Time 0.256	Data 0.117	Loss 18.24	Acc@1 1.6	Acc@5 9.4
+Epoch: [0][21/704]	Time 0.192	Data 0.061	Loss 18.18	Acc@1 9.4	Acc@5 21.9
+Epoch: [0][31/704]	Time 0.169	Data 0.042	Loss 17.24	Acc@1 1.6	Acc@5 15.6
+Epoch: [0][41/704]	Time 0.157	Data 0.032	Loss 17.37	Acc@1 1.6	Acc@5 17.2
+Epoch: [0][51/704]	Time 0.150	Data 0.025	Loss 17.69	Acc@1 4.7	Acc@5 18.8
+Epoch: [0][61/704]	Time 0.145	Data 0.021	Loss 17.60	Acc@1 1.6	Acc@5 14.1
+Epoch: [0][71/704]	Time 0.142	Data 0.018	Loss 16.71	Acc@1 3.1	Acc@5 23.4
+Epoch: [0][81/704]	Time 0.140	Data 0.016	Loss 16.97	Acc@1 3.1	Acc@5 15.6
+Epoch: [0][91/704]	Time 0.138	Data 0.014	Loss 17.31	Acc@1 1.6	Acc@5 17.2
+Epoch: [0][101/704]	Time 0.136	Data 0.013	Loss 16.40	Acc@1 3.1	Acc@5 17.2
+Epoch: [0][111/704]	Time 0.135	Data 0.012	Loss 17.46	Acc@1 6.2	Acc@5 21.9
+Epoch: [0][121/704]	Time 0.133	Data 0.011	Loss 16.62	Acc@1 6.2	Acc@5 14.1
+Epoch: [0][131/704]	Time 0.133	Data 0.010	Loss 16.09	Acc@1 4.7	Acc@5 21.9
+Epoch: [0][141/704]	Time 0.132	Data 0.009	Loss 16.23	Acc@1 6.2	Acc@5 20.3
+Epoch: [0][151/704]	Time 0.131	Data 0.009	Loss 16.79	Acc@1 6.2	Acc@5 20.3
+Epoch: [0][161/704]	Time 0.131	Data 0.008	Loss 16.47	Acc@1 10.9	Acc@5 23.4
+Epoch: [0][171/704]	Time 0.130	Data 0.008	Loss 16.11	Acc@1 4.7	Acc@5 23.4
+Epoch: [0][181/704]	Time 0.130	Data 0.007	Loss 16.50	Acc@1 7.8	Acc@5 21.9
+Epoch: [0][191/704]	Time 0.129	Data 0.007	Loss 16.01	Acc@1 7.8	Acc@5 21.9
+Epoch: [0][201/704]	Time 0.129	Data 0.007	Loss 16.73	Acc@1 14.1	Acc@5 28.1
+Epoch: [0][211/704]	Time 0.128	Data 0.006	Loss 15.89	Acc@1 9.4	Acc@5 28.1
+Epoch: [0][221/704]	Time 0.128	Data 0.006	Loss 16.76	Acc@1 7.8	Acc@5 25.0
+Epoch: [0][231/704]	Time 0.128	Data 0.006	Loss 15.57	Acc@1 7.8	Acc@5 29.7
+Epoch: [0][241/704]	Time 0.127	Data 0.006	Loss 16.11	Acc@1 6.2	Acc@5 29.7
+Epoch: [0][251/704]	Time 0.127	Data 0.005	Loss 15.94	Acc@1 6.2	Acc@5 26.6
+Epoch: [0][261/704]	Time 0.127	Data 0.005	Loss 15.54	Acc@1 9.4	Acc@5 29.7
+Epoch: [0][271/704]	Time 0.127	Data 0.005	Loss 15.13	Acc@1 10.9	Acc@5 37.5
+Epoch: [0][281/704]	Time 0.126	Data 0.005	Loss 16.71	Acc@1 3.1	Acc@5 15.6
+Epoch: [0][291/704]	Time 0.126	Data 0.005	Loss 15.65	Acc@1 7.8	Acc@5 29.7
+Epoch: [0][301/704]	Time 0.126	Data 0.005	Loss 14.45	Acc@1 14.1	Acc@5 35.9
+Epoch: [0][311/704]	Time 0.126	Data 0.004	Loss 15.65	Acc@1 10.9	Acc@5 25.0
+Epoch: [0][321/704]	Time 0.126	Data 0.004	Loss 15.58	Acc@1 17.2	Acc@5 35.9
+Epoch: [0][331/704]	Time 0.126	Data 0.004	Loss 14.60	Acc@1 17.2	Acc@5 43.8
+Epoch: [0][341/704]	Time 0.125	Data 0.004	Loss 14.83	Acc@1 17.2	Acc@5 35.9
+Epoch: [0][351/704]	Time 0.125	Data 0.004	Loss 14.99	Acc@1 6.2	Acc@5 37.5
+Epoch: [0][361/704]	Time 0.125	Data 0.004	Loss 14.84	Acc@1 15.6	Acc@5 37.5
+Epoch: [0][371/704]	Time 0.125	Data 0.004	Loss 14.75	Acc@1 14.1	Acc@5 35.9
+Epoch: [0][381/704]	Time 0.125	Data 0.004	Loss 14.42	Acc@1 15.6	Acc@5 40.6
+Epoch: [0][391/704]	Time 0.125	Data 0.004	Loss 15.02	Acc@1 7.8	Acc@5 31.2
+Epoch: [0][401/704]	Time 0.125	Data 0.004	Loss 14.65	Acc@1 14.1	Acc@5 37.5
+Epoch: [0][411/704]	Time 0.125	Data 0.003	Loss 14.20	Acc@1 7.8	Acc@5 35.9
+Epoch: [0][421/704]	Time 0.124	Data 0.003	Loss 16.03	Acc@1 9.4	Acc@5 31.2
+Epoch: [0][431/704]	Time 0.124	Data 0.003	Loss 14.19	Acc@1 21.9	Acc@5 37.5
+Epoch: [0][441/704]	Time 0.124	Data 0.003	Loss 15.07	Acc@1 7.8	Acc@5 34.4
+Epoch: [0][451/704]	Time 0.124	Data 0.003	Loss 15.60	Acc@1 6.2	Acc@5 29.7
+Epoch: [0][461/704]	Time 0.124	Data 0.003	Loss 14.62	Acc@1 14.1	Acc@5 39.1
+Epoch: [0][471/704]	Time 0.124	Data 0.003	Loss 15.23	Acc@1 9.4	Acc@5 34.4
+Epoch: [0][481/704]	Time 0.124	Data 0.003	Loss 14.60	Acc@1 10.9	Acc@5 32.8
+Epoch: [0][491/704]	Time 0.124	Data 0.003	Loss 14.73	Acc@1 10.9	Acc@5 37.5
+Epoch: [0][501/704]	Time 0.124	Data 0.003	Loss 14.77	Acc@1 17.2	Acc@5 37.5
+Epoch: [0][511/704]	Time 0.124	Data 0.003	Loss 15.17	Acc@1 9.4	Acc@5 34.4
+Epoch: [0][521/704]	Time 0.124	Data 0.003	Loss 14.95	Acc@1 10.9	Acc@5 35.9
+Epoch: [0][531/704]	Time 0.124	Data 0.003	Loss 13.86	Acc@1 12.5	Acc@5 46.9
+Epoch: [0][541/704]	Time 0.124	Data 0.003	Loss 14.08	Acc@1 14.1	Acc@5 39.1
+Epoch: [0][551/704]	Time 0.124	Data 0.003	Loss 15.12	Acc@1 12.5	Acc@5 39.1
+Epoch: [0][561/704]	Time 0.123	Data 0.003	Loss 13.77	Acc@1 21.9	Acc@5 40.6
+Epoch: [0][571/704]	Time 0.123	Data 0.003	Loss 14.45	Acc@1 17.2	Acc@5 37.5
+Epoch: [0][581/704]	Time 0.123	Data 0.003	Loss 14.84	Acc@1 7.8	Acc@5 34.4
+Epoch: [0][591/704]	Time 0.123	Data 0.002	Loss 14.11	Acc@1 10.9	Acc@5 34.4
+Epoch: [0][601/704]	Time 0.123	Data 0.002	Loss 13.69	Acc@1 15.6	Acc@5 43.8
+Epoch: [0][611/704]	Time 0.123	Data 0.002	Loss 14.05	Acc@1 10.9	Acc@5 43.8
+Epoch: [0][621/704]	Time 0.123	Data 0.002	Loss 14.54	Acc@1 12.5	Acc@5 39.1
+Epoch: [0][631/704]	Time 0.123	Data 0.002	Loss 13.88	Acc@1 18.8	Acc@5 54.7
+Epoch: [0][641/704]	Time 0.123	Data 0.002	Loss 12.63	Acc@1 21.9	Acc@5 50.0
+Epoch: [0][651/704]	Time 0.123	Data 0.002	Loss 13.71	Acc@1 18.8	Acc@5 50.0
+Epoch: [0][661/704]	Time 0.123	Data 0.002	Loss 13.84	Acc@1 15.6	Acc@5 46.9
+Epoch: [0][671/704]	Time 0.123	Data 0.002	Loss 13.40	Acc@1 14.1	Acc@5 43.8
+Epoch: [0][681/704]	Time 0.123	Data 0.002	Loss 13.12	Acc@1 20.3	Acc@5 51.6
+Epoch: [0][691/704]	Time 0.123	Data 0.002	Loss 14.06	Acc@1 17.2	Acc@5 45.3
+Epoch: [0][701/704]	Time 0.123	Data 0.002	Loss 13.80	Acc@1 7.8	Acc@5 42.2
+Epoch: [1/79]	Time 0.098	Data 0.080	Loss 15.1511	Acc@1 7.8125	Acc@5 31.2500
+Epoch: [11/79]	Time 0.023	Data 0.009	Loss 14.9246	Acc@1 9.3750	Acc@5 34.3750
+Epoch: [21/79]	Time 0.020	Data 0.006	Loss 14.7163	Acc@1 7.8125	Acc@5 32.8125
+Epoch: [31/79]	Time 0.019	Data 0.005	Loss 14.7466	Acc@1 14.0625	Acc@5 45.3125
+Epoch: [41/79]	Time 0.018	Data 0.005	Loss 13.9963	Acc@1 14.0625	Acc@5 43.7500
+Epoch: [51/79]	Time 0.018	Data 0.004	Loss 13.3574	Acc@1 17.1875	Acc@5 50.0000
+Epoch: [61/79]	Time 0.018	Data 0.004	Loss 13.1398	Acc@1 23.4375	Acc@5 53.1250
+Epoch: [71/79]	Time 0.017	Data 0.004	Loss 14.7851	Acc@1 15.6250	Acc@5 42.1875
+ * prec@1 13.340 prec@5 36.840
+ * prec@1 15.060 prec@5 38.660
+ * prec@1 15.640 prec@5 39.500
+ * prec@1 14.860 prec@5 38.280
+New best validation last_bloc_accuracy 14.86
+Namespace(MIE=False, arch='msdnet', base=1, batch_size=64, bnFactor=[1, 2, 4], bottleneck=True, compute_only_laplace=False, data='cifar100', data_root='./CIFAR100/', decay_rate=0.1, epochs=1, evalmode=None, evaluate_from=None, gpu=None, grFactor=[1, 2, 4], growthRate=6, laplace=False, laplace_temperature=1.0, lr=0.1, lr_type='multistep', momentum=0.9, nBlocks=4, nChannels=16, nScales=3, n_flops=[6859876.0, 9087688.0, 16577836.0, 19690384.0, 31467764.0, 34211672.0, 46127036.0, 48870944.0], n_mc_samples=1, num_classes=100, optimize_temperature=False, optimize_var0=False, optimizer='sgd', print_freq=10, prune='max', reduction=0.5, resume=None, save='./MSDNet/cifar100_4/probes', seed=0, splits=['train', 'val', 'test'], start_epoch=0, step=1, stepmode='lin_grow', temperature=1.0, use_valid=True, var0=2.0, weight_decay=0.0001, workers=1)
+=> saving checkpoint './MSDNet/cifar100_4/probes/save_models/checkpoint_000.pth.tar'
+=> saved checkpoint './MSDNet/cifar100_4/probes/save_models/checkpoint_000.pth.tar'
+Best val_prec1: 14.8600 at epoch 0
+Total training time: 88.2539427280426
+
+Debug: Feature collection
+Input shape: torch.Size([64, 3, 32, 32])
+Block 0 feature shape: torch.Size([64, 88, 8, 8])
+Block 1 feature shape: torch.Size([64, 136, 8, 8])
+Block 2 feature shape: torch.Size([64, 116, 8, 8])
+Block 3 feature shape: torch.Size([64, 116, 8, 8])
+Collected data from 0 batches
+Collected data from 100 batches
+Collected data from 200 batches
+Collected data from 300 batches
+Collected data from 400 batches
+Collected data from 500 batches
+Collected data from 600 batches
+Collected data from 700 batches
+
+Final collected shapes:
+Block 0 features shape: torch.Size([45000, 88, 8, 8])
+Block 1 features shape: torch.Size([45000, 136, 8, 8])
+Block 2 features shape: torch.Size([45000, 116, 8, 8])
+Block 3 features shape: torch.Size([45000, 116, 8, 8])
+Final data shape: torch.Size([45000, 100])
+New dataset has been collected
+Split sizes - Train: 40500, Val: 4500
+
+Probe Training Debug Info:
+Number of probes: 4
+Shape of intermediate_data[0]: torch.Size([40500, 88, 8, 8])
+Shape of intermediate_data[1]: torch.Size([40500, 136, 8, 8])
+Shape of intermediate_data[2]: torch.Size([40500, 116, 8, 8])
+Shape of intermediate_data[3]: torch.Size([40500, 116, 8, 8])
+Shape of final_data: torch.Size([40500, 100])
+
+First Batch Debug Info:
+
+Batch shapes:
+Block 0 intermediate batch shape: torch.Size([64, 88, 8, 8])
+Block 1 intermediate batch shape: torch.Size([64, 136, 8, 8])
+Block 2 intermediate batch shape: torch.Size([64, 116, 8, 8])
+Block 3 intermediate batch shape: torch.Size([64, 116, 8, 8])
+Final batch shape: torch.Size([64, 100])
+
+Probe processing shapes:
+
+Block 0 Probe:
+  Input shape: torch.Size([64, 88, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 1 Probe:
+  Input shape: torch.Size([64, 136, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 2 Probe:
+  Input shape: torch.Size([64, 116, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 3 Probe:
+  Input shape: torch.Size([64, 116, 8, 8])
+  Output shape: torch.Size([64, 100])
+Training: [1/633]	Time 0.024	Data 0.000	Loss 73.8542	Avg Acc@1 0.391	Avg Acc@5 3.516
+Training: [11/633]	Time 0.021	Data 0.000	Loss 71.6447	Avg Acc@1 7.209	Avg Acc@5 24.538
+Training: [21/633]	Time 0.021	Data 0.000	Loss 71.4837	Avg Acc@1 12.407	Avg Acc@5 35.714
+Training: [31/633]	Time 0.021	Data 0.000	Loss 69.5873	Avg Acc@1 18.221	Avg Acc@5 44.115
+Training: [41/633]	Time 0.021	Data 0.000	Loss 69.0481	Avg Acc@1 22.180	Avg Acc@5 49.581
+Training: [51/633]	Time 0.021	Data 0.000	Loss 67.9171	Avg Acc@1 26.057	Avg Acc@5 54.887
+Training: [61/633]	Time 0.021	Data 0.000	Loss 67.6677	Avg Acc@1 28.445	Avg Acc@5 58.696
+Training: [71/633]	Time 0.021	Data 0.000	Loss 69.1252	Avg Acc@1 31.002	Avg Acc@5 61.763
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.7242	Avg Acc@1 33.039	Avg Acc@5 64.472
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.8547	Avg Acc@1 35.023	Avg Acc@5 66.535
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.7823	Avg Acc@1 36.901	Avg Acc@5 68.560
+Training: [111/633]	Time 0.021	Data 0.000	Loss 68.1543	Avg Acc@1 38.538	Avg Acc@5 70.348
+Training: [121/633]	Time 0.021	Data 0.000	Loss 68.1813	Avg Acc@1 39.870	Avg Acc@5 72.043
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.4842	Avg Acc@1 41.281	Avg Acc@5 73.443
+Training: [141/633]	Time 0.021	Data 0.000	Loss 69.1078	Avg Acc@1 42.188	Avg Acc@5 74.587
+Training: [151/633]	Time 0.021	Data 0.000	Loss 67.3201	Avg Acc@1 43.142	Avg Acc@5 75.567
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.6700	Avg Acc@1 43.961	Avg Acc@5 76.480
+Training: [171/633]	Time 0.021	Data 0.000	Loss 68.1453	Avg Acc@1 44.769	Avg Acc@5 77.323
+Training: [181/633]	Time 0.021	Data 0.000	Loss 67.1731	Avg Acc@1 45.783	Avg Acc@5 78.201
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.6593	Avg Acc@1 46.480	Avg Acc@5 78.982
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.9130	Avg Acc@1 47.260	Avg Acc@5 79.602
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.9136	Avg Acc@1 47.902	Avg Acc@5 80.258
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.5348	Avg Acc@1 48.584	Avg Acc@5 80.916
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.3903	Avg Acc@1 49.131	Avg Acc@5 81.475
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.8018	Avg Acc@1 49.830	Avg Acc@5 82.056
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.8883	Avg Acc@1 50.367	Avg Acc@5 82.554
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.3936	Avg Acc@1 50.715	Avg Acc@5 83.006
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.9837	Avg Acc@1 51.254	Avg Acc@5 83.486
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.9082	Avg Acc@1 51.859	Avg Acc@5 83.944
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.8563	Avg Acc@1 52.357	Avg Acc@5 84.345
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.6646	Avg Acc@1 52.842	Avg Acc@5 84.724
+Training: [311/633]	Time 0.021	Data 0.000	Loss 68.0527	Avg Acc@1 53.251	Avg Acc@5 85.095
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.9974	Avg Acc@1 53.580	Avg Acc@5 85.404
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.4200	Avg Acc@1 54.021	Avg Acc@5 85.742
+Training: [341/633]	Time 0.021	Data 0.000	Loss 67.0709	Avg Acc@1 54.336	Avg Acc@5 86.053
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.9814	Avg Acc@1 54.649	Avg Acc@5 86.333
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.7773	Avg Acc@1 55.020	Avg Acc@5 86.599
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.5960	Avg Acc@1 55.308	Avg Acc@5 86.839
+Training: [381/633]	Time 0.021	Data 0.000	Loss 67.0549	Avg Acc@1 55.579	Avg Acc@5 87.078
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.5106	Avg Acc@1 55.832	Avg Acc@5 87.274
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.9096	Avg Acc@1 56.120	Avg Acc@5 87.497
+Training: [411/633]	Time 0.021	Data 0.000	Loss 67.0262	Avg Acc@1 56.444	Avg Acc@5 87.718
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.9812	Avg Acc@1 56.698	Avg Acc@5 87.917
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8836	Avg Acc@1 56.905	Avg Acc@5 88.105
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.4707	Avg Acc@1 57.146	Avg Acc@5 88.285
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8945	Avg Acc@1 57.379	Avg Acc@5 88.476
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.2285	Avg Acc@1 57.686	Avg Acc@5 88.668
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.4622	Avg Acc@1 57.892	Avg Acc@5 88.834
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7533	Avg Acc@1 58.046	Avg Acc@5 88.996
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.4823	Avg Acc@1 58.265	Avg Acc@5 89.156
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.3134	Avg Acc@1 58.460	Avg Acc@5 89.296
+Training: [511/633]	Time 0.021	Data 0.000	Loss 68.0586	Avg Acc@1 58.663	Avg Acc@5 89.422
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3820	Avg Acc@1 58.879	Avg Acc@5 89.569
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0794	Avg Acc@1 59.095	Avg Acc@5 89.694
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.9914	Avg Acc@1 59.280	Avg Acc@5 89.828
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2794	Avg Acc@1 59.470	Avg Acc@5 89.956
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.2938	Avg Acc@1 59.656	Avg Acc@5 90.068
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.7242	Avg Acc@1 59.792	Avg Acc@5 90.180
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1686	Avg Acc@1 60.014	Avg Acc@5 90.310
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.8003	Avg Acc@1 60.183	Avg Acc@5 90.413
+Training: [601/633]	Time 0.021	Data 0.000	Loss 67.0221	Avg Acc@1 60.333	Avg Acc@5 90.533
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.8456	Avg Acc@1 60.487	Avg Acc@5 90.620
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.1280	Avg Acc@1 60.650	Avg Acc@5 90.709
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7656	Avg Acc@1 60.804	Avg Acc@5 90.802
+
+Probe Training Epoch: 0	Loss: 67.6968	Acc: 60.8362
+Probe Training Epoch: 0	Train Loss: 67.6968	Train Acc: 60.8362	Val Loss: 67.0736	Val Acc: 73.5255
+New best validation accuracy: 73.5255
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.3480	Avg Acc@1 62.500	Avg Acc@5 96.875
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.7430	Avg Acc@1 66.122	Avg Acc@5 96.378
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5680	Avg Acc@1 66.574	Avg Acc@5 96.001
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.9159	Avg Acc@1 67.339	Avg Acc@5 96.270
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.5206	Avg Acc@1 68.064	Avg Acc@5 96.408
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.7022	Avg Acc@1 68.581	Avg Acc@5 96.484
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.8402	Avg Acc@1 68.526	Avg Acc@5 96.376
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2790	Avg Acc@1 68.844	Avg Acc@5 96.358
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0625	Avg Acc@1 68.924	Avg Acc@5 96.484
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2366	Avg Acc@1 69.454	Avg Acc@5 96.532
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.4070	Avg Acc@1 69.775	Avg Acc@5 96.693
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.6096	Avg Acc@1 70.024	Avg Acc@5 96.752
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8603	Avg Acc@1 70.290	Avg Acc@5 96.839
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1153	Avg Acc@1 70.423	Avg Acc@5 96.878
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.7153	Avg Acc@1 70.404	Avg Acc@5 96.853
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.9005	Avg Acc@1 70.320	Avg Acc@5 96.816
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.3135	Avg Acc@1 70.376	Avg Acc@5 96.856
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8844	Avg Acc@1 70.303	Avg Acc@5 96.852
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8673	Avg Acc@1 70.546	Avg Acc@5 96.907
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4555	Avg Acc@1 70.552	Avg Acc@5 96.934
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6841	Avg Acc@1 70.608	Avg Acc@5 96.953
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6998	Avg Acc@1 70.612	Avg Acc@5 96.981
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2848	Avg Acc@1 70.666	Avg Acc@5 96.999
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1989	Avg Acc@1 70.659	Avg Acc@5 97.015
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6465	Avg Acc@1 70.815	Avg Acc@5 97.050
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5613	Avg Acc@1 70.915	Avg Acc@5 97.093
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2330	Avg Acc@1 70.859	Avg Acc@5 97.108
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8640	Avg Acc@1 70.927	Avg Acc@5 97.149
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8124	Avg Acc@1 71.094	Avg Acc@5 97.186
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7743	Avg Acc@1 71.127	Avg Acc@5 97.212
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5644	Avg Acc@1 71.255	Avg Acc@5 97.237
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9613	Avg Acc@1 71.277	Avg Acc@5 97.247
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8819	Avg Acc@1 71.270	Avg Acc@5 97.229
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2297	Avg Acc@1 71.390	Avg Acc@5 97.272
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9354	Avg Acc@1 71.402	Avg Acc@5 97.301
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8766	Avg Acc@1 71.394	Avg Acc@5 97.309
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.7021	Avg Acc@1 71.474	Avg Acc@5 97.321
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4499	Avg Acc@1 71.472	Avg Acc@5 97.319
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9380	Avg Acc@1 71.491	Avg Acc@5 97.321
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3831	Avg Acc@1 71.504	Avg Acc@5 97.311
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8298	Avg Acc@1 71.487	Avg Acc@5 97.312
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9513	Avg Acc@1 71.505	Avg Acc@5 97.313
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8822	Avg Acc@1 71.534	Avg Acc@5 97.323
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8202	Avg Acc@1 71.532	Avg Acc@5 97.330
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.4105	Avg Acc@1 71.538	Avg Acc@5 97.325
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8625	Avg Acc@1 71.555	Avg Acc@5 97.337
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1385	Avg Acc@1 71.652	Avg Acc@5 97.362
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3902	Avg Acc@1 71.674	Avg Acc@5 97.370
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7136	Avg Acc@1 71.632	Avg Acc@5 97.372
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.4079	Avg Acc@1 71.628	Avg Acc@5 97.362
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2591	Avg Acc@1 71.657	Avg Acc@5 97.358
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9314	Avg Acc@1 71.633	Avg Acc@5 97.356
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3197	Avg Acc@1 71.643	Avg Acc@5 97.353
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0134	Avg Acc@1 71.671	Avg Acc@5 97.367
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8515	Avg Acc@1 71.683	Avg Acc@5 97.366
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2122	Avg Acc@1 71.735	Avg Acc@5 97.373
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1782	Avg Acc@1 71.775	Avg Acc@5 97.373
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6497	Avg Acc@1 71.771	Avg Acc@5 97.381
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1352	Avg Acc@1 71.833	Avg Acc@5 97.390
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7891	Avg Acc@1 71.884	Avg Acc@5 97.393
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9290	Avg Acc@1 71.935	Avg Acc@5 97.412
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7249	Avg Acc@1 71.973	Avg Acc@5 97.417
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0476	Avg Acc@1 72.039	Avg Acc@5 97.412
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7142	Avg Acc@1 72.078	Avg Acc@5 97.422
+
+Probe Training Epoch: 1	Loss: 67.2871	Acc: 72.0749
+Probe Training Epoch: 1	Train Loss: 67.2871	Train Acc: 72.0749	Val Loss: 67.0238	Val Acc: 77.7652
+New best validation accuracy: 77.7652
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2797	Avg Acc@1 67.578	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6980	Avg Acc@1 69.070	Avg Acc@5 97.230
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5259	Avg Acc@1 69.959	Avg Acc@5 97.135
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.9002	Avg Acc@1 70.060	Avg Acc@5 97.102
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4759	Avg Acc@1 70.513	Avg Acc@5 97.142
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6499	Avg Acc@1 71.224	Avg Acc@5 97.235
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7796	Avg Acc@1 71.196	Avg Acc@5 97.234
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2580	Avg Acc@1 71.336	Avg Acc@5 97.183
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0567	Avg Acc@1 71.354	Avg Acc@5 97.227
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2444	Avg Acc@1 71.596	Avg Acc@5 97.201
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3895	Avg Acc@1 71.821	Avg Acc@5 97.308
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.6048	Avg Acc@1 71.974	Avg Acc@5 97.336
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8467	Avg Acc@1 72.136	Avg Acc@5 97.417
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1150	Avg Acc@1 72.200	Avg Acc@5 97.433
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6906	Avg Acc@1 72.097	Avg Acc@5 97.393
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8940	Avg Acc@1 71.978	Avg Acc@5 97.364
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.3086	Avg Acc@1 71.945	Avg Acc@5 97.382
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8479	Avg Acc@1 71.827	Avg Acc@5 97.355
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8464	Avg Acc@1 72.011	Avg Acc@5 97.399
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4465	Avg Acc@1 71.990	Avg Acc@5 97.411
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6786	Avg Acc@1 71.992	Avg Acc@5 97.411
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6912	Avg Acc@1 71.973	Avg Acc@5 97.429
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2803	Avg Acc@1 71.981	Avg Acc@5 97.437
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1877	Avg Acc@1 71.944	Avg Acc@5 97.436
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6349	Avg Acc@1 72.076	Avg Acc@5 97.463
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5559	Avg Acc@1 72.130	Avg Acc@5 97.498
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2333	Avg Acc@1 72.040	Avg Acc@5 97.498
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8537	Avg Acc@1 72.077	Avg Acc@5 97.528
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8111	Avg Acc@1 72.216	Avg Acc@5 97.553
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7664	Avg Acc@1 72.236	Avg Acc@5 97.561
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5621	Avg Acc@1 72.336	Avg Acc@5 97.576
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9575	Avg Acc@1 72.340	Avg Acc@5 97.581
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8719	Avg Acc@1 72.301	Avg Acc@5 97.558
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2263	Avg Acc@1 72.404	Avg Acc@5 97.588
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9294	Avg Acc@1 72.395	Avg Acc@5 97.612
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8741	Avg Acc@1 72.364	Avg Acc@5 97.615
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.7015	Avg Acc@1 72.423	Avg Acc@5 97.626
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4454	Avg Acc@1 72.411	Avg Acc@5 97.619
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9401	Avg Acc@1 72.408	Avg Acc@5 97.616
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3798	Avg Acc@1 72.401	Avg Acc@5 97.603
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8226	Avg Acc@1 72.369	Avg Acc@5 97.602
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9455	Avg Acc@1 72.378	Avg Acc@5 97.599
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8704	Avg Acc@1 72.382	Avg Acc@5 97.601
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8147	Avg Acc@1 72.361	Avg Acc@5 97.600
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.4041	Avg Acc@1 72.366	Avg Acc@5 97.589
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8548	Avg Acc@1 72.364	Avg Acc@5 97.592
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1366	Avg Acc@1 72.450	Avg Acc@5 97.611
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3837	Avg Acc@1 72.462	Avg Acc@5 97.611
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7121	Avg Acc@1 72.410	Avg Acc@5 97.609
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.4021	Avg Acc@1 72.395	Avg Acc@5 97.594
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2563	Avg Acc@1 72.418	Avg Acc@5 97.591
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9285	Avg Acc@1 72.380	Avg Acc@5 97.587
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3151	Avg Acc@1 72.392	Avg Acc@5 97.580
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0089	Avg Acc@1 72.413	Avg Acc@5 97.589
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8489	Avg Acc@1 72.416	Avg Acc@5 97.585
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2081	Avg Acc@1 72.461	Avg Acc@5 97.591
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1748	Avg Acc@1 72.497	Avg Acc@5 97.589
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6461	Avg Acc@1 72.485	Avg Acc@5 97.593
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1325	Avg Acc@1 72.544	Avg Acc@5 97.600
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7868	Avg Acc@1 72.584	Avg Acc@5 97.599
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9277	Avg Acc@1 72.628	Avg Acc@5 97.614
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7230	Avg Acc@1 72.650	Avg Acc@5 97.616
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0465	Avg Acc@1 72.703	Avg Acc@5 97.610
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7126	Avg Acc@1 72.732	Avg Acc@5 97.617
+
+Probe Training Epoch: 2	Loss: 67.2755	Acc: 72.7280
+Probe Training Epoch: 2	Train Loss: 67.2755	Train Acc: 72.7280	Val Loss: 67.0211	Val Acc: 77.8873
+New best validation accuracy: 77.8873
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2766	Avg Acc@1 67.578	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6962	Avg Acc@1 69.176	Avg Acc@5 97.230
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5185	Avg Acc@1 69.978	Avg Acc@5 97.247
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8981	Avg Acc@1 70.086	Avg Acc@5 97.253
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4715	Avg Acc@1 70.532	Avg Acc@5 97.247
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6458	Avg Acc@1 71.285	Avg Acc@5 97.350
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7741	Avg Acc@1 71.299	Avg Acc@5 97.342
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2538	Avg Acc@1 71.429	Avg Acc@5 97.260
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0519	Avg Acc@1 71.441	Avg Acc@5 97.323
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2401	Avg Acc@1 71.716	Avg Acc@5 97.291
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3867	Avg Acc@1 71.921	Avg Acc@5 97.405
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.6006	Avg Acc@1 72.083	Avg Acc@5 97.438
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8442	Avg Acc@1 72.246	Avg Acc@5 97.511
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1105	Avg Acc@1 72.307	Avg Acc@5 97.522
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6870	Avg Acc@1 72.199	Avg Acc@5 97.471
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8906	Avg Acc@1 72.069	Avg Acc@5 97.447
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.3050	Avg Acc@1 72.038	Avg Acc@5 97.457
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8428	Avg Acc@1 71.921	Avg Acc@5 97.432
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8426	Avg Acc@1 72.119	Avg Acc@5 97.475
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4439	Avg Acc@1 72.094	Avg Acc@5 97.478
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6759	Avg Acc@1 72.110	Avg Acc@5 97.477
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6889	Avg Acc@1 72.112	Avg Acc@5 97.493
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2772	Avg Acc@1 72.133	Avg Acc@5 97.511
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1854	Avg Acc@1 72.110	Avg Acc@5 97.513
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6323	Avg Acc@1 72.241	Avg Acc@5 97.538
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5528	Avg Acc@1 72.284	Avg Acc@5 97.569
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2319	Avg Acc@1 72.200	Avg Acc@5 97.566
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8509	Avg Acc@1 72.245	Avg Acc@5 97.597
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8084	Avg Acc@1 72.385	Avg Acc@5 97.623
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7619	Avg Acc@1 72.417	Avg Acc@5 97.629
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5594	Avg Acc@1 72.515	Avg Acc@5 97.642
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9550	Avg Acc@1 72.524	Avg Acc@5 97.645
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8687	Avg Acc@1 72.476	Avg Acc@5 97.625
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2239	Avg Acc@1 72.587	Avg Acc@5 97.656
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9262	Avg Acc@1 72.581	Avg Acc@5 97.676
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8720	Avg Acc@1 72.546	Avg Acc@5 97.675
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.7001	Avg Acc@1 72.603	Avg Acc@5 97.683
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4425	Avg Acc@1 72.591	Avg Acc@5 97.677
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9383	Avg Acc@1 72.590	Avg Acc@5 97.671
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3768	Avg Acc@1 72.580	Avg Acc@5 97.656
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8192	Avg Acc@1 72.548	Avg Acc@5 97.654
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9430	Avg Acc@1 72.555	Avg Acc@5 97.652
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8669	Avg Acc@1 72.558	Avg Acc@5 97.653
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8122	Avg Acc@1 72.537	Avg Acc@5 97.652
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.4016	Avg Acc@1 72.535	Avg Acc@5 97.639
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8507	Avg Acc@1 72.532	Avg Acc@5 97.642
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1351	Avg Acc@1 72.616	Avg Acc@5 97.661
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3806	Avg Acc@1 72.632	Avg Acc@5 97.660
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7105	Avg Acc@1 72.585	Avg Acc@5 97.656
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3995	Avg Acc@1 72.564	Avg Acc@5 97.644
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2540	Avg Acc@1 72.580	Avg Acc@5 97.641
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9262	Avg Acc@1 72.542	Avg Acc@5 97.636
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3128	Avg Acc@1 72.550	Avg Acc@5 97.631
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0062	Avg Acc@1 72.575	Avg Acc@5 97.641
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8468	Avg Acc@1 72.574	Avg Acc@5 97.636
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2062	Avg Acc@1 72.620	Avg Acc@5 97.641
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1729	Avg Acc@1 72.658	Avg Acc@5 97.640
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6441	Avg Acc@1 72.643	Avg Acc@5 97.646
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1304	Avg Acc@1 72.699	Avg Acc@5 97.654
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7849	Avg Acc@1 72.737	Avg Acc@5 97.652
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9270	Avg Acc@1 72.775	Avg Acc@5 97.667
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7221	Avg Acc@1 72.795	Avg Acc@5 97.668
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0460	Avg Acc@1 72.844	Avg Acc@5 97.662
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7115	Avg Acc@1 72.870	Avg Acc@5 97.668
+
+Probe Training Epoch: 3	Loss: 67.2725	Acc: 72.8662
+Probe Training Epoch: 3	Train Loss: 67.2725	Train Acc: 72.8662	Val Loss: 67.0192	Val Acc: 77.9809
+New best validation accuracy: 77.9809
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2748	Avg Acc@1 68.359	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6941	Avg Acc@1 69.602	Avg Acc@5 97.337
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5145	Avg Acc@1 70.406	Avg Acc@5 97.303
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8964	Avg Acc@1 70.401	Avg Acc@5 97.329
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4689	Avg Acc@1 70.856	Avg Acc@5 97.313
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6428	Avg Acc@1 71.561	Avg Acc@5 97.403
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7711	Avg Acc@1 71.536	Avg Acc@5 97.407
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2512	Avg Acc@1 71.655	Avg Acc@5 97.321
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0483	Avg Acc@1 71.653	Avg Acc@5 97.386
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2368	Avg Acc@1 71.909	Avg Acc@5 97.356
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3850	Avg Acc@1 72.107	Avg Acc@5 97.471
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5974	Avg Acc@1 72.259	Avg Acc@5 97.501
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8424	Avg Acc@1 72.450	Avg Acc@5 97.576
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1075	Avg Acc@1 72.507	Avg Acc@5 97.585
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6850	Avg Acc@1 72.388	Avg Acc@5 97.526
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8881	Avg Acc@1 72.279	Avg Acc@5 97.501
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.3023	Avg Acc@1 72.244	Avg Acc@5 97.516
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8401	Avg Acc@1 72.119	Avg Acc@5 97.492
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8403	Avg Acc@1 72.315	Avg Acc@5 97.535
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4421	Avg Acc@1 72.300	Avg Acc@5 97.538
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6740	Avg Acc@1 72.312	Avg Acc@5 97.540
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6875	Avg Acc@1 72.295	Avg Acc@5 97.553
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2747	Avg Acc@1 72.324	Avg Acc@5 97.570
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1841	Avg Acc@1 72.305	Avg Acc@5 97.573
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6308	Avg Acc@1 72.431	Avg Acc@5 97.600
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5506	Avg Acc@1 72.471	Avg Acc@5 97.630
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2303	Avg Acc@1 72.384	Avg Acc@5 97.626
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8491	Avg Acc@1 72.430	Avg Acc@5 97.653
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8062	Avg Acc@1 72.565	Avg Acc@5 97.676
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7586	Avg Acc@1 72.588	Avg Acc@5 97.678
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5572	Avg Acc@1 72.680	Avg Acc@5 97.690
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9531	Avg Acc@1 72.693	Avg Acc@5 97.693
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8664	Avg Acc@1 72.643	Avg Acc@5 97.675
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2220	Avg Acc@1 72.753	Avg Acc@5 97.703
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9239	Avg Acc@1 72.743	Avg Acc@5 97.722
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8704	Avg Acc@1 72.705	Avg Acc@5 97.720
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6990	Avg Acc@1 72.759	Avg Acc@5 97.727
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4404	Avg Acc@1 72.748	Avg Acc@5 97.719
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9367	Avg Acc@1 72.745	Avg Acc@5 97.713
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3744	Avg Acc@1 72.739	Avg Acc@5 97.696
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8167	Avg Acc@1 72.711	Avg Acc@5 97.695
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9412	Avg Acc@1 72.710	Avg Acc@5 97.690
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8646	Avg Acc@1 72.717	Avg Acc@5 97.691
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8104	Avg Acc@1 72.690	Avg Acc@5 97.688
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3997	Avg Acc@1 72.685	Avg Acc@5 97.676
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8477	Avg Acc@1 72.681	Avg Acc@5 97.679
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1338	Avg Acc@1 72.767	Avg Acc@5 97.699
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3785	Avg Acc@1 72.783	Avg Acc@5 97.698
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7093	Avg Acc@1 72.738	Avg Acc@5 97.692
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3975	Avg Acc@1 72.722	Avg Acc@5 97.679
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2522	Avg Acc@1 72.733	Avg Acc@5 97.675
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9245	Avg Acc@1 72.692	Avg Acc@5 97.669
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3110	Avg Acc@1 72.700	Avg Acc@5 97.664
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0043	Avg Acc@1 72.726	Avg Acc@5 97.672
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8451	Avg Acc@1 72.718	Avg Acc@5 97.669
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2049	Avg Acc@1 72.765	Avg Acc@5 97.674
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1715	Avg Acc@1 72.800	Avg Acc@5 97.672
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6425	Avg Acc@1 72.782	Avg Acc@5 97.678
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1288	Avg Acc@1 72.834	Avg Acc@5 97.685
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7834	Avg Acc@1 72.868	Avg Acc@5 97.684
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9266	Avg Acc@1 72.905	Avg Acc@5 97.698
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7214	Avg Acc@1 72.922	Avg Acc@5 97.698
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0456	Avg Acc@1 72.973	Avg Acc@5 97.691
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7106	Avg Acc@1 72.995	Avg Acc@5 97.696
+
+Probe Training Epoch: 4	Loss: 67.2704	Acc: 72.9902
+Probe Training Epoch: 4	Train Loss: 67.2704	Train Acc: 72.9902	Val Loss: 67.0177	Val Acc: 78.1679
+New best validation accuracy: 78.1679
+Training: [1/633]	Time 0.020	Data 0.000	Loss 67.2733	Avg Acc@1 67.969	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6922	Avg Acc@1 69.709	Avg Acc@5 97.337
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5114	Avg Acc@1 70.554	Avg Acc@5 97.340
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8951	Avg Acc@1 70.514	Avg Acc@5 97.366
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4669	Avg Acc@1 70.913	Avg Acc@5 97.323
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6404	Avg Acc@1 71.615	Avg Acc@5 97.403
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7689	Avg Acc@1 71.587	Avg Acc@5 97.413
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2490	Avg Acc@1 71.715	Avg Acc@5 97.343
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0453	Avg Acc@1 71.721	Avg Acc@5 97.405
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2343	Avg Acc@1 71.987	Avg Acc@5 97.373
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3837	Avg Acc@1 72.192	Avg Acc@5 97.482
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5948	Avg Acc@1 72.343	Avg Acc@5 97.512
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8408	Avg Acc@1 72.550	Avg Acc@5 97.585
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1051	Avg Acc@1 72.609	Avg Acc@5 97.591
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6833	Avg Acc@1 72.476	Avg Acc@5 97.529
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8860	Avg Acc@1 72.372	Avg Acc@5 97.504
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.3002	Avg Acc@1 72.321	Avg Acc@5 97.516
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8381	Avg Acc@1 72.193	Avg Acc@5 97.499
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8386	Avg Acc@1 72.389	Avg Acc@5 97.542
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4406	Avg Acc@1 72.376	Avg Acc@5 97.550
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6725	Avg Acc@1 72.402	Avg Acc@5 97.555
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6863	Avg Acc@1 72.384	Avg Acc@5 97.569
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2727	Avg Acc@1 72.405	Avg Acc@5 97.587
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1830	Avg Acc@1 72.384	Avg Acc@5 97.590
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6297	Avg Acc@1 72.510	Avg Acc@5 97.617
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5487	Avg Acc@1 72.555	Avg Acc@5 97.647
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2288	Avg Acc@1 72.466	Avg Acc@5 97.643
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8477	Avg Acc@1 72.512	Avg Acc@5 97.668
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8042	Avg Acc@1 72.649	Avg Acc@5 97.694
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7558	Avg Acc@1 72.672	Avg Acc@5 97.697
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5553	Avg Acc@1 72.769	Avg Acc@5 97.712
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9515	Avg Acc@1 72.782	Avg Acc@5 97.715
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8645	Avg Acc@1 72.730	Avg Acc@5 97.699
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2203	Avg Acc@1 72.839	Avg Acc@5 97.728
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9220	Avg Acc@1 72.834	Avg Acc@5 97.744
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8690	Avg Acc@1 72.799	Avg Acc@5 97.743
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6980	Avg Acc@1 72.850	Avg Acc@5 97.749
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4386	Avg Acc@1 72.838	Avg Acc@5 97.744
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9354	Avg Acc@1 72.836	Avg Acc@5 97.738
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3724	Avg Acc@1 72.833	Avg Acc@5 97.721
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8149	Avg Acc@1 72.808	Avg Acc@5 97.720
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9397	Avg Acc@1 72.809	Avg Acc@5 97.714
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8628	Avg Acc@1 72.819	Avg Acc@5 97.714
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8089	Avg Acc@1 72.794	Avg Acc@5 97.712
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3981	Avg Acc@1 72.783	Avg Acc@5 97.700
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8453	Avg Acc@1 72.777	Avg Acc@5 97.702
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1326	Avg Acc@1 72.861	Avg Acc@5 97.723
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3768	Avg Acc@1 72.877	Avg Acc@5 97.723
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7082	Avg Acc@1 72.825	Avg Acc@5 97.718
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3958	Avg Acc@1 72.807	Avg Acc@5 97.706
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2508	Avg Acc@1 72.821	Avg Acc@5 97.703
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9231	Avg Acc@1 72.782	Avg Acc@5 97.696
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3095	Avg Acc@1 72.789	Avg Acc@5 97.691
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0028	Avg Acc@1 72.817	Avg Acc@5 97.699
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8436	Avg Acc@1 72.806	Avg Acc@5 97.695
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2038	Avg Acc@1 72.850	Avg Acc@5 97.702
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1704	Avg Acc@1 72.884	Avg Acc@5 97.699
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6412	Avg Acc@1 72.866	Avg Acc@5 97.705
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1276	Avg Acc@1 72.919	Avg Acc@5 97.711
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7822	Avg Acc@1 72.949	Avg Acc@5 97.710
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9262	Avg Acc@1 72.986	Avg Acc@5 97.724
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7207	Avg Acc@1 73.003	Avg Acc@5 97.724
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0452	Avg Acc@1 73.051	Avg Acc@5 97.717
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7099	Avg Acc@1 73.072	Avg Acc@5 97.721
+
+Probe Training Epoch: 5	Loss: 67.2686	Acc: 73.0666
+Probe Training Epoch: 5	Train Loss: 67.2686	Train Acc: 73.0666	Val Loss: 67.0165	Val Acc: 78.2504
+New best validation accuracy: 78.2504
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2719	Avg Acc@1 68.359	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6906	Avg Acc@1 69.744	Avg Acc@5 97.337
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5088	Avg Acc@1 70.610	Avg Acc@5 97.340
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8940	Avg Acc@1 70.590	Avg Acc@5 97.341
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4651	Avg Acc@1 70.998	Avg Acc@5 97.313
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6383	Avg Acc@1 71.722	Avg Acc@5 97.403
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7672	Avg Acc@1 71.696	Avg Acc@5 97.413
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2471	Avg Acc@1 71.831	Avg Acc@5 97.343
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0428	Avg Acc@1 71.836	Avg Acc@5 97.415
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2321	Avg Acc@1 72.081	Avg Acc@5 97.377
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3825	Avg Acc@1 72.285	Avg Acc@5 97.494
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5925	Avg Acc@1 72.435	Avg Acc@5 97.523
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8394	Avg Acc@1 72.630	Avg Acc@5 97.592
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1032	Avg Acc@1 72.698	Avg Acc@5 97.603
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6819	Avg Acc@1 72.559	Avg Acc@5 97.537
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8843	Avg Acc@1 72.470	Avg Acc@5 97.509
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.2984	Avg Acc@1 72.418	Avg Acc@5 97.523
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8363	Avg Acc@1 72.284	Avg Acc@5 97.503
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8372	Avg Acc@1 72.486	Avg Acc@5 97.546
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4394	Avg Acc@1 72.476	Avg Acc@5 97.560
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6712	Avg Acc@1 72.503	Avg Acc@5 97.563
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6852	Avg Acc@1 72.484	Avg Acc@5 97.577
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2709	Avg Acc@1 72.502	Avg Acc@5 97.594
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1821	Avg Acc@1 72.477	Avg Acc@5 97.599
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6288	Avg Acc@1 72.603	Avg Acc@5 97.625
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5472	Avg Acc@1 72.650	Avg Acc@5 97.653
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2274	Avg Acc@1 72.562	Avg Acc@5 97.647
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8465	Avg Acc@1 72.603	Avg Acc@5 97.676
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8025	Avg Acc@1 72.742	Avg Acc@5 97.699
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7534	Avg Acc@1 72.766	Avg Acc@5 97.702
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5536	Avg Acc@1 72.857	Avg Acc@5 97.719
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9502	Avg Acc@1 72.867	Avg Acc@5 97.720
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8628	Avg Acc@1 72.813	Avg Acc@5 97.704
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2189	Avg Acc@1 72.923	Avg Acc@5 97.735
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9202	Avg Acc@1 72.919	Avg Acc@5 97.751
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8679	Avg Acc@1 72.877	Avg Acc@5 97.750
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6972	Avg Acc@1 72.929	Avg Acc@5 97.755
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4371	Avg Acc@1 72.917	Avg Acc@5 97.749
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9342	Avg Acc@1 72.912	Avg Acc@5 97.744
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3706	Avg Acc@1 72.913	Avg Acc@5 97.729
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8133	Avg Acc@1 72.890	Avg Acc@5 97.727
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9385	Avg Acc@1 72.893	Avg Acc@5 97.722
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8612	Avg Acc@1 72.901	Avg Acc@5 97.723
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8076	Avg Acc@1 72.886	Avg Acc@5 97.723
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3967	Avg Acc@1 72.873	Avg Acc@5 97.712
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8432	Avg Acc@1 72.872	Avg Acc@5 97.717
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1315	Avg Acc@1 72.955	Avg Acc@5 97.738
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3753	Avg Acc@1 72.967	Avg Acc@5 97.740
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7072	Avg Acc@1 72.915	Avg Acc@5 97.735
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3943	Avg Acc@1 72.895	Avg Acc@5 97.724
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2495	Avg Acc@1 72.909	Avg Acc@5 97.720
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9220	Avg Acc@1 72.865	Avg Acc@5 97.715
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3082	Avg Acc@1 72.874	Avg Acc@5 97.711
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0016	Avg Acc@1 72.904	Avg Acc@5 97.718
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8423	Avg Acc@1 72.893	Avg Acc@5 97.713
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2028	Avg Acc@1 72.940	Avg Acc@5 97.719
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1694	Avg Acc@1 72.972	Avg Acc@5 97.717
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6401	Avg Acc@1 72.952	Avg Acc@5 97.723
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1265	Avg Acc@1 73.004	Avg Acc@5 97.730
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7811	Avg Acc@1 73.031	Avg Acc@5 97.729
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9257	Avg Acc@1 73.069	Avg Acc@5 97.742
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7202	Avg Acc@1 73.085	Avg Acc@5 97.744
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0448	Avg Acc@1 73.136	Avg Acc@5 97.736
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7092	Avg Acc@1 73.153	Avg Acc@5 97.740
+
+Probe Training Epoch: 6	Loss: 67.2671	Acc: 73.1482
+Probe Training Epoch: 6	Train Loss: 67.2671	Train Acc: 73.1482	Val Loss: 67.0154	Val Acc: 78.2669
+New best validation accuracy: 78.2669
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2707	Avg Acc@1 68.359	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6891	Avg Acc@1 69.851	Avg Acc@5 97.372
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5064	Avg Acc@1 70.778	Avg Acc@5 97.377
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8929	Avg Acc@1 70.728	Avg Acc@5 97.366
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4636	Avg Acc@1 71.065	Avg Acc@5 97.342
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6365	Avg Acc@1 71.745	Avg Acc@5 97.411
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7657	Avg Acc@1 71.721	Avg Acc@5 97.419
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2454	Avg Acc@1 71.853	Avg Acc@5 97.348
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0406	Avg Acc@1 71.880	Avg Acc@5 97.425
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2303	Avg Acc@1 72.141	Avg Acc@5 97.390
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3816	Avg Acc@1 72.355	Avg Acc@5 97.505
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5905	Avg Acc@1 72.523	Avg Acc@5 97.533
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8381	Avg Acc@1 72.705	Avg Acc@5 97.608
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1016	Avg Acc@1 72.776	Avg Acc@5 97.620
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6805	Avg Acc@1 72.631	Avg Acc@5 97.554
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8827	Avg Acc@1 72.553	Avg Acc@5 97.522
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.2968	Avg Acc@1 72.489	Avg Acc@5 97.537
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8348	Avg Acc@1 72.343	Avg Acc@5 97.517
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8360	Avg Acc@1 72.548	Avg Acc@5 97.559
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4383	Avg Acc@1 72.550	Avg Acc@5 97.581
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6700	Avg Acc@1 72.579	Avg Acc@5 97.586
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6842	Avg Acc@1 72.556	Avg Acc@5 97.601
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2692	Avg Acc@1 72.577	Avg Acc@5 97.617
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1811	Avg Acc@1 72.553	Avg Acc@5 97.617
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6279	Avg Acc@1 72.685	Avg Acc@5 97.645
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5458	Avg Acc@1 72.739	Avg Acc@5 97.672
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2262	Avg Acc@1 72.650	Avg Acc@5 97.664
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8454	Avg Acc@1 72.689	Avg Acc@5 97.691
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.8009	Avg Acc@1 72.834	Avg Acc@5 97.716
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7512	Avg Acc@1 72.848	Avg Acc@5 97.721
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5520	Avg Acc@1 72.943	Avg Acc@5 97.737
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9490	Avg Acc@1 72.956	Avg Acc@5 97.739
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8613	Avg Acc@1 72.908	Avg Acc@5 97.722
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2176	Avg Acc@1 73.019	Avg Acc@5 97.753
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9187	Avg Acc@1 73.007	Avg Acc@5 97.770
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8668	Avg Acc@1 72.965	Avg Acc@5 97.768
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6963	Avg Acc@1 73.013	Avg Acc@5 97.773
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4358	Avg Acc@1 73.004	Avg Acc@5 97.767
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9332	Avg Acc@1 72.996	Avg Acc@5 97.763
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3689	Avg Acc@1 72.995	Avg Acc@5 97.747
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8120	Avg Acc@1 72.971	Avg Acc@5 97.745
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9374	Avg Acc@1 72.975	Avg Acc@5 97.741
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8597	Avg Acc@1 72.984	Avg Acc@5 97.742
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8065	Avg Acc@1 72.968	Avg Acc@5 97.741
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3955	Avg Acc@1 72.955	Avg Acc@5 97.730
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8414	Avg Acc@1 72.954	Avg Acc@5 97.738
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1304	Avg Acc@1 73.037	Avg Acc@5 97.759
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3740	Avg Acc@1 73.051	Avg Acc@5 97.759
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7063	Avg Acc@1 72.995	Avg Acc@5 97.755
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3929	Avg Acc@1 72.974	Avg Acc@5 97.744
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2484	Avg Acc@1 72.991	Avg Acc@5 97.737
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9209	Avg Acc@1 72.944	Avg Acc@5 97.732
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3069	Avg Acc@1 72.955	Avg Acc@5 97.728
+Training: [531/633]	Time 0.021	Data 0.000	Loss 67.0006	Avg Acc@1 72.984	Avg Acc@5 97.736
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8411	Avg Acc@1 72.970	Avg Acc@5 97.731
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2019	Avg Acc@1 73.014	Avg Acc@5 97.736
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1685	Avg Acc@1 73.045	Avg Acc@5 97.734
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6392	Avg Acc@1 73.023	Avg Acc@5 97.740
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1256	Avg Acc@1 73.073	Avg Acc@5 97.746
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7802	Avg Acc@1 73.100	Avg Acc@5 97.744
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9253	Avg Acc@1 73.138	Avg Acc@5 97.756
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7196	Avg Acc@1 73.152	Avg Acc@5 97.759
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0444	Avg Acc@1 73.202	Avg Acc@5 97.750
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7085	Avg Acc@1 73.219	Avg Acc@5 97.753
+
+Probe Training Epoch: 7	Loss: 67.2658	Acc: 73.2121
+Probe Training Epoch: 7	Train Loss: 67.2658	Train Acc: 73.2121	Val Loss: 67.0145	Val Acc: 78.2945
+New best validation accuracy: 78.2945
+Training: [1/633]	Time 0.020	Data 0.000	Loss 67.2696	Avg Acc@1 68.359	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6877	Avg Acc@1 70.028	Avg Acc@5 97.372
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5043	Avg Acc@1 70.889	Avg Acc@5 97.340
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8920	Avg Acc@1 70.817	Avg Acc@5 97.341
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4622	Avg Acc@1 71.199	Avg Acc@5 97.323
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6349	Avg Acc@1 71.852	Avg Acc@5 97.396
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7643	Avg Acc@1 71.849	Avg Acc@5 97.407
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2438	Avg Acc@1 71.974	Avg Acc@5 97.332
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0386	Avg Acc@1 71.986	Avg Acc@5 97.410
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2286	Avg Acc@1 72.240	Avg Acc@5 97.382
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3808	Avg Acc@1 72.459	Avg Acc@5 97.498
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5887	Avg Acc@1 72.614	Avg Acc@5 97.526
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8369	Avg Acc@1 72.798	Avg Acc@5 97.601
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.1001	Avg Acc@1 72.859	Avg Acc@5 97.617
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6792	Avg Acc@1 72.712	Avg Acc@5 97.551
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8813	Avg Acc@1 72.630	Avg Acc@5 97.519
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.2953	Avg Acc@1 72.562	Avg Acc@5 97.535
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8333	Avg Acc@1 72.400	Avg Acc@5 97.515
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8348	Avg Acc@1 72.602	Avg Acc@5 97.559
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4372	Avg Acc@1 72.607	Avg Acc@5 97.579
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6689	Avg Acc@1 72.637	Avg Acc@5 97.584
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6832	Avg Acc@1 72.617	Avg Acc@5 97.599
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2678	Avg Acc@1 72.635	Avg Acc@5 97.616
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1802	Avg Acc@1 72.611	Avg Acc@5 97.619
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6270	Avg Acc@1 72.737	Avg Acc@5 97.648
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5445	Avg Acc@1 72.796	Avg Acc@5 97.678
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2250	Avg Acc@1 72.710	Avg Acc@5 97.670
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8443	Avg Acc@1 72.751	Avg Acc@5 97.697
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.7995	Avg Acc@1 72.901	Avg Acc@5 97.720
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7492	Avg Acc@1 72.917	Avg Acc@5 97.726
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5505	Avg Acc@1 73.014	Avg Acc@5 97.744
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9480	Avg Acc@1 73.027	Avg Acc@5 97.747
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8598	Avg Acc@1 72.982	Avg Acc@5 97.729
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2164	Avg Acc@1 73.093	Avg Acc@5 97.760
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9172	Avg Acc@1 73.081	Avg Acc@5 97.778
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8659	Avg Acc@1 73.041	Avg Acc@5 97.775
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6955	Avg Acc@1 73.089	Avg Acc@5 97.782
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4345	Avg Acc@1 73.078	Avg Acc@5 97.776
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9323	Avg Acc@1 73.069	Avg Acc@5 97.773
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3675	Avg Acc@1 73.071	Avg Acc@5 97.758
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8108	Avg Acc@1 73.047	Avg Acc@5 97.757
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9364	Avg Acc@1 73.052	Avg Acc@5 97.753
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8583	Avg Acc@1 73.062	Avg Acc@5 97.754
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8054	Avg Acc@1 73.045	Avg Acc@5 97.752
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3943	Avg Acc@1 73.034	Avg Acc@5 97.743
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8398	Avg Acc@1 73.034	Avg Acc@5 97.751
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1294	Avg Acc@1 73.117	Avg Acc@5 97.772
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3729	Avg Acc@1 73.131	Avg Acc@5 97.772
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7055	Avg Acc@1 73.072	Avg Acc@5 97.767
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3916	Avg Acc@1 73.048	Avg Acc@5 97.756
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2475	Avg Acc@1 73.066	Avg Acc@5 97.748
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9200	Avg Acc@1 73.019	Avg Acc@5 97.744
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3058	Avg Acc@1 73.031	Avg Acc@5 97.739
+Training: [531/633]	Time 0.021	Data 0.000	Loss 66.9996	Avg Acc@1 73.062	Avg Acc@5 97.746
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8400	Avg Acc@1 73.048	Avg Acc@5 97.741
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2011	Avg Acc@1 73.089	Avg Acc@5 97.746
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1677	Avg Acc@1 73.119	Avg Acc@5 97.744
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6383	Avg Acc@1 73.101	Avg Acc@5 97.750
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1247	Avg Acc@1 73.152	Avg Acc@5 97.756
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7793	Avg Acc@1 73.177	Avg Acc@5 97.751
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9248	Avg Acc@1 73.215	Avg Acc@5 97.763
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7191	Avg Acc@1 73.231	Avg Acc@5 97.767
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0440	Avg Acc@1 73.281	Avg Acc@5 97.758
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7078	Avg Acc@1 73.298	Avg Acc@5 97.761
+
+Probe Training Epoch: 8	Loss: 67.2645	Acc: 73.2905
+Probe Training Epoch: 8	Train Loss: 67.2645	Train Acc: 73.2905	Val Loss: 67.0136	Val Acc: 78.3110
+New best validation accuracy: 78.3110
+Training: [1/633]	Time 0.021	Data 0.000	Loss 67.2686	Avg Acc@1 68.359	Avg Acc@5 98.047
+Training: [11/633]	Time 0.021	Data 0.000	Loss 67.6865	Avg Acc@1 69.957	Avg Acc@5 97.408
+Training: [21/633]	Time 0.021	Data 0.000	Loss 68.5023	Avg Acc@1 70.889	Avg Acc@5 97.414
+Training: [31/633]	Time 0.021	Data 0.000	Loss 67.8911	Avg Acc@1 70.854	Avg Acc@5 97.392
+Training: [41/633]	Time 0.021	Data 0.000	Loss 67.4609	Avg Acc@1 71.256	Avg Acc@5 97.351
+Training: [51/633]	Time 0.021	Data 0.000	Loss 66.6334	Avg Acc@1 71.883	Avg Acc@5 97.411
+Training: [61/633]	Time 0.021	Data 0.000	Loss 66.7631	Avg Acc@1 71.888	Avg Acc@5 97.432
+Training: [71/633]	Time 0.021	Data 0.000	Loss 68.2424	Avg Acc@1 72.024	Avg Acc@5 97.354
+Training: [81/633]	Time 0.021	Data 0.000	Loss 67.0368	Avg Acc@1 72.034	Avg Acc@5 97.420
+Training: [91/633]	Time 0.021	Data 0.000	Loss 68.2270	Avg Acc@1 72.304	Avg Acc@5 97.403
+Training: [101/633]	Time 0.021	Data 0.000	Loss 67.3800	Avg Acc@1 72.525	Avg Acc@5 97.521
+Training: [111/633]	Time 0.021	Data 0.000	Loss 67.5871	Avg Acc@1 72.684	Avg Acc@5 97.551
+Training: [121/633]	Time 0.021	Data 0.000	Loss 67.8358	Avg Acc@1 72.860	Avg Acc@5 97.624
+Training: [131/633]	Time 0.021	Data 0.000	Loss 67.0988	Avg Acc@1 72.922	Avg Acc@5 97.641
+Training: [141/633]	Time 0.021	Data 0.000	Loss 68.6780	Avg Acc@1 72.781	Avg Acc@5 97.576
+Training: [151/633]	Time 0.021	Data 0.000	Loss 66.8800	Avg Acc@1 72.695	Avg Acc@5 97.542
+Training: [161/633]	Time 0.021	Data 0.000	Loss 67.2940	Avg Acc@1 72.634	Avg Acc@5 97.559
+Training: [171/633]	Time 0.021	Data 0.000	Loss 67.8320	Avg Acc@1 72.478	Avg Acc@5 97.535
+Training: [181/633]	Time 0.021	Data 0.000	Loss 66.8338	Avg Acc@1 72.669	Avg Acc@5 97.579
+Training: [191/633]	Time 0.021	Data 0.000	Loss 67.4362	Avg Acc@1 72.683	Avg Acc@5 97.599
+Training: [201/633]	Time 0.021	Data 0.000	Loss 66.6679	Avg Acc@1 72.707	Avg Acc@5 97.600
+Training: [211/633]	Time 0.021	Data 0.000	Loss 67.6823	Avg Acc@1 72.686	Avg Acc@5 97.612
+Training: [221/633]	Time 0.021	Data 0.000	Loss 67.2664	Avg Acc@1 72.699	Avg Acc@5 97.630
+Training: [231/633]	Time 0.021	Data 0.000	Loss 67.1793	Avg Acc@1 72.677	Avg Acc@5 97.633
+Training: [241/633]	Time 0.021	Data 0.000	Loss 67.6262	Avg Acc@1 72.802	Avg Acc@5 97.663
+Training: [251/633]	Time 0.021	Data 0.000	Loss 67.5434	Avg Acc@1 72.862	Avg Acc@5 97.692
+Training: [261/633]	Time 0.021	Data 0.000	Loss 67.2239	Avg Acc@1 72.774	Avg Acc@5 97.685
+Training: [271/633]	Time 0.021	Data 0.000	Loss 66.8434	Avg Acc@1 72.815	Avg Acc@5 97.711
+Training: [281/633]	Time 0.021	Data 0.000	Loss 67.7981	Avg Acc@1 72.968	Avg Acc@5 97.735
+Training: [291/633]	Time 0.021	Data 0.000	Loss 65.7474	Avg Acc@1 72.986	Avg Acc@5 97.741
+Training: [301/633]	Time 0.021	Data 0.000	Loss 67.5492	Avg Acc@1 73.085	Avg Acc@5 97.760
+Training: [311/633]	Time 0.021	Data 0.000	Loss 67.9471	Avg Acc@1 73.096	Avg Acc@5 97.762
+Training: [321/633]	Time 0.021	Data 0.000	Loss 67.8585	Avg Acc@1 73.052	Avg Acc@5 97.745
+Training: [331/633]	Time 0.021	Data 0.000	Loss 68.2153	Avg Acc@1 73.164	Avg Acc@5 97.777
+Training: [341/633]	Time 0.021	Data 0.000	Loss 66.9159	Avg Acc@1 73.151	Avg Acc@5 97.794
+Training: [351/633]	Time 0.021	Data 0.000	Loss 66.8650	Avg Acc@1 73.108	Avg Acc@5 97.792
+Training: [361/633]	Time 0.021	Data 0.000	Loss 67.6947	Avg Acc@1 73.151	Avg Acc@5 97.799
+Training: [371/633]	Time 0.021	Data 0.000	Loss 67.4334	Avg Acc@1 73.142	Avg Acc@5 97.794
+Training: [381/633]	Time 0.021	Data 0.000	Loss 66.9314	Avg Acc@1 73.131	Avg Acc@5 97.792
+Training: [391/633]	Time 0.021	Data 0.000	Loss 67.3662	Avg Acc@1 73.130	Avg Acc@5 97.777
+Training: [401/633]	Time 0.021	Data 0.000	Loss 66.8098	Avg Acc@1 73.104	Avg Acc@5 97.776
+Training: [411/633]	Time 0.021	Data 0.000	Loss 66.9355	Avg Acc@1 73.110	Avg Acc@5 97.772
+Training: [421/633]	Time 0.021	Data 0.000	Loss 67.8570	Avg Acc@1 73.122	Avg Acc@5 97.773
+Training: [431/633]	Time 0.021	Data 0.000	Loss 67.8044	Avg Acc@1 73.108	Avg Acc@5 97.771
+Training: [441/633]	Time 0.021	Data 0.000	Loss 67.3932	Avg Acc@1 73.097	Avg Acc@5 97.762
+Training: [451/633]	Time 0.021	Data 0.000	Loss 68.8382	Avg Acc@1 73.096	Avg Acc@5 97.770
+Training: [461/633]	Time 0.021	Data 0.000	Loss 68.1285	Avg Acc@1 73.183	Avg Acc@5 97.792
+Training: [471/633]	Time 0.021	Data 0.000	Loss 67.3718	Avg Acc@1 73.200	Avg Acc@5 97.791
+Training: [481/633]	Time 0.021	Data 0.000	Loss 67.7048	Avg Acc@1 73.141	Avg Acc@5 97.785
+Training: [491/633]	Time 0.021	Data 0.000	Loss 68.3904	Avg Acc@1 73.118	Avg Acc@5 97.772
+Training: [501/633]	Time 0.021	Data 0.000	Loss 67.2466	Avg Acc@1 73.136	Avg Acc@5 97.765
+Training: [511/633]	Time 0.021	Data 0.000	Loss 67.9192	Avg Acc@1 73.084	Avg Acc@5 97.759
+Training: [521/633]	Time 0.021	Data 0.000	Loss 67.3047	Avg Acc@1 73.093	Avg Acc@5 97.754
+Training: [531/633]	Time 0.021	Data 0.000	Loss 66.9988	Avg Acc@1 73.124	Avg Acc@5 97.761
+Training: [541/633]	Time 0.021	Data 0.000	Loss 67.8391	Avg Acc@1 73.113	Avg Acc@5 97.757
+Training: [551/633]	Time 0.021	Data 0.000	Loss 68.2003	Avg Acc@1 73.154	Avg Acc@5 97.763
+Training: [561/633]	Time 0.021	Data 0.000	Loss 66.1669	Avg Acc@1 73.185	Avg Acc@5 97.760
+Training: [571/633]	Time 0.021	Data 0.000	Loss 67.6374	Avg Acc@1 73.166	Avg Acc@5 97.766
+Training: [581/633]	Time 0.021	Data 0.000	Loss 67.1239	Avg Acc@1 73.217	Avg Acc@5 97.772
+Training: [591/633]	Time 0.021	Data 0.000	Loss 66.7785	Avg Acc@1 73.247	Avg Acc@5 97.767
+Training: [601/633]	Time 0.021	Data 0.000	Loss 66.9243	Avg Acc@1 73.286	Avg Acc@5 97.778
+Training: [611/633]	Time 0.021	Data 0.000	Loss 67.7187	Avg Acc@1 73.299	Avg Acc@5 97.783
+Training: [621/633]	Time 0.021	Data 0.000	Loss 68.0435	Avg Acc@1 73.348	Avg Acc@5 97.775
+Training: [631/633]	Time 0.021	Data 0.000	Loss 67.7072	Avg Acc@1 73.363	Avg Acc@5 97.779
+
+Probe Training Epoch: 9	Loss: 67.2634	Acc: 73.3559
+Probe Training Epoch: 9	Train Loss: 67.2634	Train Acc: 73.3559	Val Loss: 67.0128	Val Acc: 78.4265
+New best validation accuracy: 78.4265
+********** Final prediction results with the best model **********
+Epoch: [1/157]	Time 0.089	Data 0.071	Loss 14.8413	Acc@1 10.9375	Acc@5 34.3750
+Epoch: [11/157]	Time 0.021	Data 0.007	Loss 14.4671	Acc@1 12.5000	Acc@5 35.9375
+Epoch: [21/157]	Time 0.017	Data 0.004	Loss 15.4140	Acc@1 12.5000	Acc@5 35.9375
+Epoch: [31/157]	Time 0.016	Data 0.003	Loss 13.8217	Acc@1 17.1875	Acc@5 48.4375
+Epoch: [41/157]	Time 0.016	Data 0.002	Loss 15.0733	Acc@1 15.6250	Acc@5 37.5000
+Epoch: [51/157]	Time 0.015	Data 0.002	Loss 14.9219	Acc@1 10.9375	Acc@5 34.3750
+Epoch: [61/157]	Time 0.015	Data 0.001	Loss 15.3859	Acc@1 4.6875	Acc@5 29.6875
+Epoch: [71/157]	Time 0.015	Data 0.001	Loss 14.1941	Acc@1 14.0625	Acc@5 40.6250
+Epoch: [81/157]	Time 0.015	Data 0.001	Loss 15.1275	Acc@1 10.9375	Acc@5 32.8125
+Epoch: [91/157]	Time 0.015	Data 0.001	Loss 15.3146	Acc@1 9.3750	Acc@5 39.0625
+Epoch: [101/157]	Time 0.014	Data 0.001	Loss 14.6743	Acc@1 12.5000	Acc@5 37.5000
+Epoch: [111/157]	Time 0.014	Data 0.001	Loss 14.9760	Acc@1 9.3750	Acc@5 37.5000
+Epoch: [121/157]	Time 0.014	Data 0.001	Loss 15.2871	Acc@1 14.0625	Acc@5 32.8125
+Epoch: [131/157]	Time 0.014	Data 0.001	Loss 13.0344	Acc@1 25.0000	Acc@5 42.1875
+Epoch: [141/157]	Time 0.014	Data 0.001	Loss 14.5039	Acc@1 9.3750	Acc@5 42.1875
+Epoch: [151/157]	Time 0.014	Data 0.001	Loss 14.2175	Acc@1 15.6250	Acc@5 46.8750
+ * prec@1 13.690 prec@5 38.290
+ * prec@1 15.030 prec@5 41.040
+ * prec@1 16.140 prec@5 43.240
+ * prec@1 14.960 prec@5 41.660
+********** Precalculate Laplace approximation **********
+
+0it [00:00, ?it/s]
+3it [00:00, 25.55it/s]
+7it [00:00, 27.33it/s]
+11it [00:00, 28.73it/s]
+15it [00:00, 29.80it/s]
+19it [00:00, 30.58it/s]
+23it [00:00, 31.17it/s]
+27it [00:00, 31.61it/s]
+31it [00:00, 31.94it/s]
+35it [00:01, 32.17it/s]
+39it [00:01, 32.37it/s]
+43it [00:01, 32.47it/s]
+47it [00:01, 32.52it/s]
+51it [00:01, 32.50it/s]
+55it [00:01, 32.48it/s]
+59it [00:01, 32.45it/s]
+63it [00:01, 32.45it/s]
+67it [00:02, 32.43it/s]
+71it [00:02, 32.44it/s]
+75it [00:02, 32.47it/s]
+79it [00:02, 32.48it/s]
+83it [00:02, 32.49it/s]
+87it [00:02, 32.47it/s]
+91it [00:02, 32.48it/s]
+95it [00:02, 32.48it/s]
+99it [00:03, 32.48it/s]
+103it [00:03, 32.47it/s]
+107it [00:03, 32.49it/s]
+111it [00:03, 32.51it/s]
+115it [00:03, 32.53it/s]
+119it [00:03, 32.54it/s]
+123it [00:03, 32.54it/s]
+127it [00:03, 32.53it/s]
+131it [00:04, 32.53it/s]
+135it [00:04, 32.53it/s]
+139it [00:04, 32.53it/s]
+143it [00:04, 32.54it/s]
+147it [00:04, 32.56it/s]
+151it [00:04, 32.57it/s]
+155it [00:04, 32.57it/s]
+159it [00:04, 32.57it/s]
+163it [00:05, 32.56it/s]
+167it [00:05, 32.58it/s]
+171it [00:05, 32.60it/s]
+175it [00:05, 32.58it/s]
+179it [00:05, 32.58it/s]
+183it [00:05, 32.56it/s]
+187it [00:05, 32.57it/s]
+191it [00:05, 32.55it/s]
+195it [00:06, 32.55it/s]
+199it [00:06, 32.55it/s]
+203it [00:06, 32.57it/s]
+207it [00:06, 32.57it/s]
+211it [00:06, 32.58it/s]
+215it [00:06, 32.57it/s]
+219it [00:06, 32.59it/s]
+223it [00:06, 32.58it/s]
+227it [00:06, 32.57it/s]
+231it [00:07, 32.56it/s]
+235it [00:07, 32.57it/s]
+239it [00:07, 32.57it/s]
+243it [00:07, 32.57it/s]
+247it [00:07, 32.55it/s]
+251it [00:07, 32.56it/s]
+255it [00:07, 32.57it/s]
+259it [00:07, 32.58it/s]
+263it [00:08, 32.57it/s]
+267it [00:08, 32.58it/s]
+271it [00:08, 32.60it/s]
+275it [00:08, 32.60it/s]
+279it [00:08, 32.62it/s]
+283it [00:08, 32.61it/s]
+287it [00:08, 32.60it/s]
+291it [00:08, 32.60it/s]
+295it [00:09, 32.60it/s]
+299it [00:09, 32.60it/s]
+303it [00:09, 32.59it/s]
+307it [00:09, 32.60it/s]
+311it [00:09, 32.58it/s]
+315it [00:09, 32.59it/s]
+319it [00:09, 32.58it/s]
+323it [00:09, 32.58it/s]
+327it [00:10, 32.57it/s]
+331it [00:10, 32.56it/s]
+335it [00:10, 32.58it/s]
+339it [00:10, 32.58it/s]
+343it [00:10, 32.58it/s]
+347it [00:10, 32.60it/s]
+351it [00:10, 32.60it/s]
+355it [00:10, 32.58it/s]
+359it [00:11, 32.58it/s]
+363it [00:11, 32.58it/s]
+367it [00:11, 32.60it/s]
+371it [00:11, 32.59it/s]
+375it [00:11, 32.58it/s]
+379it [00:11, 32.55it/s]
+383it [00:11, 32.56it/s]
+387it [00:11, 32.55it/s]
+391it [00:12, 32.56it/s]
+395it [00:12, 32.57it/s]
+399it [00:12, 32.57it/s]
+403it [00:12, 32.59it/s]
+407it [00:12, 32.59it/s]
+411it [00:12, 32.61it/s]
+415it [00:12, 32.61it/s]
+419it [00:12, 32.58it/s]
+423it [00:13, 32.60it/s]
+427it [00:13, 32.61it/s]
+431it [00:13, 32.61it/s]
+435it [00:13, 32.59it/s]
+439it [00:13, 32.62it/s]
+443it [00:13, 32.67it/s]
+447it [00:13, 32.69it/s]
+451it [00:13, 32.71it/s]
+455it [00:13, 32.71it/s]
+459it [00:14, 32.76it/s]
+463it [00:14, 32.78it/s]
+467it [00:14, 32.79it/s]
+471it [00:14, 32.79it/s]
+475it [00:14, 32.82it/s]
+479it [00:14, 32.81it/s]
+483it [00:14, 32.83it/s]
+487it [00:14, 32.83it/s]
+491it [00:15, 32.82it/s]
+495it [00:15, 32.83it/s]
+499it [00:15, 32.83it/s]
+503it [00:15, 32.82it/s]
+507it [00:15, 32.80it/s]
+511it [00:15, 32.80it/s]
+515it [00:15, 32.79it/s]
+519it [00:15, 32.79it/s]
+523it [00:16, 32.80it/s]
+527it [00:16, 32.80it/s]
+531it [00:16, 32.79it/s]
+535it [00:16, 32.80it/s]
+539it [00:16, 32.82it/s]
+543it [00:16, 32.82it/s]
+547it [00:16, 32.83it/s]
+551it [00:16, 32.83it/s]
+555it [00:17, 32.84it/s]
+559it [00:17, 32.83it/s]
+563it [00:17, 32.81it/s]
+567it [00:17, 32.79it/s]
+571it [00:17, 32.79it/s]
+575it [00:17, 32.81it/s]
+579it [00:17, 32.82it/s]
+583it [00:17, 32.82it/s]
+587it [00:18, 32.81it/s]
+591it [00:18, 32.82it/s]
+595it [00:18, 32.84it/s]
+599it [00:18, 32.83it/s]
+603it [00:18, 32.85it/s]
+607it [00:18, 32.83it/s]
+611it [00:18, 32.83it/s]
+615it [00:18, 32.83it/s]
+619it [00:18, 32.81it/s]
+623it [00:19, 32.81it/s]
+627it [00:19, 32.80it/s]
+631it [00:19, 32.78it/s]
+635it [00:19, 32.79it/s]
+639it [00:19, 32.79it/s]
+643it [00:19, 32.81it/s]
+647it [00:19, 32.80it/s]
+651it [00:19, 32.82it/s]
+655it [00:20, 32.82it/s]
+659it [00:20, 32.82it/s]
+663it [00:20, 32.81it/s]
+667it [00:20, 32.82it/s]
+671it [00:20, 32.83it/s]
+675it [00:20, 32.83it/s]
+679it [00:20, 32.84it/s]
+683it [00:20, 32.83it/s]
+687it [00:21, 32.81it/s]
+691it [00:21, 32.80it/s]
+695it [00:21, 32.78it/s]
+699it [00:21, 32.78it/s]
+703it [00:21, 32.00it/s]
+704it [00:21, 32.50it/s]
+Saving the hessians...
+Laplace computation time: 21.792560338974
+
+JOB STATISTICS
+==============
+Job ID: 8692152
+Cluster: snellius
+User/Group: scur2884/scur2884
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:05:03
+CPU Efficiency: 5.97% of 01:24:36 core-walltime
+Job Wall-clock time: 00:04:42
+Memory Utilized: 4.09 GB
+Memory Efficiency: 3.41% of 120.00 GB

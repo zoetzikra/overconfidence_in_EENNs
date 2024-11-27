@@ -1,0 +1,1191 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+---------------------
+FLOPs: 6.86M, Params: 0.30M
+---------------------
+FLOPs: 9.09M, Params: 0.56M
+---------------------
+FLOPs: 16.58M, Params: 0.91M
+---------------------
+FLOPs: 19.69M, Params: 1.23M
+---------------------
+FLOPs: 31.47M, Params: 1.60M
+---------------------
+FLOPs: 34.21M, Params: 1.90M
+---------------------
+FLOPs: 46.13M, Params: 2.29M
+---------------------
+FLOPs: 48.87M, Params: 2.59M
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+Files already downloaded and verified
+Files already downloaded and verified
+Number of training samples:  50000
+Number of test samples:  10000
+!!!!!! Load train_set_index !!!!!!
+
+Classifier Training Debug Info:
+Number of classifiers: 4
+
+Input batch shape for batch 0: torch.Size([64, 3, 32, 32])
+
+ Classifier input shapes:
+Block 0 classifier input shape: torch.Size([64, 88, 8, 8])
+Block 1 classifier input shape: torch.Size([64, 136, 8, 8])
+Block 2 classifier input shape: torch.Size([64, 116, 8, 8])
+Block 3 classifier input shape: torch.Size([64, 116, 8, 8])
+
+Classifier output shapes:
+Block 0 classifier output shape: torch.Size([64, 100])
+Block 1 classifier output shape: torch.Size([64, 100])
+Block 2 classifier output shape: torch.Size([64, 100])
+Block 3 classifier output shape: torch.Size([64, 100])
+Epoch: [0][1/704]	Time 1.581	Data 1.268	Loss 18.53	Acc@1 0.0	Acc@5 4.7
+Epoch: [0][11/704]	Time 0.255	Data 0.116	Loss 18.30	Acc@1 3.1	Acc@5 7.8
+Epoch: [0][21/704]	Time 0.191	Data 0.061	Loss 18.39	Acc@1 4.7	Acc@5 12.5
+Epoch: [0][31/704]	Time 0.169	Data 0.041	Loss 17.45	Acc@1 0.0	Acc@5 23.4
+Epoch: [0][41/704]	Time 0.157	Data 0.031	Loss 17.93	Acc@1 4.7	Acc@5 7.8
+Epoch: [0][51/704]	Time 0.150	Data 0.025	Loss 17.85	Acc@1 3.1	Acc@5 12.5
+Epoch: [0][61/704]	Time 0.146	Data 0.021	Loss 17.42	Acc@1 1.6	Acc@5 15.6
+Epoch: [0][71/704]	Time 0.142	Data 0.018	Loss 16.65	Acc@1 4.7	Acc@5 23.4
+Epoch: [0][81/704]	Time 0.140	Data 0.016	Loss 16.95	Acc@1 4.7	Acc@5 17.2
+Epoch: [0][91/704]	Time 0.138	Data 0.014	Loss 17.28	Acc@1 4.7	Acc@5 12.5
+Epoch: [0][101/704]	Time 0.136	Data 0.013	Loss 16.42	Acc@1 4.7	Acc@5 12.5
+Epoch: [0][111/704]	Time 0.135	Data 0.012	Loss 17.52	Acc@1 4.7	Acc@5 18.8
+Epoch: [0][121/704]	Time 0.134	Data 0.011	Loss 16.75	Acc@1 7.8	Acc@5 17.2
+Epoch: [0][131/704]	Time 0.133	Data 0.010	Loss 16.19	Acc@1 6.2	Acc@5 21.9
+Epoch: [0][141/704]	Time 0.132	Data 0.009	Loss 16.11	Acc@1 9.4	Acc@5 21.9
+Epoch: [0][151/704]	Time 0.132	Data 0.009	Loss 17.04	Acc@1 7.8	Acc@5 17.2
+Epoch: [0][161/704]	Time 0.131	Data 0.008	Loss 16.36	Acc@1 9.4	Acc@5 20.3
+Epoch: [0][171/704]	Time 0.130	Data 0.008	Loss 16.23	Acc@1 4.7	Acc@5 23.4
+Epoch: [0][181/704]	Time 0.130	Data 0.007	Loss 16.41	Acc@1 7.8	Acc@5 28.1
+Epoch: [0][191/704]	Time 0.129	Data 0.007	Loss 15.93	Acc@1 6.2	Acc@5 21.9
+Epoch: [0][201/704]	Time 0.129	Data 0.007	Loss 16.52	Acc@1 10.9	Acc@5 23.4
+Epoch: [0][211/704]	Time 0.129	Data 0.006	Loss 15.95	Acc@1 9.4	Acc@5 29.7
+Epoch: [0][221/704]	Time 0.128	Data 0.006	Loss 16.90	Acc@1 7.8	Acc@5 17.2
+Epoch: [0][231/704]	Time 0.128	Data 0.006	Loss 15.75	Acc@1 4.7	Acc@5 28.1
+Epoch: [0][241/704]	Time 0.128	Data 0.006	Loss 16.05	Acc@1 9.4	Acc@5 28.1
+Epoch: [0][251/704]	Time 0.128	Data 0.005	Loss 15.80	Acc@1 10.9	Acc@5 23.4
+Epoch: [0][261/704]	Time 0.127	Data 0.005	Loss 15.46	Acc@1 9.4	Acc@5 31.2
+Epoch: [0][271/704]	Time 0.127	Data 0.005	Loss 15.20	Acc@1 7.8	Acc@5 34.4
+Epoch: [0][281/704]	Time 0.127	Data 0.005	Loss 16.77	Acc@1 4.7	Acc@5 14.1
+Epoch: [0][291/704]	Time 0.127	Data 0.005	Loss 15.77	Acc@1 7.8	Acc@5 34.4
+Epoch: [0][301/704]	Time 0.127	Data 0.005	Loss 14.49	Acc@1 15.6	Acc@5 32.8
+Epoch: [0][311/704]	Time 0.126	Data 0.005	Loss 15.69	Acc@1 7.8	Acc@5 23.4
+Epoch: [0][321/704]	Time 0.126	Data 0.004	Loss 15.87	Acc@1 7.8	Acc@5 26.6
+Epoch: [0][331/704]	Time 0.126	Data 0.004	Loss 14.67	Acc@1 9.4	Acc@5 40.6
+Epoch: [0][341/704]	Time 0.126	Data 0.004	Loss 15.00	Acc@1 12.5	Acc@5 32.8
+Epoch: [0][351/704]	Time 0.126	Data 0.004	Loss 15.16	Acc@1 3.1	Acc@5 32.8
+Epoch: [0][361/704]	Time 0.126	Data 0.004	Loss 14.84	Acc@1 10.9	Acc@5 39.1
+Epoch: [0][371/704]	Time 0.126	Data 0.004	Loss 14.89	Acc@1 14.1	Acc@5 31.2
+Epoch: [0][381/704]	Time 0.126	Data 0.004	Loss 14.47	Acc@1 18.8	Acc@5 40.6
+Epoch: [0][391/704]	Time 0.125	Data 0.004	Loss 14.91	Acc@1 10.9	Acc@5 37.5
+Epoch: [0][401/704]	Time 0.125	Data 0.004	Loss 14.68	Acc@1 9.4	Acc@5 31.2
+Epoch: [0][411/704]	Time 0.125	Data 0.004	Loss 14.14	Acc@1 12.5	Acc@5 42.2
+Epoch: [0][421/704]	Time 0.125	Data 0.003	Loss 15.79	Acc@1 12.5	Acc@5 32.8
+Epoch: [0][431/704]	Time 0.125	Data 0.003	Loss 14.04	Acc@1 20.3	Acc@5 40.6
+Epoch: [0][441/704]	Time 0.125	Data 0.003	Loss 15.25	Acc@1 6.2	Acc@5 32.8
+Epoch: [0][451/704]	Time 0.125	Data 0.003	Loss 15.57	Acc@1 3.1	Acc@5 34.4
+Epoch: [0][461/704]	Time 0.125	Data 0.003	Loss 14.55	Acc@1 14.1	Acc@5 37.5
+Epoch: [0][471/704]	Time 0.125	Data 0.003	Loss 15.03	Acc@1 12.5	Acc@5 32.8
+Epoch: [0][481/704]	Time 0.125	Data 0.003	Loss 14.82	Acc@1 9.4	Acc@5 35.9
+Epoch: [0][491/704]	Time 0.125	Data 0.003	Loss 14.59	Acc@1 7.8	Acc@5 34.4
+Epoch: [0][501/704]	Time 0.125	Data 0.003	Loss 15.01	Acc@1 12.5	Acc@5 35.9
+Epoch: [0][511/704]	Time 0.125	Data 0.003	Loss 15.29	Acc@1 7.8	Acc@5 31.2
+Epoch: [0][521/704]	Time 0.124	Data 0.003	Loss 15.25	Acc@1 10.9	Acc@5 43.8
+Epoch: [0][531/704]	Time 0.124	Data 0.003	Loss 14.03	Acc@1 12.5	Acc@5 42.2
+Epoch: [0][541/704]	Time 0.124	Data 0.003	Loss 14.38	Acc@1 15.6	Acc@5 37.5
+Epoch: [0][551/704]	Time 0.124	Data 0.003	Loss 15.08	Acc@1 12.5	Acc@5 37.5
+Epoch: [0][561/704]	Time 0.124	Data 0.003	Loss 14.19	Acc@1 21.9	Acc@5 34.4
+Epoch: [0][571/704]	Time 0.124	Data 0.003	Loss 14.45	Acc@1 15.6	Acc@5 35.9
+Epoch: [0][581/704]	Time 0.124	Data 0.003	Loss 15.08	Acc@1 6.2	Acc@5 31.2
+Epoch: [0][591/704]	Time 0.124	Data 0.003	Loss 13.97	Acc@1 15.6	Acc@5 37.5
+Epoch: [0][601/704]	Time 0.124	Data 0.003	Loss 13.85	Acc@1 12.5	Acc@5 40.6
+Epoch: [0][611/704]	Time 0.124	Data 0.003	Loss 14.13	Acc@1 7.8	Acc@5 40.6
+Epoch: [0][621/704]	Time 0.124	Data 0.003	Loss 14.72	Acc@1 12.5	Acc@5 34.4
+Epoch: [0][631/704]	Time 0.124	Data 0.002	Loss 14.22	Acc@1 10.9	Acc@5 48.4
+Epoch: [0][641/704]	Time 0.124	Data 0.002	Loss 12.98	Acc@1 21.9	Acc@5 48.4
+Epoch: [0][651/704]	Time 0.124	Data 0.002	Loss 13.96	Acc@1 15.6	Acc@5 40.6
+Epoch: [0][661/704]	Time 0.124	Data 0.002	Loss 13.74	Acc@1 15.6	Acc@5 46.9
+Epoch: [0][671/704]	Time 0.124	Data 0.002	Loss 13.61	Acc@1 18.8	Acc@5 39.1
+Epoch: [0][681/704]	Time 0.124	Data 0.002	Loss 13.39	Acc@1 14.1	Acc@5 46.9
+Epoch: [0][691/704]	Time 0.124	Data 0.002	Loss 13.96	Acc@1 17.2	Acc@5 42.2
+Epoch: [0][701/704]	Time 0.124	Data 0.002	Loss 14.29	Acc@1 14.1	Acc@5 35.9
+Epoch: [1/79]	Time 0.094	Data 0.077	Loss 15.2844	Acc@1 9.3750	Acc@5 35.9375
+Epoch: [11/79]	Time 0.023	Data 0.009	Loss 15.2483	Acc@1 9.3750	Acc@5 35.9375
+Epoch: [21/79]	Time 0.020	Data 0.006	Loss 14.5705	Acc@1 14.0625	Acc@5 29.6875
+Epoch: [31/79]	Time 0.019	Data 0.005	Loss 14.6046	Acc@1 15.6250	Acc@5 43.7500
+Epoch: [41/79]	Time 0.018	Data 0.005	Loss 14.0806	Acc@1 12.5000	Acc@5 37.5000
+Epoch: [51/79]	Time 0.018	Data 0.004	Loss 13.2592	Acc@1 17.1875	Acc@5 51.5625
+Epoch: [61/79]	Time 0.018	Data 0.004	Loss 13.2884	Acc@1 25.0000	Acc@5 51.5625
+Epoch: [71/79]	Time 0.017	Data 0.004	Loss 14.9372	Acc@1 12.5000	Acc@5 37.5000
+ * prec@1 13.680 prec@5 37.500
+ * prec@1 14.760 prec@5 38.720
+ * prec@1 15.320 prec@5 39.600
+ * prec@1 14.960 prec@5 39.420
+New best validation last_bloc_accuracy 14.96
+Namespace(MIE=False, arch='msdnet', base=1, batch_size=64, bnFactor=[1, 2, 4], bottleneck=True, compute_only_laplace=False, data='cifar100', data_root='./CIFAR100/', decay_rate=0.1, epochs=1, evalmode=None, evaluate_from=None, gpu=None, grFactor=[1, 2, 4], growthRate=6, laplace=False, laplace_temperature=1.0, lr=0.1, lr_type='multistep', momentum=0.9, nBlocks=4, nChannels=16, nScales=3, n_flops=[6859876.0, 9087688.0, 16577836.0, 19690384.0, 31467764.0, 34211672.0, 46127036.0, 48870944.0], n_mc_samples=1, num_classes=100, optimize_temperature=False, optimize_var0=False, optimizer='sgd', print_freq=10, prune='max', reduction=0.5, resume=None, save='./MSDNet/cifar100_4/probes', seed=0, splits=['train', 'val', 'test'], start_epoch=0, step=1, stepmode='lin_grow', temperature=1.0, use_valid=True, var0=2.0, weight_decay=0.0001, workers=1)
+=> saving checkpoint './MSDNet/cifar100_4/probes/save_models/checkpoint_000.pth.tar'
+=> saved checkpoint './MSDNet/cifar100_4/probes/save_models/checkpoint_000.pth.tar'
+Best val_prec1: 14.9600 at epoch 0
+Total training time: 88.81746506690979
+
+Debug: Feature collection
+Input shape: torch.Size([64, 3, 32, 32])
+Block 0 feature shape: torch.Size([64, 88, 8, 8])
+Block 1 feature shape: torch.Size([64, 136, 8, 8])
+Block 2 feature shape: torch.Size([64, 116, 8, 8])
+Block 3 feature shape: torch.Size([64, 116, 8, 8])
+Collected data from 0 batches
+Collected data from 100 batches
+Collected data from 200 batches
+Collected data from 300 batches
+Collected data from 400 batches
+Collected data from 500 batches
+Collected data from 600 batches
+Collected data from 700 batches
+
+Final collected shapes:
+Block 0 features shape: torch.Size([45000, 88, 8, 8])
+Block 1 features shape: torch.Size([45000, 136, 8, 8])
+Block 2 features shape: torch.Size([45000, 116, 8, 8])
+Block 3 features shape: torch.Size([45000, 116, 8, 8])
+Final data shape: torch.Size([45000, 100])
+New dataset has been collected
+
+Probe Training Debug Info:
+Number of probes: 4
+Shape of intermediate_data[0]: torch.Size([45000, 88, 8, 8])
+Shape of intermediate_data[1]: torch.Size([45000, 136, 8, 8])
+Shape of intermediate_data[2]: torch.Size([45000, 116, 8, 8])
+Shape of intermediate_data[3]: torch.Size([45000, 116, 8, 8])
+Shape of final_data: torch.Size([45000, 100])
+
+First Batch Debug Info:
+
+Batch shapes:
+Block 0 intermediate batch shape: torch.Size([64, 88, 8, 8])
+Block 1 intermediate batch shape: torch.Size([64, 136, 8, 8])
+Block 2 intermediate batch shape: torch.Size([64, 116, 8, 8])
+Block 3 intermediate batch shape: torch.Size([64, 116, 8, 8])
+Final batch shape: torch.Size([64, 100])
+
+Probe processing shapes:
+
+Block 0 Probe:
+  Input shape: torch.Size([64, 88, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 1 Probe:
+  Input shape: torch.Size([64, 136, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 2 Probe:
+  Input shape: torch.Size([64, 116, 8, 8])
+  Output shape: torch.Size([64, 100])
+
+Block 3 Probe:
+  Input shape: torch.Size([64, 116, 8, 8])
+  Output shape: torch.Size([64, 100])
+Probe Training Epoch: [0][1/704]	Time 0.025	Data 0.000	Loss 14.6594	Avg Acc@1 0.781	Avg Acc@5 3.125	LR 0.10000
+Probe Training Epoch: [0][11/704]	Time 0.021	Data 0.000	Loss -327.2062	Avg Acc@1 2.841	Avg Acc@5 12.358	LR 0.10000
+Probe Training Epoch: [0][21/704]	Time 0.021	Data 0.000	Loss -1312.6492	Avg Acc@1 4.408	Avg Acc@5 16.611	LR 0.10000
+Probe Training Epoch: [0][31/704]	Time 0.021	Data 0.000	Loss -2977.0454	Avg Acc@1 5.683	Avg Acc@5 19.166	LR 0.10000
+Probe Training Epoch: [0][41/704]	Time 0.021	Data 0.000	Loss -4783.1699	Avg Acc@1 5.859	Avg Acc@5 19.579	LR 0.10000
+Probe Training Epoch: [0][51/704]	Time 0.021	Data 0.000	Loss -6029.4297	Avg Acc@1 6.212	Avg Acc@5 20.335	LR 0.10000
+Probe Training Epoch: [0][61/704]	Time 0.021	Data 0.000	Loss -9131.5283	Avg Acc@1 6.506	Avg Acc@5 21.139	LR 0.10000
+Probe Training Epoch: [0][71/704]	Time 0.021	Data 0.000	Loss -13046.9873	Avg Acc@1 6.844	Avg Acc@5 21.550	LR 0.10000
+Probe Training Epoch: [0][81/704]	Time 0.021	Data 0.000	Loss -13857.9443	Avg Acc@1 7.321	Avg Acc@5 22.232	LR 0.10000
+Probe Training Epoch: [0][91/704]	Time 0.021	Data 0.000	Loss -18039.5430	Avg Acc@1 7.456	Avg Acc@5 22.506	LR 0.10000
+Probe Training Epoch: [0][101/704]	Time 0.021	Data 0.000	Loss -20103.9141	Avg Acc@1 7.360	Avg Acc@5 22.293	LR 0.10000
+Probe Training Epoch: [0][111/704]	Time 0.021	Data 0.000	Loss -19883.2383	Avg Acc@1 7.299	Avg Acc@5 22.273	LR 0.10000
+Probe Training Epoch: [0][121/704]	Time 0.021	Data 0.000	Loss -25431.2734	Avg Acc@1 7.428	Avg Acc@5 22.647	LR 0.10000
+Probe Training Epoch: [0][131/704]	Time 0.021	Data 0.000	Loss -34640.7422	Avg Acc@1 7.437	Avg Acc@5 22.600	LR 0.10000
+Probe Training Epoch: [0][141/704]	Time 0.021	Data 0.000	Loss -27359.4824	Avg Acc@1 7.375	Avg Acc@5 22.543	LR 0.10000
+Probe Training Epoch: [0][151/704]	Time 0.021	Data 0.000	Loss -34561.9141	Avg Acc@1 7.298	Avg Acc@5 22.291	LR 0.10000
+Probe Training Epoch: [0][161/704]	Time 0.021	Data 0.000	Loss -49729.2539	Avg Acc@1 7.327	Avg Acc@5 22.423	LR 0.10000
+Probe Training Epoch: [0][171/704]	Time 0.021	Data 0.000	Loss -40835.6406	Avg Acc@1 7.321	Avg Acc@5 22.391	LR 0.10000
+Probe Training Epoch: [0][181/704]	Time 0.021	Data 0.000	Loss -42619.7070	Avg Acc@1 7.312	Avg Acc@5 22.395	LR 0.10000
+Probe Training Epoch: [0][191/704]	Time 0.021	Data 0.000	Loss -58190.1758	Avg Acc@1 7.305	Avg Acc@5 22.249	LR 0.10000
+Probe Training Epoch: [0][201/704]	Time 0.021	Data 0.000	Loss -53319.7461	Avg Acc@1 7.385	Avg Acc@5 22.301	LR 0.10000
+Probe Training Epoch: [0][211/704]	Time 0.021	Data 0.000	Loss -59494.1172	Avg Acc@1 7.476	Avg Acc@5 22.362	LR 0.10000
+Probe Training Epoch: [0][221/704]	Time 0.021	Data 0.000	Loss -71091.8750	Avg Acc@1 7.447	Avg Acc@5 22.315	LR 0.10000
+Probe Training Epoch: [0][231/704]	Time 0.021	Data 0.000	Loss -67252.2266	Avg Acc@1 7.432	Avg Acc@5 22.232	LR 0.10000
+Probe Training Epoch: [0][241/704]	Time 0.021	Data 0.000	Loss -71419.8750	Avg Acc@1 7.427	Avg Acc@5 22.125	LR 0.10000
+Probe Training Epoch: [0][251/704]	Time 0.021	Data 0.000	Loss -93435.3438	Avg Acc@1 7.450	Avg Acc@5 22.110	LR 0.10000
+Probe Training Epoch: [0][261/704]	Time 0.021	Data 0.000	Loss -105423.0781	Avg Acc@1 7.419	Avg Acc@5 22.053	LR 0.10000
+Probe Training Epoch: [0][271/704]	Time 0.021	Data 0.000	Loss -85935.0547	Avg Acc@1 7.393	Avg Acc@5 21.996	LR 0.10000
+Probe Training Epoch: [0][281/704]	Time 0.021	Data 0.000	Loss -100141.0469	Avg Acc@1 7.465	Avg Acc@5 21.954	LR 0.10000
+Probe Training Epoch: [0][291/704]	Time 0.021	Data 0.000	Loss -80487.3203	Avg Acc@1 7.468	Avg Acc@5 21.972	LR 0.10000
+Probe Training Epoch: [0][301/704]	Time 0.021	Data 0.000	Loss -105290.1094	Avg Acc@1 7.478	Avg Acc@5 21.881	LR 0.10000
+Probe Training Epoch: [0][311/704]	Time 0.021	Data 0.000	Loss -102613.9688	Avg Acc@1 7.458	Avg Acc@5 21.894	LR 0.10000
+Probe Training Epoch: [0][321/704]	Time 0.021	Data 0.000	Loss -110948.8125	Avg Acc@1 7.486	Avg Acc@5 21.894	LR 0.10000
+Probe Training Epoch: [0][331/704]	Time 0.021	Data 0.000	Loss -99093.1719	Avg Acc@1 7.501	Avg Acc@5 21.927	LR 0.10000
+Probe Training Epoch: [0][341/704]	Time 0.021	Data 0.000	Loss -136329.0938	Avg Acc@1 7.525	Avg Acc@5 21.917	LR 0.10000
+Probe Training Epoch: [0][351/704]	Time 0.021	Data 0.000	Loss -114108.8750	Avg Acc@1 7.470	Avg Acc@5 21.747	LR 0.10000
+Probe Training Epoch: [0][361/704]	Time 0.021	Data 0.000	Loss -115983.7109	Avg Acc@1 7.435	Avg Acc@5 21.658	LR 0.10000
+Probe Training Epoch: [0][371/704]	Time 0.021	Data 0.000	Loss -122612.3203	Avg Acc@1 7.441	Avg Acc@5 21.652	LR 0.10000
+Probe Training Epoch: [0][381/704]	Time 0.021	Data 0.000	Loss -122631.2656	Avg Acc@1 7.441	Avg Acc@5 21.598	LR 0.10000
+Probe Training Epoch: [0][391/704]	Time 0.021	Data 0.000	Loss -164388.5938	Avg Acc@1 7.451	Avg Acc@5 21.630	LR 0.10000
+Probe Training Epoch: [0][401/704]	Time 0.021	Data 0.000	Loss -128493.0000	Avg Acc@1 7.451	Avg Acc@5 21.632	LR 0.10000
+Probe Training Epoch: [0][411/704]	Time 0.021	Data 0.000	Loss -136887.0000	Avg Acc@1 7.470	Avg Acc@5 21.594	LR 0.10000
+Probe Training Epoch: [0][421/704]	Time 0.021	Data 0.000	Loss -176510.2188	Avg Acc@1 7.475	Avg Acc@5 21.586	LR 0.10000
+Probe Training Epoch: [0][431/704]	Time 0.021	Data 0.000	Loss -145865.0312	Avg Acc@1 7.482	Avg Acc@5 21.561	LR 0.10000
+Probe Training Epoch: [0][441/704]	Time 0.021	Data 0.000	Loss -118881.7734	Avg Acc@1 7.482	Avg Acc@5 21.527	LR 0.10000
+Probe Training Epoch: [0][451/704]	Time 0.021	Data 0.000	Loss -175986.4531	Avg Acc@1 7.490	Avg Acc@5 21.502	LR 0.10000
+Probe Training Epoch: [0][461/704]	Time 0.021	Data 0.000	Loss -142444.7188	Avg Acc@1 7.479	Avg Acc@5 21.485	LR 0.10000
+Probe Training Epoch: [0][471/704]	Time 0.021	Data 0.000	Loss -165607.8125	Avg Acc@1 7.475	Avg Acc@5 21.478	LR 0.10000
+Probe Training Epoch: [0][481/704]	Time 0.021	Data 0.000	Loss -174325.5625	Avg Acc@1 7.464	Avg Acc@5 21.467	LR 0.10000
+Probe Training Epoch: [0][491/704]	Time 0.021	Data 0.000	Loss -131805.8594	Avg Acc@1 7.433	Avg Acc@5 21.438	LR 0.10000
+Probe Training Epoch: [0][501/704]	Time 0.021	Data 0.000	Loss -161617.3750	Avg Acc@1 7.451	Avg Acc@5 21.459	LR 0.10000
+Probe Training Epoch: [0][511/704]	Time 0.021	Data 0.000	Loss -108848.8438	Avg Acc@1 7.470	Avg Acc@5 21.474	LR 0.10000
+Probe Training Epoch: [0][521/704]	Time 0.021	Data 0.000	Loss -170946.7500	Avg Acc@1 7.460	Avg Acc@5 21.448	LR 0.10000
+Probe Training Epoch: [0][531/704]	Time 0.021	Data 0.000	Loss -171141.7500	Avg Acc@1 7.465	Avg Acc@5 21.491	LR 0.10000
+Probe Training Epoch: [0][541/704]	Time 0.021	Data 0.000	Loss -143711.8750	Avg Acc@1 7.470	Avg Acc@5 21.452	LR 0.10000
+Probe Training Epoch: [0][551/704]	Time 0.021	Data 0.000	Loss -166781.2812	Avg Acc@1 7.457	Avg Acc@5 21.448	LR 0.10000
+Probe Training Epoch: [0][561/704]	Time 0.021	Data 0.000	Loss -144268.0938	Avg Acc@1 7.469	Avg Acc@5 21.462	LR 0.10000
+Probe Training Epoch: [0][571/704]	Time 0.021	Data 0.000	Loss -163856.3125	Avg Acc@1 7.447	Avg Acc@5 21.424	LR 0.10000
+Probe Training Epoch: [0][581/704]	Time 0.021	Data 0.000	Loss -180888.8125	Avg Acc@1 7.397	Avg Acc@5 21.377	LR 0.10000
+Probe Training Epoch: [0][591/704]	Time 0.021	Data 0.000	Loss -155058.2812	Avg Acc@1 7.407	Avg Acc@5 21.369	LR 0.10000
+Probe Training Epoch: [0][601/704]	Time 0.021	Data 0.000	Loss -184447.9375	Avg Acc@1 7.395	Avg Acc@5 21.321	LR 0.10000
+Probe Training Epoch: [0][611/704]	Time 0.021	Data 0.000	Loss -140716.7656	Avg Acc@1 7.378	Avg Acc@5 21.279	LR 0.10000
+Probe Training Epoch: [0][621/704]	Time 0.021	Data 0.000	Loss -161829.3281	Avg Acc@1 7.396	Avg Acc@5 21.304	LR 0.10000
+Probe Training Epoch: [0][631/704]	Time 0.021	Data 0.000	Loss -156497.4062	Avg Acc@1 7.371	Avg Acc@5 21.284	LR 0.10000
+Probe Training Epoch: [0][641/704]	Time 0.021	Data 0.000	Loss -146739.4375	Avg Acc@1 7.381	Avg Acc@5 21.284	LR 0.10000
+Probe Training Epoch: [0][651/704]	Time 0.021	Data 0.000	Loss -178468.8125	Avg Acc@1 7.375	Avg Acc@5 21.279	LR 0.10000
+Probe Training Epoch: [0][661/704]	Time 0.021	Data 0.000	Loss -151334.1875	Avg Acc@1 7.377	Avg Acc@5 21.268	LR 0.10000
+Probe Training Epoch: [0][671/704]	Time 0.021	Data 0.000	Loss -149674.7656	Avg Acc@1 7.375	Avg Acc@5 21.264	LR 0.10000
+Probe Training Epoch: [0][681/704]	Time 0.021	Data 0.000	Loss -154132.4688	Avg Acc@1 7.358	Avg Acc@5 21.271	LR 0.10000
+Probe Training Epoch: [0][691/704]	Time 0.021	Data 0.000	Loss -173527.6250	Avg Acc@1 7.347	Avg Acc@5 21.229	LR 0.10000
+Probe Training Epoch: [0][701/704]	Time 0.021	Data 0.000	Loss -150672.0312	Avg Acc@1 7.327	Avg Acc@5 21.191	LR 0.10000
+
+Probe Training Epoch: 0	Loss: -104615.8605	Acc: 7.3242
+Probe Training Epoch: [1][1/704]	Time 0.021	Data 0.000	Loss -137897.7812	Avg Acc@1 1.953	Avg Acc@5 15.625	LR 0.10000
+Probe Training Epoch: [1][11/704]	Time 0.021	Data 0.000	Loss -157693.4844	Avg Acc@1 6.357	Avg Acc@5 19.531	LR 0.10000
+Probe Training Epoch: [1][21/704]	Time 0.021	Data 0.000	Loss -182779.3438	Avg Acc@1 6.789	Avg Acc@5 20.499	LR 0.10000
+Probe Training Epoch: [1][31/704]	Time 0.021	Data 0.000	Loss -202309.7812	Avg Acc@1 6.968	Avg Acc@5 21.018	LR 0.10000
+Probe Training Epoch: [1][41/704]	Time 0.021	Data 0.000	Loss -195618.4219	Avg Acc@1 6.698	Avg Acc@5 20.617	LR 0.10000
+Probe Training Epoch: [1][51/704]	Time 0.021	Data 0.000	Loss -167341.3438	Avg Acc@1 6.533	Avg Acc@5 19.945	LR 0.10000
+Probe Training Epoch: [1][61/704]	Time 0.021	Data 0.000	Loss -197123.3750	Avg Acc@1 6.628	Avg Acc@5 20.216	LR 0.10000
+Probe Training Epoch: [1][71/704]	Time 0.021	Data 0.000	Loss -218266.0312	Avg Acc@1 6.751	Avg Acc@5 20.208	LR 0.10000
+Probe Training Epoch: [1][81/704]	Time 0.021	Data 0.000	Loss -192780.1562	Avg Acc@1 7.147	Avg Acc@5 20.882	LR 0.10000
+Probe Training Epoch: [1][91/704]	Time 0.021	Data 0.000	Loss -211736.8125	Avg Acc@1 7.306	Avg Acc@5 21.081	LR 0.10000
+Probe Training Epoch: [1][101/704]	Time 0.021	Data 0.000	Loss -202085.8281	Avg Acc@1 7.027	Avg Acc@5 20.603	LR 0.10000
+Probe Training Epoch: [1][111/704]	Time 0.021	Data 0.000	Loss -173229.3125	Avg Acc@1 6.852	Avg Acc@5 20.341	LR 0.10000
+Probe Training Epoch: [1][121/704]	Time 0.021	Data 0.000	Loss -199551.0625	Avg Acc@1 6.967	Avg Acc@5 20.535	LR 0.10000
+Probe Training Epoch: [1][131/704]	Time 0.021	Data 0.000	Loss -252340.0312	Avg Acc@1 6.945	Avg Acc@5 20.462	LR 0.10000
+Probe Training Epoch: [1][141/704]	Time 0.021	Data 0.000	Loss -180674.7344	Avg Acc@1 6.887	Avg Acc@5 20.390	LR 0.10000
+Probe Training Epoch: [1][151/704]	Time 0.021	Data 0.000	Loss -208864.6562	Avg Acc@1 6.762	Avg Acc@5 20.168	LR 0.10000
+Probe Training Epoch: [1][161/704]	Time 0.021	Data 0.000	Loss -286273.5625	Avg Acc@1 6.803	Avg Acc@5 20.327	LR 0.10000
+Probe Training Epoch: [1][171/704]	Time 0.021	Data 0.000	Loss -217101.1250	Avg Acc@1 6.830	Avg Acc@5 20.333	LR 0.10000
+Probe Training Epoch: [1][181/704]	Time 0.021	Data 0.000	Loss -215646.5625	Avg Acc@1 6.792	Avg Acc@5 20.334	LR 0.10000
+Probe Training Epoch: [1][191/704]	Time 0.021	Data 0.000	Loss -278648.4688	Avg Acc@1 6.786	Avg Acc@5 20.237	LR 0.10000
+Probe Training Epoch: [1][201/704]	Time 0.021	Data 0.000	Loss -239304.9688	Avg Acc@1 6.843	Avg Acc@5 20.266	LR 0.10000
+Probe Training Epoch: [1][211/704]	Time 0.021	Data 0.000	Loss -259239.1250	Avg Acc@1 6.894	Avg Acc@5 20.372	LR 0.10000
+Probe Training Epoch: [1][221/704]	Time 0.021	Data 0.000	Loss -296499.3125	Avg Acc@1 6.863	Avg Acc@5 20.327	LR 0.10000
+Probe Training Epoch: [1][231/704]	Time 0.021	Data 0.000	Loss -267748.1562	Avg Acc@1 6.813	Avg Acc@5 20.292	LR 0.10000
+Probe Training Epoch: [1][241/704]	Time 0.021	Data 0.000	Loss -272492.3125	Avg Acc@1 6.793	Avg Acc@5 20.206	LR 0.10000
+Probe Training Epoch: [1][251/704]	Time 0.021	Data 0.000	Loss -352178.0938	Avg Acc@1 6.793	Avg Acc@5 20.230	LR 0.10000
+Probe Training Epoch: [1][261/704]	Time 0.021	Data 0.000	Loss -386086.4375	Avg Acc@1 6.777	Avg Acc@5 20.229	LR 0.10000
+Probe Training Epoch: [1][271/704]	Time 0.021	Data 0.000	Loss -305103.4062	Avg Acc@1 6.746	Avg Acc@5 20.189	LR 0.10000
+Probe Training Epoch: [1][281/704]	Time 0.021	Data 0.000	Loss -346632.5625	Avg Acc@1 6.821	Avg Acc@5 20.161	LR 0.10000
+Probe Training Epoch: [1][291/704]	Time 0.021	Data 0.000	Loss -270521.8125	Avg Acc@1 6.849	Avg Acc@5 20.227	LR 0.10000
+Probe Training Epoch: [1][301/704]	Time 0.021	Data 0.000	Loss -344294.2188	Avg Acc@1 6.859	Avg Acc@5 20.165	LR 0.10000
+Probe Training Epoch: [1][311/704]	Time 0.021	Data 0.000	Loss -331669.0625	Avg Acc@1 6.854	Avg Acc@5 20.228	LR 0.10000
+Probe Training Epoch: [1][321/704]	Time 0.021	Data 0.000	Loss -352009.4688	Avg Acc@1 6.875	Avg Acc@5 20.250	LR 0.10000
+Probe Training Epoch: [1][331/704]	Time 0.021	Data 0.000	Loss -307072.8125	Avg Acc@1 6.894	Avg Acc@5 20.328	LR 0.10000
+Probe Training Epoch: [1][341/704]	Time 0.021	Data 0.000	Loss -416724.2188	Avg Acc@1 6.917	Avg Acc@5 20.343	LR 0.10000
+Probe Training Epoch: [1][351/704]	Time 0.021	Data 0.000	Loss -344170.7500	Avg Acc@1 6.862	Avg Acc@5 20.197	LR 0.10000
+Probe Training Epoch: [1][361/704]	Time 0.021	Data 0.000	Loss -343213.2188	Avg Acc@1 6.826	Avg Acc@5 20.137	LR 0.10000
+Probe Training Epoch: [1][371/704]	Time 0.021	Data 0.000	Loss -359804.7500	Avg Acc@1 6.851	Avg Acc@5 20.154	LR 0.10000
+Probe Training Epoch: [1][381/704]	Time 0.021	Data 0.000	Loss -352077.9688	Avg Acc@1 6.846	Avg Acc@5 20.114	LR 0.10000
+Probe Training Epoch: [1][391/704]	Time 0.021	Data 0.000	Loss -468736.6250	Avg Acc@1 6.851	Avg Acc@5 20.163	LR 0.10000
+Probe Training Epoch: [1][401/704]	Time 0.021	Data 0.000	Loss -360577.1875	Avg Acc@1 6.853	Avg Acc@5 20.171	LR 0.10000
+Probe Training Epoch: [1][411/704]	Time 0.021	Data 0.000	Loss -381397.5000	Avg Acc@1 6.876	Avg Acc@5 20.164	LR 0.10000
+Probe Training Epoch: [1][421/704]	Time 0.021	Data 0.000	Loss -489474.6250	Avg Acc@1 6.887	Avg Acc@5 20.154	LR 0.10000
+Probe Training Epoch: [1][431/704]	Time 0.021	Data 0.000	Loss -399132.4688	Avg Acc@1 6.893	Avg Acc@5 20.141	LR 0.10000
+Probe Training Epoch: [1][441/704]	Time 0.021	Data 0.000	Loss -323232.0938	Avg Acc@1 6.896	Avg Acc@5 20.116	LR 0.10000
+Probe Training Epoch: [1][451/704]	Time 0.021	Data 0.000	Loss -477054.1875	Avg Acc@1 6.904	Avg Acc@5 20.100	LR 0.10000
+Probe Training Epoch: [1][461/704]	Time 0.021	Data 0.000	Loss -380293.5312	Avg Acc@1 6.898	Avg Acc@5 20.100	LR 0.10000
+Probe Training Epoch: [1][471/704]	Time 0.021	Data 0.000	Loss -441328.8750	Avg Acc@1 6.894	Avg Acc@5 20.099	LR 0.10000
+Probe Training Epoch: [1][481/704]	Time 0.021	Data 0.000	Loss -463195.6562	Avg Acc@1 6.887	Avg Acc@5 20.101	LR 0.10000
+Probe Training Epoch: [1][491/704]	Time 0.021	Data 0.000	Loss -346325.6562	Avg Acc@1 6.859	Avg Acc@5 20.076	LR 0.10000
+Probe Training Epoch: [1][501/704]	Time 0.021	Data 0.000	Loss -423332.4688	Avg Acc@1 6.880	Avg Acc@5 20.091	LR 0.10000
+Probe Training Epoch: [1][511/704]	Time 0.021	Data 0.000	Loss -284740.5625	Avg Acc@1 6.897	Avg Acc@5 20.112	LR 0.10000
+Probe Training Epoch: [1][521/704]	Time 0.021	Data 0.000	Loss -445097.1250	Avg Acc@1 6.895	Avg Acc@5 20.083	LR 0.10000
+Probe Training Epoch: [1][531/704]	Time 0.021	Data 0.000	Loss -443531.2812	Avg Acc@1 6.903	Avg Acc@5 20.127	LR 0.10000
+Probe Training Epoch: [1][541/704]	Time 0.021	Data 0.000	Loss -373886.9688	Avg Acc@1 6.903	Avg Acc@5 20.100	LR 0.10000
+Probe Training Epoch: [1][551/704]	Time 0.021	Data 0.000	Loss -431336.5000	Avg Acc@1 6.894	Avg Acc@5 20.111	LR 0.10000
+Probe Training Epoch: [1][561/704]	Time 0.021	Data 0.000	Loss -371679.9375	Avg Acc@1 6.911	Avg Acc@5 20.150	LR 0.10000
+Probe Training Epoch: [1][571/704]	Time 0.021	Data 0.000	Loss -420544.7500	Avg Acc@1 6.888	Avg Acc@5 20.128	LR 0.10000
+Probe Training Epoch: [1][581/704]	Time 0.021	Data 0.000	Loss -463911.1562	Avg Acc@1 6.843	Avg Acc@5 20.087	LR 0.10000
+Probe Training Epoch: [1][591/704]	Time 0.021	Data 0.000	Loss -396570.2188	Avg Acc@1 6.850	Avg Acc@5 20.084	LR 0.10000
+Probe Training Epoch: [1][601/704]	Time 0.021	Data 0.000	Loss -472046.6250	Avg Acc@1 6.848	Avg Acc@5 20.049	LR 0.10000
+Probe Training Epoch: [1][611/704]	Time 0.021	Data 0.000	Loss -357627.6250	Avg Acc@1 6.826	Avg Acc@5 20.011	LR 0.10000
+Probe Training Epoch: [1][621/704]	Time 0.021	Data 0.000	Loss -412394.4375	Avg Acc@1 6.844	Avg Acc@5 20.051	LR 0.10000
+Probe Training Epoch: [1][631/704]	Time 0.021	Data 0.000	Loss -397261.0000	Avg Acc@1 6.817	Avg Acc@5 20.029	LR 0.10000
+Probe Training Epoch: [1][641/704]	Time 0.021	Data 0.000	Loss -373813.1875	Avg Acc@1 6.826	Avg Acc@5 20.037	LR 0.10000
+Probe Training Epoch: [1][651/704]	Time 0.021	Data 0.000	Loss -455373.3438	Avg Acc@1 6.821	Avg Acc@5 20.047	LR 0.10000
+Probe Training Epoch: [1][661/704]	Time 0.021	Data 0.000	Loss -384628.5000	Avg Acc@1 6.827	Avg Acc@5 20.044	LR 0.10000
+Probe Training Epoch: [1][671/704]	Time 0.021	Data 0.000	Loss -381411.9062	Avg Acc@1 6.816	Avg Acc@5 20.048	LR 0.10000
+Probe Training Epoch: [1][681/704]	Time 0.021	Data 0.000	Loss -391282.2500	Avg Acc@1 6.806	Avg Acc@5 20.064	LR 0.10000
+Probe Training Epoch: [1][691/704]	Time 0.021	Data 0.000	Loss -441075.5938	Avg Acc@1 6.792	Avg Acc@5 20.019	LR 0.10000
+Probe Training Epoch: [1][701/704]	Time 0.021	Data 0.000	Loss -382300.6250	Avg Acc@1 6.773	Avg Acc@5 19.984	LR 0.10000
+
+Probe Training Epoch: 1	Loss: -339327.1772	Acc: 6.7727
+Probe Training Epoch: [2][1/704]	Time 0.021	Data 0.000	Loss -350106.4375	Avg Acc@1 1.953	Avg Acc@5 12.500	LR 0.10000
+Probe Training Epoch: [2][11/704]	Time 0.021	Data 0.000	Loss -395913.8750	Avg Acc@1 5.646	Avg Acc@5 19.070	LR 0.10000
+Probe Training Epoch: [2][21/704]	Time 0.021	Data 0.000	Loss -449663.1250	Avg Acc@1 6.027	Avg Acc@5 19.903	LR 0.10000
+Probe Training Epoch: [2][31/704]	Time 0.021	Data 0.000	Loss -488651.3438	Avg Acc@1 6.250	Avg Acc@5 20.552	LR 0.10000
+Probe Training Epoch: [2][41/704]	Time 0.021	Data 0.000	Loss -465196.0625	Avg Acc@1 6.012	Avg Acc@5 19.817	LR 0.10000
+Probe Training Epoch: [2][51/704]	Time 0.021	Data 0.000	Loss -391633.1562	Avg Acc@1 5.951	Avg Acc@5 19.240	LR 0.10000
+Probe Training Epoch: [2][61/704]	Time 0.021	Data 0.000	Loss -455583.5625	Avg Acc@1 6.039	Avg Acc@5 19.550	LR 0.10000
+Probe Training Epoch: [2][71/704]	Time 0.021	Data 0.000	Loss -495794.5000	Avg Acc@1 6.162	Avg Acc@5 19.636	LR 0.10000
+Probe Training Epoch: [2][81/704]	Time 0.021	Data 0.000	Loss -431763.9688	Avg Acc@1 6.568	Avg Acc@5 20.279	LR 0.10000
+Probe Training Epoch: [2][91/704]	Time 0.021	Data 0.000	Loss -468325.1250	Avg Acc@1 6.739	Avg Acc@5 20.480	LR 0.10000
+Probe Training Epoch: [2][101/704]	Time 0.021	Data 0.000	Loss -439230.2500	Avg Acc@1 6.486	Avg Acc@5 19.968	LR 0.10000
+Probe Training Epoch: [2][111/704]	Time 0.021	Data 0.000	Loss -370869.4062	Avg Acc@1 6.352	Avg Acc@5 19.668	LR 0.10000
+Probe Training Epoch: [2][121/704]	Time 0.021	Data 0.000	Loss -421724.5625	Avg Acc@1 6.486	Avg Acc@5 19.822	LR 0.10000
+Probe Training Epoch: [2][131/704]	Time 0.021	Data 0.000	Loss -528596.0000	Avg Acc@1 6.462	Avg Acc@5 19.719	LR 0.10000
+Probe Training Epoch: [2][141/704]	Time 0.021	Data 0.000	Loss -373168.7812	Avg Acc@1 6.394	Avg Acc@5 19.620	LR 0.10000
+Probe Training Epoch: [2][151/704]	Time 0.021	Data 0.000	Loss -426109.0938	Avg Acc@1 6.253	Avg Acc@5 19.373	LR 0.10000
+Probe Training Epoch: [2][161/704]	Time 0.021	Data 0.000	Loss -578947.5000	Avg Acc@1 6.289	Avg Acc@5 19.502	LR 0.10000
+Probe Training Epoch: [2][171/704]	Time 0.021	Data 0.000	Loss -434003.0000	Avg Acc@1 6.291	Avg Acc@5 19.508	LR 0.10000
+Probe Training Epoch: [2][181/704]	Time 0.021	Data 0.000	Loss -427871.5000	Avg Acc@1 6.237	Avg Acc@5 19.508	LR 0.10000
+Probe Training Epoch: [2][191/704]	Time 0.021	Data 0.000	Loss -547698.6250	Avg Acc@1 6.246	Avg Acc@5 19.421	LR 0.10000
+Probe Training Epoch: [2][201/704]	Time 0.021	Data 0.000	Loss -464156.5000	Avg Acc@1 6.287	Avg Acc@5 19.426	LR 0.10000
+Probe Training Epoch: [2][211/704]	Time 0.021	Data 0.000	Loss -500594.6250	Avg Acc@1 6.337	Avg Acc@5 19.563	LR 0.10000
+Probe Training Epoch: [2][221/704]	Time 0.021	Data 0.000	Loss -566609.8750	Avg Acc@1 6.296	Avg Acc@5 19.496	LR 0.10000
+Probe Training Epoch: [2][231/704]	Time 0.021	Data 0.000	Loss -506291.4062	Avg Acc@1 6.253	Avg Acc@5 19.459	LR 0.10000
+Probe Training Epoch: [2][241/704]	Time 0.021	Data 0.000	Loss -509959.7188	Avg Acc@1 6.232	Avg Acc@5 19.363	LR 0.10000
+Probe Training Epoch: [2][251/704]	Time 0.021	Data 0.000	Loss -657958.8125	Avg Acc@1 6.228	Avg Acc@5 19.393	LR 0.10000
+Probe Training Epoch: [2][261/704]	Time 0.021	Data 0.000	Loss -716478.1250	Avg Acc@1 6.222	Avg Acc@5 19.410	LR 0.10000
+Probe Training Epoch: [2][271/704]	Time 0.021	Data 0.000	Loss -561946.7500	Avg Acc@1 6.211	Avg Acc@5 19.365	LR 0.10000
+Probe Training Epoch: [2][281/704]	Time 0.021	Data 0.000	Loss -634228.2500	Avg Acc@1 6.294	Avg Acc@5 19.346	LR 0.10000
+Probe Training Epoch: [2][291/704]	Time 0.021	Data 0.000	Loss -491035.6250	Avg Acc@1 6.322	Avg Acc@5 19.409	LR 0.10000
+Probe Training Epoch: [2][301/704]	Time 0.021	Data 0.000	Loss -620039.2500	Avg Acc@1 6.333	Avg Acc@5 19.344	LR 0.10000
+Probe Training Epoch: [2][311/704]	Time 0.021	Data 0.000	Loss -596165.3750	Avg Acc@1 6.345	Avg Acc@5 19.413	LR 0.10000
+Probe Training Epoch: [2][321/704]	Time 0.021	Data 0.000	Loss -629663.1250	Avg Acc@1 6.372	Avg Acc@5 19.430	LR 0.10000
+Probe Training Epoch: [2][331/704]	Time 0.021	Data 0.000	Loss -545315.2500	Avg Acc@1 6.396	Avg Acc@5 19.509	LR 0.10000
+Probe Training Epoch: [2][341/704]	Time 0.021	Data 0.000	Loss -737962.6875	Avg Acc@1 6.410	Avg Acc@5 19.536	LR 0.10000
+Probe Training Epoch: [2][351/704]	Time 0.021	Data 0.000	Loss -607318.8750	Avg Acc@1 6.365	Avg Acc@5 19.400	LR 0.10000
+Probe Training Epoch: [2][361/704]	Time 0.021	Data 0.000	Loss -602034.5625	Avg Acc@1 6.330	Avg Acc@5 19.347	LR 0.10000
+Probe Training Epoch: [2][371/704]	Time 0.021	Data 0.000	Loss -629760.7500	Avg Acc@1 6.354	Avg Acc@5 19.368	LR 0.10000
+Probe Training Epoch: [2][381/704]	Time 0.021	Data 0.000	Loss -611637.1250	Avg Acc@1 6.352	Avg Acc@5 19.333	LR 0.10000
+Probe Training Epoch: [2][391/704]	Time 0.021	Data 0.000	Loss -813166.5000	Avg Acc@1 6.361	Avg Acc@5 19.388	LR 0.10000
+Probe Training Epoch: [2][401/704]	Time 0.021	Data 0.000	Loss -622390.1875	Avg Acc@1 6.368	Avg Acc@5 19.398	LR 0.10000
+Probe Training Epoch: [2][411/704]	Time 0.021	Data 0.000	Loss -657139.3125	Avg Acc@1 6.393	Avg Acc@5 19.402	LR 0.10000
+Probe Training Epoch: [2][421/704]	Time 0.021	Data 0.000	Loss -842333.0000	Avg Acc@1 6.405	Avg Acc@5 19.403	LR 0.10000
+Probe Training Epoch: [2][431/704]	Time 0.021	Data 0.000	Loss -683738.2500	Avg Acc@1 6.402	Avg Acc@5 19.399	LR 0.10000
+Probe Training Epoch: [2][441/704]	Time 0.021	Data 0.000	Loss -552742.6250	Avg Acc@1 6.394	Avg Acc@5 19.378	LR 0.10000
+Probe Training Epoch: [2][451/704]	Time 0.021	Data 0.000	Loss -814945.5000	Avg Acc@1 6.413	Avg Acc@5 19.366	LR 0.10000
+Probe Training Epoch: [2][461/704]	Time 0.021	Data 0.000	Loss -646191.5000	Avg Acc@1 6.412	Avg Acc@5 19.368	LR 0.10000
+Probe Training Epoch: [2][471/704]	Time 0.021	Data 0.000	Loss -749509.8750	Avg Acc@1 6.406	Avg Acc@5 19.375	LR 0.10000
+Probe Training Epoch: [2][481/704]	Time 0.021	Data 0.000	Loss -786443.1250	Avg Acc@1 6.399	Avg Acc@5 19.377	LR 0.10000
+Probe Training Epoch: [2][491/704]	Time 0.021	Data 0.000	Loss -585686.8750	Avg Acc@1 6.374	Avg Acc@5 19.344	LR 0.10000
+Probe Training Epoch: [2][501/704]	Time 0.021	Data 0.000	Loss -714747.9375	Avg Acc@1 6.396	Avg Acc@5 19.360	LR 0.10000
+Probe Training Epoch: [2][511/704]	Time 0.021	Data 0.000	Loss -480955.7188	Avg Acc@1 6.417	Avg Acc@5 19.383	LR 0.10000
+Probe Training Epoch: [2][521/704]	Time 0.021	Data 0.000	Loss -750259.5000	Avg Acc@1 6.425	Avg Acc@5 19.355	LR 0.10000
+Probe Training Epoch: [2][531/704]	Time 0.021	Data 0.000	Loss -746485.5000	Avg Acc@1 6.434	Avg Acc@5 19.398	LR 0.10000
+Probe Training Epoch: [2][541/704]	Time 0.021	Data 0.000	Loss -630813.7500	Avg Acc@1 6.440	Avg Acc@5 19.372	LR 0.10000
+Probe Training Epoch: [2][551/704]	Time 0.021	Data 0.000	Loss -725764.7500	Avg Acc@1 6.431	Avg Acc@5 19.385	LR 0.10000
+Probe Training Epoch: [2][561/704]	Time 0.021	Data 0.000	Loss -624474.1250	Avg Acc@1 6.451	Avg Acc@5 19.419	LR 0.10000
+Probe Training Epoch: [2][571/704]	Time 0.021	Data 0.000	Loss -705519.8750	Avg Acc@1 6.428	Avg Acc@5 19.390	LR 0.10000
+Probe Training Epoch: [2][581/704]	Time 0.021	Data 0.000	Loss -778034.1250	Avg Acc@1 6.384	Avg Acc@5 19.347	LR 0.10000
+Probe Training Epoch: [2][591/704]	Time 0.021	Data 0.000	Loss -664544.7500	Avg Acc@1 6.395	Avg Acc@5 19.349	LR 0.10000
+Probe Training Epoch: [2][601/704]	Time 0.021	Data 0.000	Loss -791253.8750	Avg Acc@1 6.394	Avg Acc@5 19.319	LR 0.10000
+Probe Training Epoch: [2][611/704]	Time 0.021	Data 0.000	Loss -597681.8125	Avg Acc@1 6.376	Avg Acc@5 19.279	LR 0.10000
+Probe Training Epoch: [2][621/704]	Time 0.021	Data 0.000	Loss -690114.3750	Avg Acc@1 6.398	Avg Acc@5 19.315	LR 0.10000
+Probe Training Epoch: [2][631/704]	Time 0.021	Data 0.000	Loss -663966.3125	Avg Acc@1 6.373	Avg Acc@5 19.295	LR 0.10000
+Probe Training Epoch: [2][641/704]	Time 0.021	Data 0.000	Loss -625737.8750	Avg Acc@1 6.383	Avg Acc@5 19.302	LR 0.10000
+Probe Training Epoch: [2][651/704]	Time 0.021	Data 0.000	Loss -762711.0000	Avg Acc@1 6.381	Avg Acc@5 19.306	LR 0.10000
+Probe Training Epoch: [2][661/704]	Time 0.021	Data 0.000	Loss -643107.3750	Avg Acc@1 6.389	Avg Acc@5 19.301	LR 0.10000
+Probe Training Epoch: [2][671/704]	Time 0.021	Data 0.000	Loss -638518.0625	Avg Acc@1 6.377	Avg Acc@5 19.311	LR 0.10000
+Probe Training Epoch: [2][681/704]	Time 0.021	Data 0.000	Loss -653889.8125	Avg Acc@1 6.368	Avg Acc@5 19.330	LR 0.10000
+Probe Training Epoch: [2][691/704]	Time 0.021	Data 0.000	Loss -737486.6250	Avg Acc@1 6.359	Avg Acc@5 19.289	LR 0.10000
+Probe Training Epoch: [2][701/704]	Time 0.021	Data 0.000	Loss -638845.8750	Avg Acc@1 6.345	Avg Acc@5 19.256	LR 0.10000
+
+Probe Training Epoch: 2	Loss: -615826.3158	Acc: 6.3454
+Probe Training Epoch: [3][1/704]	Time 0.021	Data 0.000	Loss -585540.8750	Avg Acc@1 1.953	Avg Acc@5 11.719	LR 0.10000
+Probe Training Epoch: [3][11/704]	Time 0.021	Data 0.000	Loss -659963.7500	Avg Acc@1 5.256	Avg Acc@5 18.395	LR 0.10000
+Probe Training Epoch: [3][21/704]	Time 0.021	Data 0.000	Loss -743670.8750	Avg Acc@1 5.599	Avg Acc@5 19.494	LR 0.10000
+Probe Training Epoch: [3][31/704]	Time 0.021	Data 0.000	Loss -803289.8125	Avg Acc@1 5.809	Avg Acc@5 19.960	LR 0.10000
+Probe Training Epoch: [3][41/704]	Time 0.021	Data 0.000	Loss -760616.5000	Avg Acc@1 5.612	Avg Acc@5 19.083	LR 0.10000
+Probe Training Epoch: [3][51/704]	Time 0.021	Data 0.000	Loss -637009.0000	Avg Acc@1 5.591	Avg Acc@5 18.581	LR 0.10000
+Probe Training Epoch: [3][61/704]	Time 0.021	Data 0.000	Loss -737661.5625	Avg Acc@1 5.712	Avg Acc@5 18.904	LR 0.10000
+Probe Training Epoch: [3][71/704]	Time 0.021	Data 0.000	Loss -797227.6875	Avg Acc@1 5.876	Avg Acc@5 19.003	LR 0.10000
+Probe Training Epoch: [3][81/704]	Time 0.021	Data 0.000	Loss -691381.0000	Avg Acc@1 6.303	Avg Acc@5 19.642	LR 0.10000
+Probe Training Epoch: [3][91/704]	Time 0.021	Data 0.000	Loss -746630.2500	Avg Acc@1 6.508	Avg Acc@5 19.853	LR 0.10000
+Probe Training Epoch: [3][101/704]	Time 0.021	Data 0.000	Loss -696260.0625	Avg Acc@1 6.273	Avg Acc@5 19.353	LR 0.10000
+Probe Training Epoch: [3][111/704]	Time 0.021	Data 0.000	Loss -584178.5625	Avg Acc@1 6.109	Avg Acc@5 19.049	LR 0.10000
+Probe Training Epoch: [3][121/704]	Time 0.021	Data 0.000	Loss -660577.0000	Avg Acc@1 6.214	Avg Acc@5 19.186	LR 0.10000
+Probe Training Epoch: [3][131/704]	Time 0.021	Data 0.000	Loss -825347.5000	Avg Acc@1 6.226	Avg Acc@5 19.081	LR 0.10000
+Probe Training Epoch: [3][141/704]	Time 0.021	Data 0.000	Loss -579857.2500	Avg Acc@1 6.164	Avg Acc@5 18.983	LR 0.10000
+Probe Training Epoch: [3][151/704]	Time 0.021	Data 0.000	Loss -658426.0625	Avg Acc@1 6.040	Avg Acc@5 18.778	LR 0.10000
+Probe Training Epoch: [3][161/704]	Time 0.021	Data 0.000	Loss -891170.8750	Avg Acc@1 6.085	Avg Acc@5 18.915	LR 0.10000
+Probe Training Epoch: [3][171/704]	Time 0.021	Data 0.000	Loss -665116.1250	Avg Acc@1 6.081	Avg Acc@5 18.946	LR 0.10000
+Probe Training Epoch: [3][181/704]	Time 0.021	Data 0.000	Loss -653768.9375	Avg Acc@1 6.021	Avg Acc@5 18.957	LR 0.10000
+Probe Training Epoch: [3][191/704]	Time 0.021	Data 0.000	Loss -833724.7500	Avg Acc@1 6.027	Avg Acc@5 18.893	LR 0.10000
+Probe Training Epoch: [3][201/704]	Time 0.021	Data 0.000	Loss -702125.6250	Avg Acc@1 6.056	Avg Acc@5 18.911	LR 0.10000
+Probe Training Epoch: [3][211/704]	Time 0.021	Data 0.000	Loss -756324.1875	Avg Acc@1 6.091	Avg Acc@5 19.070	LR 0.10000
+Probe Training Epoch: [3][221/704]	Time 0.021	Data 0.000	Loss -851617.8750	Avg Acc@1 6.056	Avg Acc@5 19.003	LR 0.10000
+Probe Training Epoch: [3][231/704]	Time 0.021	Data 0.000	Loss -757259.5000	Avg Acc@1 6.013	Avg Acc@5 18.944	LR 0.10000
+Probe Training Epoch: [3][241/704]	Time 0.021	Data 0.000	Loss -759959.8750	Avg Acc@1 5.984	Avg Acc@5 18.863	LR 0.10000
+Probe Training Epoch: [3][251/704]	Time 0.021	Data 0.000	Loss -979764.1875	Avg Acc@1 5.970	Avg Acc@5 18.892	LR 0.10000
+Probe Training Epoch: [3][261/704]	Time 0.021	Data 0.000	Loss -1063618.7500	Avg Acc@1 5.973	Avg Acc@5 18.903	LR 0.10000
+Probe Training Epoch: [3][271/704]	Time 0.021	Data 0.000	Loss -831119.1875	Avg Acc@1 5.965	Avg Acc@5 18.864	LR 0.10000
+Probe Training Epoch: [3][281/704]	Time 0.021	Data 0.000	Loss -935915.5000	Avg Acc@1 6.043	Avg Acc@5 18.846	LR 0.10000
+Probe Training Epoch: [3][291/704]	Time 0.021	Data 0.000	Loss -721552.7500	Avg Acc@1 6.080	Avg Acc@5 18.918	LR 0.10000
+Probe Training Epoch: [3][301/704]	Time 0.021	Data 0.000	Loss -907729.3125	Avg Acc@1 6.088	Avg Acc@5 18.853	LR 0.10000
+Probe Training Epoch: [3][311/704]	Time 0.021	Data 0.000	Loss -872451.7500	Avg Acc@1 6.104	Avg Acc@5 18.925	LR 0.10000
+Probe Training Epoch: [3][321/704]	Time 0.021	Data 0.000	Loss -919166.1250	Avg Acc@1 6.126	Avg Acc@5 18.948	LR 0.10000
+Probe Training Epoch: [3][331/704]	Time 0.021	Data 0.000	Loss -793680.0625	Avg Acc@1 6.146	Avg Acc@5 19.034	LR 0.10000
+Probe Training Epoch: [3][341/704]	Time 0.021	Data 0.000	Loss -1072077.5000	Avg Acc@1 6.165	Avg Acc@5 19.062	LR 0.10000
+Probe Training Epoch: [3][351/704]	Time 0.021	Data 0.000	Loss -881346.3750	Avg Acc@1 6.122	Avg Acc@5 18.933	LR 0.10000
+Probe Training Epoch: [3][361/704]	Time 0.021	Data 0.000	Loss -870919.7500	Avg Acc@1 6.100	Avg Acc@5 18.871	LR 0.10000
+Probe Training Epoch: [3][371/704]	Time 0.021	Data 0.000	Loss -910429.5000	Avg Acc@1 6.117	Avg Acc@5 18.889	LR 0.10000
+Probe Training Epoch: [3][381/704]	Time 0.021	Data 0.000	Loss -880691.1875	Avg Acc@1 6.114	Avg Acc@5 18.849	LR 0.10000
+Probe Training Epoch: [3][391/704]	Time 0.021	Data 0.000	Loss -1169835.0000	Avg Acc@1 6.130	Avg Acc@5 18.906	LR 0.10000
+Probe Training Epoch: [3][401/704]	Time 0.021	Data 0.000	Loss -893093.8750	Avg Acc@1 6.131	Avg Acc@5 18.926	LR 0.10000
+Probe Training Epoch: [3][411/704]	Time 0.021	Data 0.000	Loss -942419.2500	Avg Acc@1 6.158	Avg Acc@5 18.936	LR 0.10000
+Probe Training Epoch: [3][421/704]	Time 0.021	Data 0.000	Loss -1207148.5000	Avg Acc@1 6.174	Avg Acc@5 18.934	LR 0.10000
+Probe Training Epoch: [3][431/704]	Time 0.021	Data 0.000	Loss -977854.3750	Avg Acc@1 6.173	Avg Acc@5 18.930	LR 0.10000
+Probe Training Epoch: [3][441/704]	Time 0.021	Data 0.000	Loss -789746.5000	Avg Acc@1 6.165	Avg Acc@5 18.910	LR 0.10000
+Probe Training Epoch: [3][451/704]	Time 0.021	Data 0.000	Loss -1164124.3750	Avg Acc@1 6.176	Avg Acc@5 18.899	LR 0.10000
+Probe Training Epoch: [3][461/704]	Time 0.021	Data 0.000	Loss -920215.1875	Avg Acc@1 6.174	Avg Acc@5 18.895	LR 0.10000
+Probe Training Epoch: [3][471/704]	Time 0.021	Data 0.000	Loss -1067379.3750	Avg Acc@1 6.171	Avg Acc@5 18.902	LR 0.10000
+Probe Training Epoch: [3][481/704]	Time 0.021	Data 0.000	Loss -1119995.5000	Avg Acc@1 6.166	Avg Acc@5 18.902	LR 0.10000
+Probe Training Epoch: [3][491/704]	Time 0.021	Data 0.000	Loss -832318.0625	Avg Acc@1 6.141	Avg Acc@5 18.870	LR 0.10000
+Probe Training Epoch: [3][501/704]	Time 0.021	Data 0.000	Loss -1014836.2500	Avg Acc@1 6.160	Avg Acc@5 18.887	LR 0.10000
+Probe Training Epoch: [3][511/704]	Time 0.021	Data 0.000	Loss -683291.7500	Avg Acc@1 6.175	Avg Acc@5 18.909	LR 0.10000
+Probe Training Epoch: [3][521/704]	Time 0.021	Data 0.000	Loss -1064374.1250	Avg Acc@1 6.181	Avg Acc@5 18.883	LR 0.10000
+Probe Training Epoch: [3][531/704]	Time 0.021	Data 0.000	Loss -1058588.0000	Avg Acc@1 6.185	Avg Acc@5 18.922	LR 0.10000
+Probe Training Epoch: [3][541/704]	Time 0.021	Data 0.000	Loss -895989.2500	Avg Acc@1 6.194	Avg Acc@5 18.896	LR 0.10000
+Probe Training Epoch: [3][551/704]	Time 0.021	Data 0.000	Loss -1029143.7500	Avg Acc@1 6.184	Avg Acc@5 18.910	LR 0.10000
+Probe Training Epoch: [3][561/704]	Time 0.021	Data 0.000	Loss -884962.1250	Avg Acc@1 6.201	Avg Acc@5 18.943	LR 0.10000
+Probe Training Epoch: [3][571/704]	Time 0.021	Data 0.000	Loss -998801.2500	Avg Acc@1 6.180	Avg Acc@5 18.920	LR 0.10000
+Probe Training Epoch: [3][581/704]	Time 0.021	Data 0.000	Loss -1101533.1250	Avg Acc@1 6.137	Avg Acc@5 18.880	LR 0.10000
+Probe Training Epoch: [3][591/704]	Time 0.021	Data 0.000	Loss -940127.6250	Avg Acc@1 6.145	Avg Acc@5 18.890	LR 0.10000
+Probe Training Epoch: [3][601/704]	Time 0.021	Data 0.000	Loss -1119864.0000	Avg Acc@1 6.141	Avg Acc@5 18.861	LR 0.10000
+Probe Training Epoch: [3][611/704]	Time 0.021	Data 0.000	Loss -844487.6875	Avg Acc@1 6.119	Avg Acc@5 18.821	LR 0.10000
+Probe Training Epoch: [3][621/704]	Time 0.021	Data 0.000	Loss -975675.1875	Avg Acc@1 6.140	Avg Acc@5 18.856	LR 0.10000
+Probe Training Epoch: [3][631/704]	Time 0.021	Data 0.000	Loss -938138.2500	Avg Acc@1 6.116	Avg Acc@5 18.836	LR 0.10000
+Probe Training Epoch: [3][641/704]	Time 0.021	Data 0.000	Loss -884660.5625	Avg Acc@1 6.125	Avg Acc@5 18.843	LR 0.10000
+Probe Training Epoch: [3][651/704]	Time 0.021	Data 0.000	Loss -1078912.6250	Avg Acc@1 6.121	Avg Acc@5 18.849	LR 0.10000
+Probe Training Epoch: [3][661/704]	Time 0.021	Data 0.000	Loss -908885.0000	Avg Acc@1 6.129	Avg Acc@5 18.842	LR 0.10000
+Probe Training Epoch: [3][671/704]	Time 0.021	Data 0.000	Loss -903116.0000	Avg Acc@1 6.120	Avg Acc@5 18.848	LR 0.10000
+Probe Training Epoch: [3][681/704]	Time 0.021	Data 0.000	Loss -924017.0000	Avg Acc@1 6.112	Avg Acc@5 18.874	LR 0.10000
+Probe Training Epoch: [3][691/704]	Time 0.021	Data 0.000	Loss -1042335.8125	Avg Acc@1 6.102	Avg Acc@5 18.836	LR 0.10000
+Probe Training Epoch: [3][701/704]	Time 0.021	Data 0.000	Loss -902668.0000	Avg Acc@1 6.087	Avg Acc@5 18.806	LR 0.10000
+
+Probe Training Epoch: 3	Loss: -905835.7122	Acc: 6.0835
+Probe Training Epoch: [4][1/704]	Time 0.021	Data 0.000	Loss -828186.8750	Avg Acc@1 2.344	Avg Acc@5 12.109	LR 0.10000
+Probe Training Epoch: [4][11/704]	Time 0.021	Data 0.000	Loss -931743.4375	Avg Acc@1 5.149	Avg Acc@5 18.182	LR 0.10000
+Probe Training Epoch: [4][21/704]	Time 0.021	Data 0.000	Loss -1045741.1875	Avg Acc@1 5.580	Avg Acc@5 19.103	LR 0.10000
+Probe Training Epoch: [4][31/704]	Time 0.021	Data 0.000	Loss -1125968.8750	Avg Acc@1 5.658	Avg Acc@5 19.468	LR 0.10000
+Probe Training Epoch: [4][41/704]	Time 0.021	Data 0.000	Loss -1063260.6250	Avg Acc@1 5.507	Avg Acc@5 18.617	LR 0.10000
+Probe Training Epoch: [4][51/704]	Time 0.021	Data 0.000	Loss -888795.3125	Avg Acc@1 5.492	Avg Acc@5 18.214	LR 0.10000
+Probe Training Epoch: [4][61/704]	Time 0.021	Data 0.000	Loss -1025924.3750	Avg Acc@1 5.571	Avg Acc@5 18.551	LR 0.10000
+Probe Training Epoch: [4][71/704]	Time 0.021	Data 0.000	Loss -1104229.2500	Avg Acc@1 5.733	Avg Acc@5 18.667	LR 0.10000
+Probe Training Epoch: [4][81/704]	Time 0.021	Data 0.000	Loss -955907.1250	Avg Acc@1 6.144	Avg Acc@5 19.285	LR 0.10000
+Probe Training Epoch: [4][91/704]	Time 0.021	Data 0.000	Loss -1030082.1875	Avg Acc@1 6.323	Avg Acc@5 19.501	LR 0.10000
+Probe Training Epoch: [4][101/704]	Time 0.021	Data 0.000	Loss -957382.7500	Avg Acc@1 6.119	Avg Acc@5 19.013	LR 0.10000
+Probe Training Epoch: [4][111/704]	Time 0.021	Data 0.000	Loss -800626.0000	Avg Acc@1 5.951	Avg Acc@5 18.690	LR 0.10000
+Probe Training Epoch: [4][121/704]	Time 0.021	Data 0.000	Loss -902488.0625	Avg Acc@1 6.053	Avg Acc@5 18.824	LR 0.10000
+Probe Training Epoch: [4][131/704]	Time 0.021	Data 0.000	Loss -1126210.0000	Avg Acc@1 6.068	Avg Acc@5 18.723	LR 0.10000
+Probe Training Epoch: [4][141/704]	Time 0.021	Data 0.000	Loss -788611.1875	Avg Acc@1 6.001	Avg Acc@5 18.606	LR 0.10000
+Probe Training Epoch: [4][151/704]	Time 0.021	Data 0.000	Loss -893171.5000	Avg Acc@1 5.880	Avg Acc@5 18.398	LR 0.10000
+Probe Training Epoch: [4][161/704]	Time 0.021	Data 0.000	Loss -1205541.0000	Avg Acc@1 5.935	Avg Acc@5 18.515	LR 0.10000
+Probe Training Epoch: [4][171/704]	Time 0.021	Data 0.000	Loss -897913.7500	Avg Acc@1 5.932	Avg Acc@5 18.549	LR 0.10000
+Probe Training Epoch: [4][181/704]	Time 0.021	Data 0.000	Loss -881447.0000	Avg Acc@1 5.883	Avg Acc@5 18.536	LR 0.10000
+Probe Training Epoch: [4][191/704]	Time 0.021	Data 0.000	Loss -1121504.5000	Avg Acc@1 5.892	Avg Acc@5 18.462	LR 0.10000
+Probe Training Epoch: [4][201/704]	Time 0.021	Data 0.000	Loss -941513.2500	Avg Acc@1 5.916	Avg Acc@5 18.466	LR 0.10000
+Probe Training Epoch: [4][211/704]	Time 0.021	Data 0.000	Loss -1013445.7500	Avg Acc@1 5.950	Avg Acc@5 18.633	LR 0.10000
+Probe Training Epoch: [4][221/704]	Time 0.021	Data 0.000	Loss -1138252.2500	Avg Acc@1 5.923	Avg Acc@5 18.570	LR 0.10000
+Probe Training Epoch: [4][231/704]	Time 0.021	Data 0.000	Loss -1009201.2500	Avg Acc@1 5.898	Avg Acc@5 18.517	LR 0.10000
+Probe Training Epoch: [4][241/704]	Time 0.021	Data 0.000	Loss -1010611.8750	Avg Acc@1 5.856	Avg Acc@5 18.432	LR 0.10000
+Probe Training Epoch: [4][251/704]	Time 0.021	Data 0.000	Loss -1302624.5000	Avg Acc@1 5.848	Avg Acc@5 18.453	LR 0.10000
+Probe Training Epoch: [4][261/704]	Time 0.021	Data 0.000	Loss -1411616.1250	Avg Acc@1 5.844	Avg Acc@5 18.463	LR 0.10000
+Probe Training Epoch: [4][271/704]	Time 0.021	Data 0.000	Loss -1100770.5000	Avg Acc@1 5.831	Avg Acc@5 18.427	LR 0.10000
+Probe Training Epoch: [4][281/704]	Time 0.021	Data 0.000	Loss -1237046.7500	Avg Acc@1 5.907	Avg Acc@5 18.415	LR 0.10000
+Probe Training Epoch: [4][291/704]	Time 0.021	Data 0.000	Loss -952142.6250	Avg Acc@1 5.943	Avg Acc@5 18.480	LR 0.10000
+Probe Training Epoch: [4][301/704]	Time 0.021	Data 0.000	Loss -1194349.1250	Avg Acc@1 5.958	Avg Acc@5 18.411	LR 0.10000
+Probe Training Epoch: [4][311/704]	Time 0.021	Data 0.000	Loss -1147803.0000	Avg Acc@1 5.976	Avg Acc@5 18.480	LR 0.10000
+Probe Training Epoch: [4][321/704]	Time 0.021	Data 0.000	Loss -1208030.2500	Avg Acc@1 5.999	Avg Acc@5 18.502	LR 0.10000
+Probe Training Epoch: [4][331/704]	Time 0.021	Data 0.000	Loss -1040956.0000	Avg Acc@1 6.012	Avg Acc@5 18.591	LR 0.10000
+Probe Training Epoch: [4][341/704]	Time 0.021	Data 0.000	Loss -1404994.0000	Avg Acc@1 6.029	Avg Acc@5 18.611	LR 0.10000
+Probe Training Epoch: [4][351/704]	Time 0.021	Data 0.000	Loss -1154590.2500	Avg Acc@1 5.988	Avg Acc@5 18.495	LR 0.10000
+Probe Training Epoch: [4][361/704]	Time 0.021	Data 0.000	Loss -1138459.0000	Avg Acc@1 5.966	Avg Acc@5 18.430	LR 0.10000
+Probe Training Epoch: [4][371/704]	Time 0.021	Data 0.000	Loss -1189867.5000	Avg Acc@1 5.977	Avg Acc@5 18.447	LR 0.10000
+Probe Training Epoch: [4][381/704]	Time 0.021	Data 0.000	Loss -1148113.2500	Avg Acc@1 5.977	Avg Acc@5 18.395	LR 0.10000
+Probe Training Epoch: [4][391/704]	Time 0.021	Data 0.000	Loss -1524346.5000	Avg Acc@1 5.990	Avg Acc@5 18.448	LR 0.10000
+Probe Training Epoch: [4][401/704]	Time 0.021	Data 0.000	Loss -1161963.0000	Avg Acc@1 5.990	Avg Acc@5 18.466	LR 0.10000
+Probe Training Epoch: [4][411/704]	Time 0.021	Data 0.000	Loss -1225403.2500	Avg Acc@1 6.014	Avg Acc@5 18.482	LR 0.10000
+Probe Training Epoch: [4][421/704]	Time 0.021	Data 0.000	Loss -1569410.2500	Avg Acc@1 6.031	Avg Acc@5 18.472	LR 0.10000
+Probe Training Epoch: [4][431/704]	Time 0.021	Data 0.000	Loss -1269443.2500	Avg Acc@1 6.030	Avg Acc@5 18.462	LR 0.10000
+Probe Training Epoch: [4][441/704]	Time 0.021	Data 0.000	Loss -1025277.6250	Avg Acc@1 6.015	Avg Acc@5 18.437	LR 0.10000
+Probe Training Epoch: [4][451/704]	Time 0.021	Data 0.000	Loss -1510567.8750	Avg Acc@1 6.032	Avg Acc@5 18.430	LR 0.10000
+Probe Training Epoch: [4][461/704]	Time 0.021	Data 0.000	Loss -1191584.5000	Avg Acc@1 6.025	Avg Acc@5 18.416	LR 0.10000
+Probe Training Epoch: [4][471/704]	Time 0.021	Data 0.000	Loss -1382695.0000	Avg Acc@1 6.027	Avg Acc@5 18.422	LR 0.10000
+Probe Training Epoch: [4][481/704]	Time 0.021	Data 0.000	Loss -1450742.2500	Avg Acc@1 6.021	Avg Acc@5 18.426	LR 0.10000
+Probe Training Epoch: [4][491/704]	Time 0.021	Data 0.000	Loss -1076809.2500	Avg Acc@1 6.000	Avg Acc@5 18.392	LR 0.10000
+Probe Training Epoch: [4][501/704]	Time 0.021	Data 0.000	Loss -1311857.5000	Avg Acc@1 6.024	Avg Acc@5 18.404	LR 0.10000
+Probe Training Epoch: [4][511/704]	Time 0.021	Data 0.000	Loss -884076.0625	Avg Acc@1 6.041	Avg Acc@5 18.422	LR 0.10000
+Probe Training Epoch: [4][521/704]	Time 0.021	Data 0.000	Loss -1375561.7500	Avg Acc@1 6.048	Avg Acc@5 18.391	LR 0.10000
+Probe Training Epoch: [4][531/704]	Time 0.021	Data 0.000	Loss -1367814.1250	Avg Acc@1 6.051	Avg Acc@5 18.426	LR 0.10000
+Probe Training Epoch: [4][541/704]	Time 0.021	Data 0.000	Loss -1158754.2500	Avg Acc@1 6.059	Avg Acc@5 18.405	LR 0.10000
+Probe Training Epoch: [4][551/704]	Time 0.021	Data 0.000	Loss -1329561.2500	Avg Acc@1 6.050	Avg Acc@5 18.418	LR 0.10000
+Probe Training Epoch: [4][561/704]	Time 0.021	Data 0.000	Loss -1142651.0000	Avg Acc@1 6.065	Avg Acc@5 18.449	LR 0.10000
+Probe Training Epoch: [4][571/704]	Time 0.021	Data 0.000	Loss -1289199.5000	Avg Acc@1 6.041	Avg Acc@5 18.424	LR 0.10000
+Probe Training Epoch: [4][581/704]	Time 0.021	Data 0.000	Loss -1421601.7500	Avg Acc@1 6.001	Avg Acc@5 18.386	LR 0.10000
+Probe Training Epoch: [4][591/704]	Time 0.021	Data 0.000	Loss -1212927.5000	Avg Acc@1 6.007	Avg Acc@5 18.396	LR 0.10000
+Probe Training Epoch: [4][601/704]	Time 0.021	Data 0.000	Loss -1445210.0000	Avg Acc@1 6.005	Avg Acc@5 18.370	LR 0.10000
+Probe Training Epoch: [4][611/704]	Time 0.021	Data 0.000	Loss -1088541.2500	Avg Acc@1 5.984	Avg Acc@5 18.334	LR 0.10000
+Probe Training Epoch: [4][621/704]	Time 0.021	Data 0.000	Loss -1258334.0000	Avg Acc@1 6.008	Avg Acc@5 18.365	LR 0.10000
+Probe Training Epoch: [4][631/704]	Time 0.021	Data 0.000	Loss -1209124.5000	Avg Acc@1 5.981	Avg Acc@5 18.342	LR 0.10000
+Probe Training Epoch: [4][641/704]	Time 0.021	Data 0.000	Loss -1141178.7500	Avg Acc@1 5.990	Avg Acc@5 18.353	LR 0.10000
+Probe Training Epoch: [4][651/704]	Time 0.021	Data 0.000	Loss -1391744.7500	Avg Acc@1 5.990	Avg Acc@5 18.358	LR 0.10000
+Probe Training Epoch: [4][661/704]	Time 0.021	Data 0.000	Loss -1171742.3750	Avg Acc@1 5.995	Avg Acc@5 18.353	LR 0.10000
+Probe Training Epoch: [4][671/704]	Time 0.021	Data 0.000	Loss -1164925.5000	Avg Acc@1 5.986	Avg Acc@5 18.354	LR 0.10000
+Probe Training Epoch: [4][681/704]	Time 0.021	Data 0.000	Loss -1191075.2500	Avg Acc@1 5.977	Avg Acc@5 18.385	LR 0.10000
+Probe Training Epoch: [4][691/704]	Time 0.021	Data 0.000	Loss -1344368.8750	Avg Acc@1 5.968	Avg Acc@5 18.342	LR 0.10000
+Probe Training Epoch: [4][701/704]	Time 0.021	Data 0.000	Loss -1163692.7500	Avg Acc@1 5.954	Avg Acc@5 18.314	LR 0.10000
+
+Probe Training Epoch: 4	Loss: -1195926.6153	Acc: 5.9587
+Probe Training Epoch: [5][1/704]	Time 0.021	Data 0.000	Loss -1068559.7500	Avg Acc@1 1.953	Avg Acc@5 11.719	LR 0.10000
+Probe Training Epoch: [5][11/704]	Time 0.021	Data 0.000	Loss -1200998.5000	Avg Acc@1 5.007	Avg Acc@5 17.720	LR 0.10000
+Probe Training Epoch: [5][21/704]	Time 0.021	Data 0.000	Loss -1344217.6250	Avg Acc@1 5.525	Avg Acc@5 18.508	LR 0.10000
+Probe Training Epoch: [5][31/704]	Time 0.021	Data 0.000	Loss -1444476.5000	Avg Acc@1 5.620	Avg Acc@5 18.826	LR 0.10000
+Probe Training Epoch: [5][41/704]	Time 0.021	Data 0.000	Loss -1362135.2500	Avg Acc@1 5.440	Avg Acc@5 18.016	LR 0.10000
+Probe Training Epoch: [5][51/704]	Time 0.021	Data 0.000	Loss -1137241.5000	Avg Acc@1 5.438	Avg Acc@5 17.685	LR 0.10000
+Probe Training Epoch: [5][61/704]	Time 0.021	Data 0.000	Loss -1309872.0000	Avg Acc@1 5.475	Avg Acc@5 18.046	LR 0.10000
+Probe Training Epoch: [5][71/704]	Time 0.021	Data 0.000	Loss -1405938.5000	Avg Acc@1 5.650	Avg Acc@5 18.112	LR 0.10000
+Probe Training Epoch: [5][81/704]	Time 0.021	Data 0.000	Loss -1216162.2500	Avg Acc@1 6.033	Avg Acc@5 18.678	LR 0.10000
+Probe Training Epoch: [5][91/704]	Time 0.021	Data 0.000	Loss -1309189.8750	Avg Acc@1 6.186	Avg Acc@5 18.900	LR 0.10000
+Probe Training Epoch: [5][101/704]	Time 0.021	Data 0.000	Loss -1214210.5000	Avg Acc@1 5.972	Avg Acc@5 18.456	LR 0.10000
+Probe Training Epoch: [5][111/704]	Time 0.021	Data 0.000	Loss -1013281.6875	Avg Acc@1 5.800	Avg Acc@5 18.152	LR 0.10000
+Probe Training Epoch: [5][121/704]	Time 0.021	Data 0.000	Loss -1140288.0000	Avg Acc@1 5.898	Avg Acc@5 18.272	LR 0.10000
+Probe Training Epoch: [5][131/704]	Time 0.021	Data 0.000	Loss -1421266.0000	Avg Acc@1 5.934	Avg Acc@5 18.189	LR 0.10000
+Probe Training Epoch: [5][141/704]	Time 0.021	Data 0.000	Loss -994490.9375	Avg Acc@1 5.895	Avg Acc@5 18.080	LR 0.10000
+Probe Training Epoch: [5][151/704]	Time 0.021	Data 0.000	Loss -1123041.5000	Avg Acc@1 5.774	Avg Acc@5 17.896	LR 0.10000
+Probe Training Epoch: [5][161/704]	Time 0.021	Data 0.000	Loss -1513982.7500	Avg Acc@1 5.804	Avg Acc@5 18.010	LR 0.10000
+Probe Training Epoch: [5][171/704]	Time 0.021	Data 0.000	Loss -1126009.8750	Avg Acc@1 5.816	Avg Acc@5 18.040	LR 0.10000
+Probe Training Epoch: [5][181/704]	Time 0.021	Data 0.000	Loss -1104022.0000	Avg Acc@1 5.756	Avg Acc@5 18.027	LR 0.10000
+Probe Training Epoch: [5][191/704]	Time 0.021	Data 0.000	Loss -1403397.2500	Avg Acc@1 5.771	Avg Acc@5 17.956	LR 0.10000
+Probe Training Epoch: [5][201/704]	Time 0.021	Data 0.000	Loss -1175554.5000	Avg Acc@1 5.803	Avg Acc@5 17.961	LR 0.10000
+Probe Training Epoch: [5][211/704]	Time 0.021	Data 0.000	Loss -1265304.0000	Avg Acc@1 5.852	Avg Acc@5 18.132	LR 0.10000
+Probe Training Epoch: [5][221/704]	Time 0.021	Data 0.000	Loss -1418279.5000	Avg Acc@1 5.829	Avg Acc@5 18.059	LR 0.10000
+Probe Training Epoch: [5][231/704]	Time 0.021	Data 0.000	Loss -1255426.7500	Avg Acc@1 5.800	Avg Acc@5 17.986	LR 0.10000
+Probe Training Epoch: [5][241/704]	Time 0.021	Data 0.000	Loss -1255167.2500	Avg Acc@1 5.749	Avg Acc@5 17.904	LR 0.10000
+Probe Training Epoch: [5][251/704]	Time 0.021	Data 0.000	Loss -1617715.2500	Avg Acc@1 5.743	Avg Acc@5 17.938	LR 0.10000
+Probe Training Epoch: [5][261/704]	Time 0.021	Data 0.000	Loss -1750924.5000	Avg Acc@1 5.735	Avg Acc@5 17.960	LR 0.10000
+Probe Training Epoch: [5][271/704]	Time 0.021	Data 0.000	Loss -1363782.1250	Avg Acc@1 5.727	Avg Acc@5 17.924	LR 0.10000
+Probe Training Epoch: [5][281/704]	Time 0.021	Data 0.000	Loss -1530750.7500	Avg Acc@1 5.805	Avg Acc@5 17.926	LR 0.10000
+Probe Training Epoch: [5][291/704]	Time 0.021	Data 0.000	Loss -1175945.2500	Avg Acc@1 5.839	Avg Acc@5 18.001	LR 0.10000
+Probe Training Epoch: [5][301/704]	Time 0.021	Data 0.000	Loss -1473696.5000	Avg Acc@1 5.858	Avg Acc@5 17.936	LR 0.10000
+Probe Training Epoch: [5][311/704]	Time 0.021	Data 0.000	Loss -1416316.0000	Avg Acc@1 5.872	Avg Acc@5 18.005	LR 0.10000
+Probe Training Epoch: [5][321/704]	Time 0.021	Data 0.000	Loss -1489402.6250	Avg Acc@1 5.896	Avg Acc@5 18.032	LR 0.10000
+Probe Training Epoch: [5][331/704]	Time 0.021	Data 0.000	Loss -1282144.2500	Avg Acc@1 5.905	Avg Acc@5 18.129	LR 0.10000
+Probe Training Epoch: [5][341/704]	Time 0.021	Data 0.000	Loss -1729048.7500	Avg Acc@1 5.927	Avg Acc@5 18.154	LR 0.10000
+Probe Training Epoch: [5][351/704]	Time 0.021	Data 0.000	Loss -1421034.5000	Avg Acc@1 5.883	Avg Acc@5 18.037	LR 0.10000
+Probe Training Epoch: [5][361/704]	Time 0.021	Data 0.000	Loss -1398889.3750	Avg Acc@1 5.859	Avg Acc@5 17.969	LR 0.10000
+Probe Training Epoch: [5][371/704]	Time 0.021	Data 0.000	Loss -1461457.2500	Avg Acc@1 5.868	Avg Acc@5 17.988	LR 0.10000
+Probe Training Epoch: [5][381/704]	Time 0.021	Data 0.000	Loss -1407983.5000	Avg Acc@1 5.872	Avg Acc@5 17.939	LR 0.10000
+Probe Training Epoch: [5][391/704]	Time 0.021	Data 0.000	Loss -1869247.0000	Avg Acc@1 5.890	Avg Acc@5 17.990	LR 0.10000
+Probe Training Epoch: [5][401/704]	Time 0.021	Data 0.000	Loss -1423576.7500	Avg Acc@1 5.890	Avg Acc@5 18.005	LR 0.10000
+Probe Training Epoch: [5][411/704]	Time 0.021	Data 0.000	Loss -1500457.6250	Avg Acc@1 5.918	Avg Acc@5 18.025	LR 0.10000
+Probe Training Epoch: [5][421/704]	Time 0.021	Data 0.000	Loss -1921486.6250	Avg Acc@1 5.935	Avg Acc@5 18.016	LR 0.10000
+Probe Training Epoch: [5][431/704]	Time 0.021	Data 0.000	Loss -1552920.2500	Avg Acc@1 5.933	Avg Acc@5 18.012	LR 0.10000
+Probe Training Epoch: [5][441/704]	Time 0.021	Data 0.000	Loss -1254045.1250	Avg Acc@1 5.920	Avg Acc@5 17.986	LR 0.10000
+Probe Training Epoch: [5][451/704]	Time 0.021	Data 0.000	Loss -1847097.1250	Avg Acc@1 5.938	Avg Acc@5 17.986	LR 0.10000
+Probe Training Epoch: [5][461/704]	Time 0.021	Data 0.000	Loss -1455102.5000	Avg Acc@1 5.936	Avg Acc@5 17.976	LR 0.10000
+Probe Training Epoch: [5][471/704]	Time 0.021	Data 0.000	Loss -1688890.0000	Avg Acc@1 5.939	Avg Acc@5 17.984	LR 0.10000
+Probe Training Epoch: [5][481/704]	Time 0.021	Data 0.000	Loss -1771916.5000	Avg Acc@1 5.937	Avg Acc@5 17.991	LR 0.10000
+Probe Training Epoch: [5][491/704]	Time 0.021	Data 0.000	Loss -1313802.5000	Avg Acc@1 5.917	Avg Acc@5 17.960	LR 0.10000
+Probe Training Epoch: [5][501/704]	Time 0.021	Data 0.000	Loss -1599849.7500	Avg Acc@1 5.942	Avg Acc@5 17.972	LR 0.10000
+Probe Training Epoch: [5][511/704]	Time 0.021	Data 0.000	Loss -1078569.7500	Avg Acc@1 5.962	Avg Acc@5 17.986	LR 0.10000
+Probe Training Epoch: [5][521/704]	Time 0.021	Data 0.000	Loss -1677787.2500	Avg Acc@1 5.968	Avg Acc@5 17.958	LR 0.10000
+Probe Training Epoch: [5][531/704]	Time 0.021	Data 0.000	Loss -1667408.7500	Avg Acc@1 5.972	Avg Acc@5 17.988	LR 0.10000
+Probe Training Epoch: [5][541/704]	Time 0.021	Data 0.000	Loss -1413941.0000	Avg Acc@1 5.976	Avg Acc@5 17.973	LR 0.10000
+Probe Training Epoch: [5][551/704]	Time 0.021	Data 0.000	Loss -1621112.8750	Avg Acc@1 5.967	Avg Acc@5 17.987	LR 0.10000
+Probe Training Epoch: [5][561/704]	Time 0.021	Data 0.000	Loss -1392815.0000	Avg Acc@1 5.984	Avg Acc@5 18.019	LR 0.10000
+Probe Training Epoch: [5][571/704]	Time 0.021	Data 0.000	Loss -1570846.3750	Avg Acc@1 5.960	Avg Acc@5 17.989	LR 0.10000
+Probe Training Epoch: [5][581/704]	Time 0.021	Data 0.000	Loss -1731931.8750	Avg Acc@1 5.920	Avg Acc@5 17.949	LR 0.10000
+Probe Training Epoch: [5][591/704]	Time 0.021	Data 0.000	Loss -1477301.0000	Avg Acc@1 5.925	Avg Acc@5 17.961	LR 0.10000
+Probe Training Epoch: [5][601/704]	Time 0.021	Data 0.000	Loss -1760703.6250	Avg Acc@1 5.926	Avg Acc@5 17.936	LR 0.10000
+Probe Training Epoch: [5][611/704]	Time 0.021	Data 0.000	Loss -1325308.2500	Avg Acc@1 5.903	Avg Acc@5 17.899	LR 0.10000
+Probe Training Epoch: [5][621/704]	Time 0.021	Data 0.000	Loss -1532275.7500	Avg Acc@1 5.928	Avg Acc@5 17.927	LR 0.10000
+Probe Training Epoch: [5][631/704]	Time 0.021	Data 0.000	Loss -1471874.5000	Avg Acc@1 5.906	Avg Acc@5 17.901	LR 0.10000
+Probe Training Epoch: [5][641/704]	Time 0.021	Data 0.000	Loss -1389600.0000	Avg Acc@1 5.916	Avg Acc@5 17.909	LR 0.10000
+Probe Training Epoch: [5][651/704]	Time 0.021	Data 0.000	Loss -1695141.1250	Avg Acc@1 5.917	Avg Acc@5 17.912	LR 0.10000
+Probe Training Epoch: [5][661/704]	Time 0.021	Data 0.000	Loss -1426693.5000	Avg Acc@1 5.920	Avg Acc@5 17.909	LR 0.10000
+Probe Training Epoch: [5][671/704]	Time 0.021	Data 0.000	Loss -1419157.7500	Avg Acc@1 5.910	Avg Acc@5 17.909	LR 0.10000
+Probe Training Epoch: [5][681/704]	Time 0.021	Data 0.000	Loss -1450255.6250	Avg Acc@1 5.904	Avg Acc@5 17.942	LR 0.10000
+Probe Training Epoch: [5][691/704]	Time 0.021	Data 0.000	Loss -1636994.0000	Avg Acc@1 5.893	Avg Acc@5 17.900	LR 0.10000
+Probe Training Epoch: [5][701/704]	Time 0.021	Data 0.000	Loss -1417011.0000	Avg Acc@1 5.876	Avg Acc@5 17.871	LR 0.10000
+
+Probe Training Epoch: 5	Loss: -1478878.1651	Acc: 5.8721
+Probe Training Epoch: [6][1/704]	Time 0.021	Data 0.000	Loss -1301833.0000	Avg Acc@1 2.344	Avg Acc@5 11.328	LR 0.10000
+Probe Training Epoch: [6][11/704]	Time 0.021	Data 0.000	Loss -1462472.6250	Avg Acc@1 4.794	Avg Acc@5 17.188	LR 0.10000
+Probe Training Epoch: [6][21/704]	Time 0.021	Data 0.000	Loss -1634566.7500	Avg Acc@1 5.394	Avg Acc@5 18.118	LR 0.10000
+Probe Training Epoch: [6][31/704]	Time 0.021	Data 0.000	Loss -1753810.2500	Avg Acc@1 5.418	Avg Acc@5 18.511	LR 0.10000
+Probe Training Epoch: [6][41/704]	Time 0.021	Data 0.000	Loss -1651778.8750	Avg Acc@1 5.326	Avg Acc@5 17.559	LR 0.10000
+Probe Training Epoch: [6][51/704]	Time 0.021	Data 0.000	Loss -1377244.0000	Avg Acc@1 5.346	Avg Acc@5 17.264	LR 0.10000
+Probe Training Epoch: [6][61/704]	Time 0.021	Data 0.000	Loss -1585723.3750	Avg Acc@1 5.424	Avg Acc@5 17.636	LR 0.10000
+Probe Training Epoch: [6][71/704]	Time 0.021	Data 0.000	Loss -1698614.0000	Avg Acc@1 5.601	Avg Acc@5 17.688	LR 0.10000
+Probe Training Epoch: [6][81/704]	Time 0.021	Data 0.000	Loss -1468827.1250	Avg Acc@1 5.985	Avg Acc@5 18.268	LR 0.10000
+Probe Training Epoch: [6][91/704]	Time 0.021	Data 0.000	Loss -1579218.0000	Avg Acc@1 6.143	Avg Acc@5 18.428	LR 0.10000
+Probe Training Epoch: [6][101/704]	Time 0.021	Data 0.000	Loss -1462582.2500	Avg Acc@1 5.960	Avg Acc@5 17.996	LR 0.10000
+Probe Training Epoch: [6][111/704]	Time 0.021	Data 0.000	Loss -1219208.5000	Avg Acc@1 5.789	Avg Acc@5 17.715	LR 0.10000
+Probe Training Epoch: [6][121/704]	Time 0.021	Data 0.000	Loss -1370630.7500	Avg Acc@1 5.892	Avg Acc@5 17.827	LR 0.10000
+Probe Training Epoch: [6][131/704]	Time 0.021	Data 0.000	Loss -1705894.2500	Avg Acc@1 5.922	Avg Acc@5 17.757	LR 0.10000
+Probe Training Epoch: [6][141/704]	Time 0.021	Data 0.000	Loss -1192563.0000	Avg Acc@1 5.865	Avg Acc@5 17.642	LR 0.10000
+Probe Training Epoch: [6][151/704]	Time 0.021	Data 0.000	Loss -1344664.1250	Avg Acc@1 5.748	Avg Acc@5 17.457	LR 0.10000
+Probe Training Epoch: [6][161/704]	Time 0.021	Data 0.000	Loss -1810557.6250	Avg Acc@1 5.787	Avg Acc@5 17.583	LR 0.10000
+Probe Training Epoch: [6][171/704]	Time 0.021	Data 0.000	Loss -1345356.8750	Avg Acc@1 5.798	Avg Acc@5 17.617	LR 0.10000
+Probe Training Epoch: [6][181/704]	Time 0.021	Data 0.000	Loss -1318899.6250	Avg Acc@1 5.743	Avg Acc@5 17.606	LR 0.10000
+Probe Training Epoch: [6][191/704]	Time 0.021	Data 0.000	Loss -1674704.6250	Avg Acc@1 5.757	Avg Acc@5 17.541	LR 0.10000
+Probe Training Epoch: [6][201/704]	Time 0.021	Data 0.000	Loss -1400796.2500	Avg Acc@1 5.782	Avg Acc@5 17.547	LR 0.10000
+Probe Training Epoch: [6][211/704]	Time 0.021	Data 0.000	Loss -1507047.0000	Avg Acc@1 5.817	Avg Acc@5 17.719	LR 0.10000
+Probe Training Epoch: [6][221/704]	Time 0.021	Data 0.000	Loss -1687261.3750	Avg Acc@1 5.794	Avg Acc@5 17.645	LR 0.10000
+Probe Training Epoch: [6][231/704]	Time 0.021	Data 0.000	Loss -1491847.5000	Avg Acc@1 5.775	Avg Acc@5 17.566	LR 0.10000
+Probe Training Epoch: [6][241/704]	Time 0.021	Data 0.000	Loss -1490651.8750	Avg Acc@1 5.722	Avg Acc@5 17.489	LR 0.10000
+Probe Training Epoch: [6][251/704]	Time 0.021	Data 0.000	Loss -1920863.5000	Avg Acc@1 5.718	Avg Acc@5 17.533	LR 0.10000
+Probe Training Epoch: [6][261/704]	Time 0.021	Data 0.000	Loss -2076824.2500	Avg Acc@1 5.711	Avg Acc@5 17.568	LR 0.10000
+Probe Training Epoch: [6][271/704]	Time 0.021	Data 0.000	Loss -1616109.6250	Avg Acc@1 5.708	Avg Acc@5 17.532	LR 0.10000
+Probe Training Epoch: [6][281/704]	Time 0.021	Data 0.000	Loss -1813657.1250	Avg Acc@1 5.777	Avg Acc@5 17.539	LR 0.10000
+Probe Training Epoch: [6][291/704]	Time 0.021	Data 0.000	Loss -1391326.5000	Avg Acc@1 5.811	Avg Acc@5 17.614	LR 0.10000
+Probe Training Epoch: [6][301/704]	Time 0.021	Data 0.000	Loss -1741044.8750	Avg Acc@1 5.826	Avg Acc@5 17.555	LR 0.10000
+Probe Training Epoch: [6][311/704]	Time 0.021	Data 0.000	Loss -1674259.1250	Avg Acc@1 5.832	Avg Acc@5 17.622	LR 0.10000
+Probe Training Epoch: [6][321/704]	Time 0.021	Data 0.000	Loss -1759884.0000	Avg Acc@1 5.862	Avg Acc@5 17.662	LR 0.10000
+Probe Training Epoch: [6][331/704]	Time 0.021	Data 0.000	Loss -1513330.2500	Avg Acc@1 5.875	Avg Acc@5 17.762	LR 0.10000
+Probe Training Epoch: [6][341/704]	Time 0.021	Data 0.000	Loss -2040005.2500	Avg Acc@1 5.897	Avg Acc@5 17.789	LR 0.10000
+Probe Training Epoch: [6][351/704]	Time 0.021	Data 0.000	Loss -1676422.7500	Avg Acc@1 5.855	Avg Acc@5 17.670	LR 0.10000
+Probe Training Epoch: [6][361/704]	Time 0.021	Data 0.000	Loss -1648662.5000	Avg Acc@1 5.834	Avg Acc@5 17.610	LR 0.10000
+Probe Training Epoch: [6][371/704]	Time 0.021	Data 0.000	Loss -1721909.2500	Avg Acc@1 5.851	Avg Acc@5 17.624	LR 0.10000
+Probe Training Epoch: [6][381/704]	Time 0.021	Data 0.000	Loss -1657327.7500	Avg Acc@1 5.857	Avg Acc@5 17.575	LR 0.10000
+Probe Training Epoch: [6][391/704]	Time 0.021	Data 0.000	Loss -2199952.5000	Avg Acc@1 5.870	Avg Acc@5 17.622	LR 0.10000
+Probe Training Epoch: [6][401/704]	Time 0.021	Data 0.000	Loss -1673824.8750	Avg Acc@1 5.865	Avg Acc@5 17.636	LR 0.10000
+Probe Training Epoch: [6][411/704]	Time 0.021	Data 0.000	Loss -1763964.5000	Avg Acc@1 5.893	Avg Acc@5 17.658	LR 0.10000
+Probe Training Epoch: [6][421/704]	Time 0.021	Data 0.000	Loss -2259010.0000	Avg Acc@1 5.908	Avg Acc@5 17.649	LR 0.10000
+Probe Training Epoch: [6][431/704]	Time 0.021	Data 0.000	Loss -1824272.2500	Avg Acc@1 5.905	Avg Acc@5 17.648	LR 0.10000
+Probe Training Epoch: [6][441/704]	Time 0.021	Data 0.000	Loss -1472385.0000	Avg Acc@1 5.891	Avg Acc@5 17.623	LR 0.10000
+Probe Training Epoch: [6][451/704]	Time 0.021	Data 0.000	Loss -2169325.5000	Avg Acc@1 5.912	Avg Acc@5 17.626	LR 0.10000
+Probe Training Epoch: [6][461/704]	Time 0.021	Data 0.000	Loss -1707154.2500	Avg Acc@1 5.911	Avg Acc@5 17.620	LR 0.10000
+Probe Training Epoch: [6][471/704]	Time 0.021	Data 0.000	Loss -1981692.3750	Avg Acc@1 5.912	Avg Acc@5 17.630	LR 0.10000
+Probe Training Epoch: [6][481/704]	Time 0.021	Data 0.000	Loss -2079579.7500	Avg Acc@1 5.909	Avg Acc@5 17.644	LR 0.10000
+Probe Training Epoch: [6][491/704]	Time 0.021	Data 0.000	Loss -1540779.5000	Avg Acc@1 5.884	Avg Acc@5 17.616	LR 0.10000
+Probe Training Epoch: [6][501/704]	Time 0.021	Data 0.000	Loss -1875450.0000	Avg Acc@1 5.908	Avg Acc@5 17.628	LR 0.10000
+Probe Training Epoch: [6][511/704]	Time 0.021	Data 0.000	Loss -1265176.5000	Avg Acc@1 5.924	Avg Acc@5 17.644	LR 0.10000
+Probe Training Epoch: [6][521/704]	Time 0.021	Data 0.000	Loss -1966034.0000	Avg Acc@1 5.931	Avg Acc@5 17.620	LR 0.10000
+Probe Training Epoch: [6][531/704]	Time 0.021	Data 0.000	Loss -1954561.3750	Avg Acc@1 5.935	Avg Acc@5 17.652	LR 0.10000
+Probe Training Epoch: [6][541/704]	Time 0.021	Data 0.000	Loss -1658578.7500	Avg Acc@1 5.940	Avg Acc@5 17.639	LR 0.10000
+Probe Training Epoch: [6][551/704]	Time 0.021	Data 0.000	Loss -1899883.0000	Avg Acc@1 5.934	Avg Acc@5 17.651	LR 0.10000
+Probe Training Epoch: [6][561/704]	Time 0.021	Data 0.000	Loss -1632141.7500	Avg Acc@1 5.953	Avg Acc@5 17.680	LR 0.10000
+Probe Training Epoch: [6][571/704]	Time 0.021	Data 0.000	Loss -1840057.7500	Avg Acc@1 5.928	Avg Acc@5 17.653	LR 0.10000
+Probe Training Epoch: [6][581/704]	Time 0.021	Data 0.000	Loss -2028501.3750	Avg Acc@1 5.884	Avg Acc@5 17.616	LR 0.10000
+Probe Training Epoch: [6][591/704]	Time 0.021	Data 0.000	Loss -1730131.7500	Avg Acc@1 5.893	Avg Acc@5 17.631	LR 0.10000
+Probe Training Epoch: [6][601/704]	Time 0.021	Data 0.000	Loss -2062396.2500	Avg Acc@1 5.890	Avg Acc@5 17.610	LR 0.10000
+Probe Training Epoch: [6][611/704]	Time 0.021	Data 0.000	Loss -1551750.5000	Avg Acc@1 5.868	Avg Acc@5 17.576	LR 0.10000
+Probe Training Epoch: [6][621/704]	Time 0.021	Data 0.000	Loss -1794666.0000	Avg Acc@1 5.892	Avg Acc@5 17.603	LR 0.10000
+Probe Training Epoch: [6][631/704]	Time 0.021	Data 0.000	Loss -1723765.2500	Avg Acc@1 5.870	Avg Acc@5 17.579	LR 0.10000
+Probe Training Epoch: [6][641/704]	Time 0.021	Data 0.000	Loss -1627434.5000	Avg Acc@1 5.877	Avg Acc@5 17.587	LR 0.10000
+Probe Training Epoch: [6][651/704]	Time 0.021	Data 0.000	Loss -1984967.2500	Avg Acc@1 5.879	Avg Acc@5 17.593	LR 0.10000
+Probe Training Epoch: [6][661/704]	Time 0.021	Data 0.000	Loss -1670069.5000	Avg Acc@1 5.879	Avg Acc@5 17.591	LR 0.10000
+Probe Training Epoch: [6][671/704]	Time 0.021	Data 0.000	Loss -1662154.5000	Avg Acc@1 5.869	Avg Acc@5 17.590	LR 0.10000
+Probe Training Epoch: [6][681/704]	Time 0.021	Data 0.000	Loss -1698146.2500	Avg Acc@1 5.862	Avg Acc@5 17.626	LR 0.10000
+Probe Training Epoch: [6][691/704]	Time 0.021	Data 0.000	Loss -1916910.8750	Avg Acc@1 5.850	Avg Acc@5 17.584	LR 0.10000
+Probe Training Epoch: [6][701/704]	Time 0.021	Data 0.000	Loss -1658912.0000	Avg Acc@1 5.833	Avg Acc@5 17.556	LR 0.10000
+
+Probe Training Epoch: 6	Loss: -1750687.7198	Acc: 5.8339
+Probe Training Epoch: [7][1/704]	Time 0.021	Data 0.000	Loss -1525075.7500	Avg Acc@1 1.953	Avg Acc@5 10.938	LR 0.10000
+Probe Training Epoch: [7][11/704]	Time 0.021	Data 0.000	Loss -1712904.2500	Avg Acc@1 4.865	Avg Acc@5 17.116	LR 0.10000
+Probe Training Epoch: [7][21/704]	Time 0.021	Data 0.000	Loss -1911568.2500	Avg Acc@1 5.339	Avg Acc@5 17.913	LR 0.10000
+Probe Training Epoch: [7][31/704]	Time 0.021	Data 0.000	Loss -2048388.0000	Avg Acc@1 5.381	Avg Acc@5 18.271	LR 0.10000
+Probe Training Epoch: [7][41/704]	Time 0.021	Data 0.000	Loss -1929043.2500	Avg Acc@1 5.278	Avg Acc@5 17.273	LR 0.10000
+Probe Training Epoch: [7][51/704]	Time 0.021	Data 0.000	Loss -1606970.2500	Avg Acc@1 5.293	Avg Acc@5 17.011	LR 0.10000
+Probe Training Epoch: [7][61/704]	Time 0.021	Data 0.000	Loss -1848382.1250	Avg Acc@1 5.353	Avg Acc@5 17.367	LR 0.10000
+Probe Training Epoch: [7][71/704]	Time 0.021	Data 0.000	Loss -1977272.0000	Avg Acc@1 5.518	Avg Acc@5 17.441	LR 0.10000
+Probe Training Epoch: [7][81/704]	Time 0.021	Data 0.000	Loss -1709311.5000	Avg Acc@1 5.888	Avg Acc@5 18.031	LR 0.10000
+Probe Training Epoch: [7][91/704]	Time 0.021	Data 0.000	Loss -1836409.0000	Avg Acc@1 6.040	Avg Acc@5 18.183	LR 0.10000
+Probe Training Epoch: [7][101/704]	Time 0.021	Data 0.000	Loss -1699399.2500	Avg Acc@1 5.863	Avg Acc@5 17.768	LR 0.10000
+Probe Training Epoch: [7][111/704]	Time 0.021	Data 0.000	Loss -1415228.8750	Avg Acc@1 5.708	Avg Acc@5 17.487	LR 0.10000
+Probe Training Epoch: [7][121/704]	Time 0.021	Data 0.000	Loss -1589739.5000	Avg Acc@1 5.808	Avg Acc@5 17.597	LR 0.10000
+Probe Training Epoch: [7][131/704]	Time 0.021	Data 0.000	Loss -1976417.0000	Avg Acc@1 5.833	Avg Acc@5 17.521	LR 0.10000
+Probe Training Epoch: [7][141/704]	Time 0.021	Data 0.000	Loss -1381320.6250	Avg Acc@1 5.787	Avg Acc@5 17.412	LR 0.10000
+Probe Training Epoch: [7][151/704]	Time 0.021	Data 0.000	Loss -1555034.2500	Avg Acc@1 5.673	Avg Acc@5 17.226	LR 0.10000
+Probe Training Epoch: [7][161/704]	Time 0.021	Data 0.000	Loss -2092556.0000	Avg Acc@1 5.721	Avg Acc@5 17.355	LR 0.10000
+Probe Training Epoch: [7][171/704]	Time 0.021	Data 0.000	Loss -1554329.3750	Avg Acc@1 5.741	Avg Acc@5 17.382	LR 0.10000
+Probe Training Epoch: [7][181/704]	Time 0.021	Data 0.000	Loss -1522815.5000	Avg Acc@1 5.680	Avg Acc@5 17.371	LR 0.10000
+Probe Training Epoch: [7][191/704]	Time 0.021	Data 0.000	Loss -1932674.0000	Avg Acc@1 5.677	Avg Acc@5 17.312	LR 0.10000
+Probe Training Epoch: [7][201/704]	Time 0.021	Data 0.000	Loss -1614812.0000	Avg Acc@1 5.710	Avg Acc@5 17.320	LR 0.10000
+Probe Training Epoch: [7][211/704]	Time 0.021	Data 0.000	Loss -1737406.7500	Avg Acc@1 5.756	Avg Acc@5 17.491	LR 0.10000
+Probe Training Epoch: [7][221/704]	Time 0.021	Data 0.000	Loss -1942973.2500	Avg Acc@1 5.736	Avg Acc@5 17.408	LR 0.10000
+Probe Training Epoch: [7][231/704]	Time 0.021	Data 0.000	Loss -1717118.3750	Avg Acc@1 5.716	Avg Acc@5 17.336	LR 0.10000
+Probe Training Epoch: [7][241/704]	Time 0.021	Data 0.000	Loss -1714219.1250	Avg Acc@1 5.675	Avg Acc@5 17.257	LR 0.10000
+Probe Training Epoch: [7][251/704]	Time 0.021	Data 0.000	Loss -2208659.5000	Avg Acc@1 5.679	Avg Acc@5 17.295	LR 0.10000
+Probe Training Epoch: [7][261/704]	Time 0.021	Data 0.000	Loss -2386538.2500	Avg Acc@1 5.677	Avg Acc@5 17.327	LR 0.10000
+Probe Training Epoch: [7][271/704]	Time 0.021	Data 0.000	Loss -1856449.8750	Avg Acc@1 5.676	Avg Acc@5 17.290	LR 0.10000
+Probe Training Epoch: [7][281/704]	Time 0.021	Data 0.000	Loss -2080961.0000	Avg Acc@1 5.743	Avg Acc@5 17.299	LR 0.10000
+Probe Training Epoch: [7][291/704]	Time 0.021	Data 0.000	Loss -1595654.2500	Avg Acc@1 5.775	Avg Acc@5 17.371	LR 0.10000
+Probe Training Epoch: [7][301/704]	Time 0.021	Data 0.000	Loss -1994786.5000	Avg Acc@1 5.789	Avg Acc@5 17.317	LR 0.10000
+Probe Training Epoch: [7][311/704]	Time 0.021	Data 0.000	Loss -1918289.1250	Avg Acc@1 5.798	Avg Acc@5 17.386	LR 0.10000
+Probe Training Epoch: [7][321/704]	Time 0.021	Data 0.000	Loss -2016040.3750	Avg Acc@1 5.824	Avg Acc@5 17.414	LR 0.10000
+Probe Training Epoch: [7][331/704]	Time 0.021	Data 0.000	Loss -1732249.2500	Avg Acc@1 5.840	Avg Acc@5 17.518	LR 0.10000
+Probe Training Epoch: [7][341/704]	Time 0.021	Data 0.000	Loss -2334591.5000	Avg Acc@1 5.857	Avg Acc@5 17.548	LR 0.10000
+Probe Training Epoch: [7][351/704]	Time 0.021	Data 0.000	Loss -1918814.5000	Avg Acc@1 5.808	Avg Acc@5 17.432	LR 0.10000
+Probe Training Epoch: [7][361/704]	Time 0.021	Data 0.000	Loss -1885480.2500	Avg Acc@1 5.786	Avg Acc@5 17.371	LR 0.10000
+Probe Training Epoch: [7][371/704]	Time 0.021	Data 0.000	Loss -1968972.2500	Avg Acc@1 5.803	Avg Acc@5 17.390	LR 0.10000
+Probe Training Epoch: [7][381/704]	Time 0.021	Data 0.000	Loss -1893114.7500	Avg Acc@1 5.807	Avg Acc@5 17.340	LR 0.10000
+Probe Training Epoch: [7][391/704]	Time 0.021	Data 0.000	Loss -2512931.0000	Avg Acc@1 5.818	Avg Acc@5 17.387	LR 0.10000
+Probe Training Epoch: [7][401/704]	Time 0.021	Data 0.000	Loss -1910851.7500	Avg Acc@1 5.811	Avg Acc@5 17.409	LR 0.10000
+Probe Training Epoch: [7][411/704]	Time 0.021	Data 0.000	Loss -2013414.2500	Avg Acc@1 5.836	Avg Acc@5 17.433	LR 0.10000
+Probe Training Epoch: [7][421/704]	Time 0.021	Data 0.000	Loss -2578153.5000	Avg Acc@1 5.850	Avg Acc@5 17.425	LR 0.10000
+Probe Training Epoch: [7][431/704]	Time 0.021	Data 0.000	Loss -2080959.6250	Avg Acc@1 5.842	Avg Acc@5 17.420	LR 0.10000
+Probe Training Epoch: [7][441/704]	Time 0.021	Data 0.000	Loss -1679457.8750	Avg Acc@1 5.829	Avg Acc@5 17.398	LR 0.10000
+Probe Training Epoch: [7][451/704]	Time 0.021	Data 0.000	Loss -2474228.0000	Avg Acc@1 5.853	Avg Acc@5 17.404	LR 0.10000
+Probe Training Epoch: [7][461/704]	Time 0.021	Data 0.000	Loss -1945999.2500	Avg Acc@1 5.853	Avg Acc@5 17.400	LR 0.10000
+Probe Training Epoch: [7][471/704]	Time 0.021	Data 0.000	Loss -2259039.5000	Avg Acc@1 5.854	Avg Acc@5 17.414	LR 0.10000
+Probe Training Epoch: [7][481/704]	Time 0.021	Data 0.000	Loss -2370600.0000	Avg Acc@1 5.852	Avg Acc@5 17.426	LR 0.10000
+Probe Training Epoch: [7][491/704]	Time 0.021	Data 0.000	Loss -1755783.2500	Avg Acc@1 5.829	Avg Acc@5 17.401	LR 0.10000
+Probe Training Epoch: [7][501/704]	Time 0.021	Data 0.000	Loss -2136046.5000	Avg Acc@1 5.854	Avg Acc@5 17.417	LR 0.10000
+Probe Training Epoch: [7][511/704]	Time 0.021	Data 0.000	Loss -1441164.5000	Avg Acc@1 5.872	Avg Acc@5 17.433	LR 0.10000
+Probe Training Epoch: [7][521/704]	Time 0.021	Data 0.000	Loss -2239194.5000	Avg Acc@1 5.879	Avg Acc@5 17.406	LR 0.10000
+Probe Training Epoch: [7][531/704]	Time 0.021	Data 0.000	Loss -2225736.0000	Avg Acc@1 5.889	Avg Acc@5 17.433	LR 0.10000
+Probe Training Epoch: [7][541/704]	Time 0.021	Data 0.000	Loss -1889766.2500	Avg Acc@1 5.893	Avg Acc@5 17.419	LR 0.10000
+Probe Training Epoch: [7][551/704]	Time 0.021	Data 0.000	Loss -2163803.7500	Avg Acc@1 5.885	Avg Acc@5 17.434	LR 0.10000
+Probe Training Epoch: [7][561/704]	Time 0.021	Data 0.000	Loss -1858186.2500	Avg Acc@1 5.907	Avg Acc@5 17.463	LR 0.10000
+Probe Training Epoch: [7][571/704]	Time 0.021	Data 0.000	Loss -2094597.5000	Avg Acc@1 5.883	Avg Acc@5 17.434	LR 0.10000
+Probe Training Epoch: [7][581/704]	Time 0.021	Data 0.000	Loss -2309280.0000	Avg Acc@1 5.845	Avg Acc@5 17.396	LR 0.10000
+Probe Training Epoch: [7][591/704]	Time 0.021	Data 0.000	Loss -1968999.0000	Avg Acc@1 5.852	Avg Acc@5 17.410	LR 0.10000
+Probe Training Epoch: [7][601/704]	Time 0.021	Data 0.000	Loss -2347676.7500	Avg Acc@1 5.852	Avg Acc@5 17.386	LR 0.10000
+Probe Training Epoch: [7][611/704]	Time 0.021	Data 0.000	Loss -1765780.3750	Avg Acc@1 5.830	Avg Acc@5 17.352	LR 0.10000
+Probe Training Epoch: [7][621/704]	Time 0.021	Data 0.000	Loss -2042622.3750	Avg Acc@1 5.854	Avg Acc@5 17.382	LR 0.10000
+Probe Training Epoch: [7][631/704]	Time 0.021	Data 0.000	Loss -1961167.3750	Avg Acc@1 5.834	Avg Acc@5 17.356	LR 0.10000
+Probe Training Epoch: [7][641/704]	Time 0.021	Data 0.000	Loss -1852089.2500	Avg Acc@1 5.843	Avg Acc@5 17.362	LR 0.10000
+Probe Training Epoch: [7][651/704]	Time 0.021	Data 0.000	Loss -2259168.2500	Avg Acc@1 5.847	Avg Acc@5 17.371	LR 0.10000
+Probe Training Epoch: [7][661/704]	Time 0.021	Data 0.000	Loss -1900447.0000	Avg Acc@1 5.849	Avg Acc@5 17.370	LR 0.10000
+Probe Training Epoch: [7][671/704]	Time 0.021	Data 0.000	Loss -1892286.7500	Avg Acc@1 5.838	Avg Acc@5 17.370	LR 0.10000
+Probe Training Epoch: [7][681/704]	Time 0.021	Data 0.000	Loss -1932394.0000	Avg Acc@1 5.835	Avg Acc@5 17.404	LR 0.10000
+Probe Training Epoch: [7][691/704]	Time 0.021	Data 0.000	Loss -2181535.2500	Avg Acc@1 5.820	Avg Acc@5 17.363	LR 0.10000
+Probe Training Epoch: [7][701/704]	Time 0.021	Data 0.000	Loss -1888019.6250	Avg Acc@1 5.803	Avg Acc@5 17.336	LR 0.10000
+
+Probe Training Epoch: 7	Loss: -2008550.2116	Acc: 5.8039
+Probe Training Epoch: [8][1/704]	Time 0.021	Data 0.000	Loss -1736425.7500	Avg Acc@1 1.562	Avg Acc@5 11.328	LR 0.10000
+Probe Training Epoch: [8][11/704]	Time 0.021	Data 0.000	Loss -1949794.6250	Avg Acc@1 4.688	Avg Acc@5 16.939	LR 0.10000
+Probe Training Epoch: [8][21/704]	Time 0.021	Data 0.000	Loss -2173742.0000	Avg Acc@1 5.357	Avg Acc@5 17.708	LR 0.10000
+Probe Training Epoch: [8][31/704]	Time 0.021	Data 0.000	Loss -2327680.0000	Avg Acc@1 5.330	Avg Acc@5 18.095	LR 0.10000
+Probe Training Epoch: [8][41/704]	Time 0.021	Data 0.000	Loss -2190961.7500	Avg Acc@1 5.278	Avg Acc@5 17.102	LR 0.10000
+Probe Training Epoch: [8][51/704]	Time 0.021	Data 0.000	Loss -1824176.0000	Avg Acc@1 5.316	Avg Acc@5 16.812	LR 0.10000
+Probe Training Epoch: [8][61/704]	Time 0.021	Data 0.000	Loss -2097523.0000	Avg Acc@1 5.418	Avg Acc@5 17.155	LR 0.10000
+Probe Training Epoch: [8][71/704]	Time 0.021	Data 0.000	Loss -2240389.7500	Avg Acc@1 5.551	Avg Acc@5 17.298	LR 0.10000
+Probe Training Epoch: [8][81/704]	Time 0.021	Data 0.000	Loss -1936398.5000	Avg Acc@1 5.883	Avg Acc@5 17.901	LR 0.10000
+Probe Training Epoch: [8][91/704]	Time 0.021	Data 0.000	Loss -2079816.5000	Avg Acc@1 6.031	Avg Acc@5 18.016	LR 0.10000
+Probe Training Epoch: [8][101/704]	Time 0.021	Data 0.000	Loss -1923369.8750	Avg Acc@1 5.848	Avg Acc@5 17.594	LR 0.10000
+Probe Training Epoch: [8][111/704]	Time 0.021	Data 0.000	Loss -1600258.2500	Avg Acc@1 5.680	Avg Acc@5 17.346	LR 0.10000
+Probe Training Epoch: [8][121/704]	Time 0.021	Data 0.000	Loss -1796431.0000	Avg Acc@1 5.788	Avg Acc@5 17.430	LR 0.10000
+Probe Training Epoch: [8][131/704]	Time 0.021	Data 0.000	Loss -2232886.0000	Avg Acc@1 5.824	Avg Acc@5 17.337	LR 0.10000
+Probe Training Epoch: [8][141/704]	Time 0.021	Data 0.000	Loss -1559563.5000	Avg Acc@1 5.760	Avg Acc@5 17.229	LR 0.10000
+Probe Training Epoch: [8][151/704]	Time 0.021	Data 0.000	Loss -1754624.5000	Avg Acc@1 5.647	Avg Acc@5 17.048	LR 0.10000
+Probe Training Epoch: [8][161/704]	Time 0.021	Data 0.000	Loss -2358967.5000	Avg Acc@1 5.690	Avg Acc@5 17.190	LR 0.10000
+Probe Training Epoch: [8][171/704]	Time 0.021	Data 0.000	Loss -1751086.7500	Avg Acc@1 5.720	Avg Acc@5 17.222	LR 0.10000
+Probe Training Epoch: [8][181/704]	Time 0.021	Data 0.000	Loss -1715463.5000	Avg Acc@1 5.672	Avg Acc@5 17.218	LR 0.10000
+Probe Training Epoch: [8][191/704]	Time 0.021	Data 0.000	Loss -2176609.5000	Avg Acc@1 5.688	Avg Acc@5 17.155	LR 0.10000
+Probe Training Epoch: [8][201/704]	Time 0.021	Data 0.000	Loss -1817129.5000	Avg Acc@1 5.716	Avg Acc@5 17.166	LR 0.10000
+Probe Training Epoch: [8][211/704]	Time 0.021	Data 0.000	Loss -1954426.7500	Avg Acc@1 5.761	Avg Acc@5 17.324	LR 0.10000
+Probe Training Epoch: [8][221/704]	Time 0.021	Data 0.000	Loss -2184118.2500	Avg Acc@1 5.736	Avg Acc@5 17.226	LR 0.10000
+Probe Training Epoch: [8][231/704]	Time 0.021	Data 0.000	Loss -1929094.2500	Avg Acc@1 5.716	Avg Acc@5 17.152	LR 0.10000
+Probe Training Epoch: [8][241/704]	Time 0.021	Data 0.000	Loss -1924682.7500	Avg Acc@1 5.668	Avg Acc@5 17.074	LR 0.10000
+Probe Training Epoch: [8][251/704]	Time 0.021	Data 0.000	Loss -2479314.5000	Avg Acc@1 5.670	Avg Acc@5 17.116	LR 0.10000
+Probe Training Epoch: [8][261/704]	Time 0.021	Data 0.000	Loss -2678707.5000	Avg Acc@1 5.660	Avg Acc@5 17.158	LR 0.10000
+Probe Training Epoch: [8][271/704]	Time 0.021	Data 0.000	Loss -2082321.2500	Avg Acc@1 5.660	Avg Acc@5 17.108	LR 0.10000
+Probe Training Epoch: [8][281/704]	Time 0.021	Data 0.000	Loss -2332438.5000	Avg Acc@1 5.719	Avg Acc@5 17.114	LR 0.10000
+Probe Training Epoch: [8][291/704]	Time 0.021	Data 0.000	Loss -1788042.1250	Avg Acc@1 5.751	Avg Acc@5 17.174	LR 0.10000
+Probe Training Epoch: [8][301/704]	Time 0.021	Data 0.000	Loss -2234149.2500	Avg Acc@1 5.769	Avg Acc@5 17.123	LR 0.10000
+Probe Training Epoch: [8][311/704]	Time 0.021	Data 0.000	Loss -2148352.7500	Avg Acc@1 5.778	Avg Acc@5 17.188	LR 0.10000
+Probe Training Epoch: [8][321/704]	Time 0.021	Data 0.000	Loss -2256534.0000	Avg Acc@1 5.805	Avg Acc@5 17.211	LR 0.10000
+Probe Training Epoch: [8][331/704]	Time 0.021	Data 0.000	Loss -1938440.2500	Avg Acc@1 5.820	Avg Acc@5 17.315	LR 0.10000
+Probe Training Epoch: [8][341/704]	Time 0.021	Data 0.000	Loss -2611308.0000	Avg Acc@1 5.841	Avg Acc@5 17.348	LR 0.10000
+Probe Training Epoch: [8][351/704]	Time 0.021	Data 0.000	Loss -2146918.0000	Avg Acc@1 5.791	Avg Acc@5 17.232	LR 0.10000
+Probe Training Epoch: [8][361/704]	Time 0.021	Data 0.000	Loss -2107741.5000	Avg Acc@1 5.772	Avg Acc@5 17.177	LR 0.10000
+Probe Training Epoch: [8][371/704]	Time 0.021	Data 0.000	Loss -2201958.5000	Avg Acc@1 5.790	Avg Acc@5 17.193	LR 0.10000
+Probe Training Epoch: [8][381/704]	Time 0.021	Data 0.000	Loss -2114570.2500	Avg Acc@1 5.795	Avg Acc@5 17.149	LR 0.10000
+Probe Training Epoch: [8][391/704]	Time 0.021	Data 0.000	Loss -2806700.5000	Avg Acc@1 5.806	Avg Acc@5 17.196	LR 0.10000
+Probe Training Epoch: [8][401/704]	Time 0.021	Data 0.000	Loss -2134090.0000	Avg Acc@1 5.798	Avg Acc@5 17.219	LR 0.10000
+Probe Training Epoch: [8][411/704]	Time 0.021	Data 0.000	Loss -2247522.5000	Avg Acc@1 5.823	Avg Acc@5 17.248	LR 0.10000
+Probe Training Epoch: [8][421/704]	Time 0.021	Data 0.000	Loss -2878819.0000	Avg Acc@1 5.839	Avg Acc@5 17.237	LR 0.10000
+Probe Training Epoch: [8][431/704]	Time 0.021	Data 0.000	Loss -2321685.5000	Avg Acc@1 5.834	Avg Acc@5 17.234	LR 0.10000
+Probe Training Epoch: [8][441/704]	Time 0.021	Data 0.000	Loss -1874135.8750	Avg Acc@1 5.820	Avg Acc@5 17.209	LR 0.10000
+Probe Training Epoch: [8][451/704]	Time 0.021	Data 0.000	Loss -2760986.5000	Avg Acc@1 5.846	Avg Acc@5 17.209	LR 0.10000
+Probe Training Epoch: [8][461/704]	Time 0.021	Data 0.000	Loss -2169496.0000	Avg Acc@1 5.848	Avg Acc@5 17.205	LR 0.10000
+Probe Training Epoch: [8][471/704]	Time 0.021	Data 0.000	Loss -2519062.0000	Avg Acc@1 5.848	Avg Acc@5 17.217	LR 0.10000
+Probe Training Epoch: [8][481/704]	Time 0.021	Data 0.000	Loss -2644084.2500	Avg Acc@1 5.846	Avg Acc@5 17.235	LR 0.10000
+Probe Training Epoch: [8][491/704]	Time 0.021	Data 0.000	Loss -1957392.7500	Avg Acc@1 5.822	Avg Acc@5 17.211	LR 0.10000
+Probe Training Epoch: [8][501/704]	Time 0.021	Data 0.000	Loss -2380902.2500	Avg Acc@1 5.848	Avg Acc@5 17.226	LR 0.10000
+Probe Training Epoch: [8][511/704]	Time 0.021	Data 0.000	Loss -1606622.0000	Avg Acc@1 5.866	Avg Acc@5 17.239	LR 0.10000
+Probe Training Epoch: [8][521/704]	Time 0.021	Data 0.000	Loss -2495481.0000	Avg Acc@1 5.871	Avg Acc@5 17.212	LR 0.10000
+Probe Training Epoch: [8][531/704]	Time 0.021	Data 0.000	Loss -2480271.2500	Avg Acc@1 5.878	Avg Acc@5 17.235	LR 0.10000
+Probe Training Epoch: [8][541/704]	Time 0.021	Data 0.000	Loss -2106748.5000	Avg Acc@1 5.880	Avg Acc@5 17.216	LR 0.10000
+Probe Training Epoch: [8][551/704]	Time 0.021	Data 0.000	Loss -2411608.7500	Avg Acc@1 5.871	Avg Acc@5 17.230	LR 0.10000
+Probe Training Epoch: [8][561/704]	Time 0.021	Data 0.000	Loss -2070643.5000	Avg Acc@1 5.892	Avg Acc@5 17.261	LR 0.10000
+Probe Training Epoch: [8][571/704]	Time 0.021	Data 0.000	Loss -2333972.2500	Avg Acc@1 5.866	Avg Acc@5 17.233	LR 0.10000
+Probe Training Epoch: [8][581/704]	Time 0.021	Data 0.000	Loss -2573202.5000	Avg Acc@1 5.828	Avg Acc@5 17.196	LR 0.10000
+Probe Training Epoch: [8][591/704]	Time 0.021	Data 0.000	Loss -2193258.5000	Avg Acc@1 5.836	Avg Acc@5 17.209	LR 0.10000
+Probe Training Epoch: [8][601/704]	Time 0.021	Data 0.000	Loss -2615390.0000	Avg Acc@1 5.833	Avg Acc@5 17.184	LR 0.10000
+Probe Training Epoch: [8][611/704]	Time 0.021	Data 0.000	Loss -1966471.2500	Avg Acc@1 5.811	Avg Acc@5 17.150	LR 0.10000
+Probe Training Epoch: [8][621/704]	Time 0.021	Data 0.000	Loss -2275468.0000	Avg Acc@1 5.835	Avg Acc@5 17.181	LR 0.10000
+Probe Training Epoch: [8][631/704]	Time 0.021	Data 0.000	Loss -2184205.2500	Avg Acc@1 5.814	Avg Acc@5 17.158	LR 0.10000
+Probe Training Epoch: [8][641/704]	Time 0.021	Data 0.000	Loss -2063496.2500	Avg Acc@1 5.819	Avg Acc@5 17.166	LR 0.10000
+Probe Training Epoch: [8][651/704]	Time 0.021	Data 0.000	Loss -2516290.5000	Avg Acc@1 5.820	Avg Acc@5 17.172	LR 0.10000
+Probe Training Epoch: [8][661/704]	Time 0.021	Data 0.000	Loss -2116630.2500	Avg Acc@1 5.822	Avg Acc@5 17.174	LR 0.10000
+Probe Training Epoch: [8][671/704]	Time 0.021	Data 0.000	Loss -2108459.5000	Avg Acc@1 5.809	Avg Acc@5 17.178	LR 0.10000
+Probe Training Epoch: [8][681/704]	Time 0.021	Data 0.000	Loss -2152469.0000	Avg Acc@1 5.807	Avg Acc@5 17.210	LR 0.10000
+Probe Training Epoch: [8][691/704]	Time 0.021	Data 0.000	Loss -2429927.5000	Avg Acc@1 5.792	Avg Acc@5 17.172	LR 0.10000
+Probe Training Epoch: [8][701/704]	Time 0.021	Data 0.000	Loss -2103008.5000	Avg Acc@1 5.777	Avg Acc@5 17.144	LR 0.10000
+
+Probe Training Epoch: 8	Loss: -2251297.9977	Acc: 5.7789
+Probe Training Epoch: [9][1/704]	Time 0.021	Data 0.000	Loss -1934702.5000	Avg Acc@1 1.172	Avg Acc@5 10.938	LR 0.10000
+Probe Training Epoch: [9][11/704]	Time 0.021	Data 0.000	Loss -2171987.5000	Avg Acc@1 4.545	Avg Acc@5 16.584	LR 0.10000
+Probe Training Epoch: [9][21/704]	Time 0.021	Data 0.000	Loss -2419497.5000	Avg Acc@1 5.190	Avg Acc@5 17.411	LR 0.10000
+Probe Training Epoch: [9][31/704]	Time 0.021	Data 0.000	Loss -2589556.0000	Avg Acc@1 5.204	Avg Acc@5 17.755	LR 0.10000
+Probe Training Epoch: [9][41/704]	Time 0.021	Data 0.000	Loss -2436779.7500	Avg Acc@1 5.116	Avg Acc@5 16.797	LR 0.10000
+Probe Training Epoch: [9][51/704]	Time 0.021	Data 0.000	Loss -2028863.6250	Avg Acc@1 5.162	Avg Acc@5 16.590	LR 0.10000
+Probe Training Epoch: [9][61/704]	Time 0.021	Data 0.000	Loss -2330437.0000	Avg Acc@1 5.328	Avg Acc@5 16.963	LR 0.10000
+Probe Training Epoch: [9][71/704]	Time 0.021	Data 0.000	Loss -2487584.5000	Avg Acc@1 5.496	Avg Acc@5 17.121	LR 0.10000
+Probe Training Epoch: [9][81/704]	Time 0.021	Data 0.000	Loss -2148807.0000	Avg Acc@1 5.845	Avg Acc@5 17.718	LR 0.10000
+Probe Training Epoch: [9][91/704]	Time 0.021	Data 0.000	Loss -2308151.5000	Avg Acc@1 5.992	Avg Acc@5 17.831	LR 0.10000
+Probe Training Epoch: [9][101/704]	Time 0.021	Data 0.000	Loss -2132074.0000	Avg Acc@1 5.821	Avg Acc@5 17.439	LR 0.10000
+Probe Training Epoch: [9][111/704]	Time 0.021	Data 0.000	Loss -1773259.5000	Avg Acc@1 5.652	Avg Acc@5 17.188	LR 0.10000
+Probe Training Epoch: [9][121/704]	Time 0.021	Data 0.000	Loss -1990308.5000	Avg Acc@1 5.753	Avg Acc@5 17.281	LR 0.10000
+Probe Training Epoch: [9][131/704]	Time 0.021	Data 0.000	Loss -2473167.5000	Avg Acc@1 5.779	Avg Acc@5 17.170	LR 0.10000
+Probe Training Epoch: [9][141/704]	Time 0.021	Data 0.000	Loss -1727284.1250	Avg Acc@1 5.724	Avg Acc@5 17.077	LR 0.10000
+Probe Training Epoch: [9][151/704]	Time 0.021	Data 0.000	Loss -1941568.7500	Avg Acc@1 5.606	Avg Acc@5 16.903	LR 0.10000
+Probe Training Epoch: [9][161/704]	Time 0.021	Data 0.000	Loss -2608766.2500	Avg Acc@1 5.656	Avg Acc@5 17.049	LR 0.10000
+Probe Training Epoch: [9][171/704]	Time 0.021	Data 0.000	Loss -1935636.1250	Avg Acc@1 5.688	Avg Acc@5 17.085	LR 0.10000
+Probe Training Epoch: [9][181/704]	Time 0.021	Data 0.000	Loss -1895337.5000	Avg Acc@1 5.639	Avg Acc@5 17.075	LR 0.10000
+Probe Training Epoch: [9][191/704]	Time 0.021	Data 0.000	Loss -2404787.2500	Avg Acc@1 5.651	Avg Acc@5 17.016	LR 0.10000
+Probe Training Epoch: [9][201/704]	Time 0.021	Data 0.000	Loss -2006134.6250	Avg Acc@1 5.675	Avg Acc@5 17.022	LR 0.10000
+Probe Training Epoch: [9][211/704]	Time 0.021	Data 0.000	Loss -2157256.0000	Avg Acc@1 5.717	Avg Acc@5 17.182	LR 0.10000
+Probe Training Epoch: [9][221/704]	Time 0.021	Data 0.000	Loss -2409010.7500	Avg Acc@1 5.690	Avg Acc@5 17.080	LR 0.10000
+Probe Training Epoch: [9][231/704]	Time 0.021	Data 0.000	Loss -2127379.5000	Avg Acc@1 5.673	Avg Acc@5 17.012	LR 0.10000
+Probe Training Epoch: [9][241/704]	Time 0.021	Data 0.000	Loss -2121099.2500	Avg Acc@1 5.631	Avg Acc@5 16.933	LR 0.10000
+Probe Training Epoch: [9][251/704]	Time 0.021	Data 0.000	Loss -2732446.2500	Avg Acc@1 5.629	Avg Acc@5 16.985	LR 0.10000
+Probe Training Epoch: [9][261/704]	Time 0.021	Data 0.000	Loss -2950650.7500	Avg Acc@1 5.620	Avg Acc@5 17.029	LR 0.10000
+Probe Training Epoch: [9][271/704]	Time 0.021	Data 0.000	Loss -2293715.5000	Avg Acc@1 5.622	Avg Acc@5 16.983	LR 0.10000
+Probe Training Epoch: [9][281/704]	Time 0.021	Data 0.000	Loss -2568223.2500	Avg Acc@1 5.679	Avg Acc@5 16.990	LR 0.10000
+Probe Training Epoch: [9][291/704]	Time 0.021	Data 0.000	Loss -1967040.3750	Avg Acc@1 5.710	Avg Acc@5 17.047	LR 0.10000
+Probe Training Epoch: [9][301/704]	Time 0.021	Data 0.000	Loss -2457290.0000	Avg Acc@1 5.731	Avg Acc@5 16.999	LR 0.10000
+Probe Training Epoch: [9][311/704]	Time 0.021	Data 0.000	Loss -2363049.5000	Avg Acc@1 5.738	Avg Acc@5 17.063	LR 0.10000
+Probe Training Epoch: [9][321/704]	Time 0.021	Data 0.000	Loss -2481459.0000	Avg Acc@1 5.766	Avg Acc@5 17.088	LR 0.10000
+Probe Training Epoch: [9][331/704]	Time 0.021	Data 0.000	Loss -2130404.7500	Avg Acc@1 5.784	Avg Acc@5 17.189	LR 0.10000
+Probe Training Epoch: [9][341/704]	Time 0.021	Data 0.000	Loss -2870087.5000	Avg Acc@1 5.807	Avg Acc@5 17.217	LR 0.10000
+Probe Training Epoch: [9][351/704]	Time 0.021	Data 0.000	Loss -2359862.5000	Avg Acc@1 5.758	Avg Acc@5 17.106	LR 0.10000
+Probe Training Epoch: [9][361/704]	Time 0.021	Data 0.000	Loss -2315608.5000	Avg Acc@1 5.736	Avg Acc@5 17.050	LR 0.10000
+Probe Training Epoch: [9][371/704]	Time 0.021	Data 0.000	Loss -2418236.0000	Avg Acc@1 5.755	Avg Acc@5 17.063	LR 0.10000
+Probe Training Epoch: [9][381/704]	Time 0.021	Data 0.000	Loss -2320786.5000	Avg Acc@1 5.760	Avg Acc@5 17.019	LR 0.10000
+Probe Training Epoch: [9][391/704]	Time 0.021	Data 0.000	Loss -3081094.5000	Avg Acc@1 5.781	Avg Acc@5 17.071	LR 0.10000
+Probe Training Epoch: [9][401/704]	Time 0.021	Data 0.000	Loss -2341757.5000	Avg Acc@1 5.775	Avg Acc@5 17.094	LR 0.10000
+Probe Training Epoch: [9][411/704]	Time 0.021	Data 0.000	Loss -2465780.5000	Avg Acc@1 5.801	Avg Acc@5 17.120	LR 0.10000
+Probe Training Epoch: [9][421/704]	Time 0.021	Data 0.000	Loss -3158490.5000	Avg Acc@1 5.817	Avg Acc@5 17.110	LR 0.10000
+Probe Training Epoch: [9][431/704]	Time 0.021	Data 0.000	Loss -2546536.7500	Avg Acc@1 5.808	Avg Acc@5 17.108	LR 0.10000
+Probe Training Epoch: [9][441/704]	Time 0.021	Data 0.000	Loss -2055879.3750	Avg Acc@1 5.801	Avg Acc@5 17.083	LR 0.10000
+Probe Training Epoch: [9][451/704]	Time 0.021	Data 0.000	Loss -3027581.7500	Avg Acc@1 5.828	Avg Acc@5 17.084	LR 0.10000
+Probe Training Epoch: [9][461/704]	Time 0.021	Data 0.000	Loss -2378675.5000	Avg Acc@1 5.829	Avg Acc@5 17.076	LR 0.10000
+Probe Training Epoch: [9][471/704]	Time 0.021	Data 0.000	Loss -2761294.5000	Avg Acc@1 5.827	Avg Acc@5 17.093	LR 0.10000
+Probe Training Epoch: [9][481/704]	Time 0.021	Data 0.000	Loss -2898911.0000	Avg Acc@1 5.822	Avg Acc@5 17.110	LR 0.10000
+Probe Training Epoch: [9][491/704]	Time 0.021	Data 0.000	Loss -2145621.2500	Avg Acc@1 5.799	Avg Acc@5 17.086	LR 0.10000
+Probe Training Epoch: [9][501/704]	Time 0.021	Data 0.000	Loss -2609002.5000	Avg Acc@1 5.827	Avg Acc@5 17.103	LR 0.10000
+Probe Training Epoch: [9][511/704]	Time 0.021	Data 0.000	Loss -1761320.6250	Avg Acc@1 5.846	Avg Acc@5 17.117	LR 0.10000
+Probe Training Epoch: [9][521/704]	Time 0.021	Data 0.000	Loss -2735042.0000	Avg Acc@1 5.850	Avg Acc@5 17.088	LR 0.10000
+Probe Training Epoch: [9][531/704]	Time 0.021	Data 0.000	Loss -2717424.7500	Avg Acc@1 5.856	Avg Acc@5 17.108	LR 0.10000
+Probe Training Epoch: [9][541/704]	Time 0.021	Data 0.000	Loss -2309249.2500	Avg Acc@1 5.862	Avg Acc@5 17.093	LR 0.10000
+Probe Training Epoch: [9][551/704]	Time 0.021	Data 0.000	Loss -2642612.2500	Avg Acc@1 5.852	Avg Acc@5 17.102	LR 0.10000
+Probe Training Epoch: [9][561/704]	Time 0.021	Data 0.000	Loss -2268971.7500	Avg Acc@1 5.876	Avg Acc@5 17.130	LR 0.10000
+Probe Training Epoch: [9][571/704]	Time 0.021	Data 0.000	Loss -2556724.5000	Avg Acc@1 5.849	Avg Acc@5 17.101	LR 0.10000
+Probe Training Epoch: [9][581/704]	Time 0.021	Data 0.000	Loss -2819027.7500	Avg Acc@1 5.812	Avg Acc@5 17.065	LR 0.10000
+Probe Training Epoch: [9][591/704]	Time 0.021	Data 0.000	Loss -2402245.0000	Avg Acc@1 5.819	Avg Acc@5 17.079	LR 0.10000
+Probe Training Epoch: [9][601/704]	Time 0.021	Data 0.000	Loss -2864980.0000	Avg Acc@1 5.818	Avg Acc@5 17.054	LR 0.10000
+Probe Training Epoch: [9][611/704]	Time 0.021	Data 0.000	Loss -2153719.5000	Avg Acc@1 5.796	Avg Acc@5 17.021	LR 0.10000
+Probe Training Epoch: [9][621/704]	Time 0.021	Data 0.000	Loss -2492628.7500	Avg Acc@1 5.818	Avg Acc@5 17.052	LR 0.10000
+Probe Training Epoch: [9][631/704]	Time 0.021	Data 0.000	Loss -2392329.0000	Avg Acc@1 5.796	Avg Acc@5 17.028	LR 0.10000
+Probe Training Epoch: [9][641/704]	Time 0.021	Data 0.000	Loss -2260906.5000	Avg Acc@1 5.801	Avg Acc@5 17.034	LR 0.10000
+Probe Training Epoch: [9][651/704]	Time 0.021	Data 0.000	Loss -2756133.2500	Avg Acc@1 5.805	Avg Acc@5 17.042	LR 0.10000
+Probe Training Epoch: [9][661/704]	Time 0.021	Data 0.000	Loss -2318047.7500	Avg Acc@1 5.806	Avg Acc@5 17.040	LR 0.10000
+Probe Training Epoch: [9][671/704]	Time 0.021	Data 0.000	Loss -2310166.5000	Avg Acc@1 5.794	Avg Acc@5 17.042	LR 0.10000
+Probe Training Epoch: [9][681/704]	Time 0.021	Data 0.000	Loss -2357643.0000	Avg Acc@1 5.791	Avg Acc@5 17.076	LR 0.10000
+Probe Training Epoch: [9][691/704]	Time 0.021	Data 0.000	Loss -2661224.5000	Avg Acc@1 5.776	Avg Acc@5 17.037	LR 0.10000
+Probe Training Epoch: [9][701/704]	Time 0.021	Data 0.000	Loss -2303946.7500	Avg Acc@1 5.760	Avg Acc@5 17.009	LR 0.10000
+
+Probe Training Epoch: 9	Loss: -2478055.0483	Acc: 5.7606
+
+Best probe accuracy: 7.3242
+********** Final prediction results with the best model **********
+Epoch: [1/157]	Time 0.088	Data 0.070	Loss 14.5464	Acc@1 9.3750	Acc@5 40.6250
+Epoch: [11/157]	Time 0.021	Data 0.007	Loss 14.2837	Acc@1 18.7500	Acc@5 37.5000
+Epoch: [21/157]	Time 0.017	Data 0.004	Loss 15.5386	Acc@1 18.7500	Acc@5 35.9375
+Epoch: [31/157]	Time 0.016	Data 0.002	Loss 13.8098	Acc@1 15.6250	Acc@5 40.6250
+Epoch: [41/157]	Time 0.016	Data 0.002	Loss 15.0045	Acc@1 17.1875	Acc@5 37.5000
+Epoch: [51/157]	Time 0.015	Data 0.002	Loss 14.6855	Acc@1 7.8125	Acc@5 37.5000
+Epoch: [61/157]	Time 0.015	Data 0.001	Loss 15.0270	Acc@1 6.2500	Acc@5 35.9375
+Epoch: [71/157]	Time 0.015	Data 0.001	Loss 14.3663	Acc@1 14.0625	Acc@5 39.0625
+Epoch: [81/157]	Time 0.015	Data 0.001	Loss 15.0245	Acc@1 14.0625	Acc@5 31.2500
+Epoch: [91/157]	Time 0.015	Data 0.001	Loss 15.0018	Acc@1 15.6250	Acc@5 37.5000
+Epoch: [101/157]	Time 0.015	Data 0.001	Loss 14.5985	Acc@1 12.5000	Acc@5 37.5000
+Epoch: [111/157]	Time 0.015	Data 0.001	Loss 15.1209	Acc@1 14.0625	Acc@5 39.0625
+Epoch: [121/157]	Time 0.014	Data 0.001	Loss 15.7635	Acc@1 12.5000	Acc@5 32.8125
+Epoch: [131/157]	Time 0.014	Data 0.001	Loss 13.2833	Acc@1 20.3125	Acc@5 50.0000
+Epoch: [141/157]	Time 0.014	Data 0.001	Loss 14.7425	Acc@1 3.1250	Acc@5 43.7500
+Epoch: [151/157]	Time 0.014	Data 0.001	Loss 14.4130	Acc@1 15.6250	Acc@5 46.8750
+ * prec@1 13.990 prec@5 39.090
+ * prec@1 14.960 prec@5 40.650
+ * prec@1 15.280 prec@5 41.400
+ * prec@1 14.780 prec@5 41.110
+********** Precalculate Laplace approximation **********
+
+0it [00:00, ?it/s]
+3it [00:00, 25.79it/s]
+7it [00:00, 27.44it/s]
+11it [00:00, 28.73it/s]
+15it [00:00, 29.72it/s]
+19it [00:00, 30.48it/s]
+23it [00:00, 31.02it/s]
+27it [00:00, 31.39it/s]
+31it [00:00, 31.66it/s]
+35it [00:01, 31.84it/s]
+39it [00:01, 31.98it/s]
+43it [00:01, 32.09it/s]
+47it [00:01, 32.17it/s]
+51it [00:01, 32.19it/s]
+55it [00:01, 32.22it/s]
+59it [00:01, 32.22it/s]
+63it [00:01, 32.24it/s]
+67it [00:02, 32.24it/s]
+71it [00:02, 32.26it/s]
+75it [00:02, 32.26it/s]
+79it [00:02, 32.26it/s]
+83it [00:02, 32.26it/s]
+87it [00:02, 32.25it/s]
+91it [00:02, 32.27it/s]
+95it [00:02, 32.27it/s]
+99it [00:03, 32.27it/s]
+103it [00:03, 32.29it/s]
+107it [00:03, 32.32it/s]
+111it [00:03, 32.32it/s]
+115it [00:03, 32.35it/s]
+119it [00:03, 32.33it/s]
+123it [00:03, 32.32it/s]
+127it [00:03, 32.32it/s]
+131it [00:04, 32.32it/s]
+135it [00:04, 32.32it/s]
+139it [00:04, 32.36it/s]
+143it [00:04, 32.34it/s]
+147it [00:04, 32.34it/s]
+151it [00:04, 32.29it/s]
+155it [00:04, 32.29it/s]
+159it [00:04, 32.30it/s]
+163it [00:05, 32.29it/s]
+167it [00:05, 32.33it/s]
+171it [00:05, 32.35it/s]
+175it [00:05, 32.37it/s]
+179it [00:05, 32.35it/s]
+183it [00:05, 32.34it/s]
+187it [00:05, 32.34it/s]
+191it [00:05, 32.33it/s]
+195it [00:06, 32.32it/s]
+199it [00:06, 32.34it/s]
+203it [00:06, 32.34it/s]
+207it [00:06, 32.33it/s]
+211it [00:06, 32.33it/s]
+215it [00:06, 32.33it/s]
+219it [00:06, 32.34it/s]
+223it [00:06, 32.35it/s]
+227it [00:07, 32.35it/s]
+231it [00:07, 32.34it/s]
+235it [00:07, 32.36it/s]
+239it [00:07, 32.36it/s]
+243it [00:07, 32.34it/s]
+247it [00:07, 32.33it/s]
+251it [00:07, 32.36it/s]
+255it [00:07, 32.34it/s]
+259it [00:08, 32.35it/s]
+263it [00:08, 30.80it/s]
+267it [00:08, 31.24it/s]
+271it [00:08, 31.56it/s]
+275it [00:08, 31.81it/s]
+279it [00:08, 31.97it/s]
+283it [00:08, 32.07it/s]
+287it [00:08, 32.17it/s]
+291it [00:09, 32.22it/s]
+295it [00:09, 32.25it/s]
+299it [00:09, 32.28it/s]
+303it [00:09, 32.31it/s]
+307it [00:09, 32.33it/s]
+311it [00:09, 32.31it/s]
+315it [00:09, 32.30it/s]
+319it [00:09, 32.30it/s]
+323it [00:10, 32.28it/s]
+327it [00:10, 32.29it/s]
+331it [00:10, 32.31it/s]
+335it [00:10, 32.32it/s]
+339it [00:10, 32.31it/s]
+343it [00:10, 32.32it/s]
+347it [00:10, 32.31it/s]
+351it [00:10, 32.33it/s]
+355it [00:11, 32.36it/s]
+359it [00:11, 32.37it/s]
+363it [00:11, 32.38it/s]
+367it [00:11, 32.38it/s]
+371it [00:11, 32.36it/s]
+375it [00:11, 32.33it/s]
+379it [00:11, 32.33it/s]
+383it [00:11, 32.35it/s]
+387it [00:12, 32.34it/s]
+391it [00:12, 32.33it/s]
+395it [00:12, 32.34it/s]
+399it [00:12, 32.37it/s]
+403it [00:12, 32.39it/s]
+407it [00:12, 32.37it/s]
+411it [00:12, 32.37it/s]
+415it [00:12, 32.36it/s]
+419it [00:13, 32.37it/s]
+423it [00:13, 32.36it/s]
+427it [00:13, 32.34it/s]
+431it [00:13, 32.34it/s]
+435it [00:13, 32.33it/s]
+439it [00:13, 32.34it/s]
+443it [00:13, 32.33it/s]
+447it [00:13, 32.34it/s]
+451it [00:13, 32.35it/s]
+455it [00:14, 32.35it/s]
+459it [00:14, 32.37it/s]
+463it [00:14, 32.36it/s]
+467it [00:14, 32.39it/s]
+471it [00:14, 32.39it/s]
+475it [00:14, 32.37it/s]
+479it [00:14, 32.38it/s]
+483it [00:14, 32.37it/s]
+487it [00:15, 32.36it/s]
+491it [00:15, 32.37it/s]
+495it [00:15, 32.37it/s]
+499it [00:15, 32.35it/s]
+503it [00:15, 32.37it/s]
+507it [00:15, 32.37it/s]
+511it [00:15, 32.37it/s]
+515it [00:15, 32.36it/s]
+519it [00:16, 32.35it/s]
+523it [00:16, 32.34it/s]
+527it [00:16, 32.37it/s]
+531it [00:16, 32.38it/s]
+535it [00:16, 32.36it/s]
+539it [00:16, 32.35it/s]
+543it [00:16, 32.35it/s]
+547it [00:16, 32.34it/s]
+551it [00:17, 32.36it/s]
+555it [00:17, 32.37it/s]
+559it [00:17, 32.36it/s]
+563it [00:17, 32.35it/s]
+567it [00:17, 32.36it/s]
+571it [00:17, 32.35it/s]
+575it [00:17, 32.35it/s]
+579it [00:17, 32.37it/s]
+583it [00:18, 32.38it/s]
+587it [00:18, 32.38it/s]
+591it [00:18, 32.38it/s]
+595it [00:18, 32.37it/s]
+599it [00:18, 32.38it/s]
+603it [00:18, 32.38it/s]
+607it [00:18, 32.36it/s]
+611it [00:18, 32.37it/s]
+615it [00:19, 32.37it/s]
+619it [00:19, 32.37it/s]
+623it [00:19, 32.36it/s]
+627it [00:19, 32.35it/s]
+631it [00:19, 32.36it/s]
+635it [00:19, 32.35it/s]
+639it [00:19, 32.36it/s]
+643it [00:19, 32.36it/s]
+647it [00:20, 32.37it/s]
+651it [00:20, 32.38it/s]
+655it [00:20, 32.40it/s]
+659it [00:20, 32.41it/s]
+663it [00:20, 32.39it/s]
+667it [00:20, 32.40it/s]
+671it [00:20, 32.38it/s]
+675it [00:20, 32.37it/s]
+679it [00:21, 32.35it/s]
+683it [00:21, 32.39it/s]
+687it [00:21, 32.37it/s]
+691it [00:21, 32.36it/s]
+695it [00:21, 32.38it/s]
+699it [00:21, 32.40it/s]
+703it [00:21, 31.66it/s]
+704it [00:21, 32.16it/s]
+Saving the hessians...
+Laplace computation time: 22.013736486434937
