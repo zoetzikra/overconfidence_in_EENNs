@@ -489,16 +489,28 @@ class MSDNet(nn.Module):
         This function was coded for MC integration of LA inference
         it outputs final output (res) and mean feature of the image (phi_out) 
         """
-        res = []
-        phi_out = []
+        res = []     # Will store classifier outputs (logits)
+        phi_out = [] # Will store feature representations before the final linear layer
         for i in range(self.nBlocks):
+            # Forward pass through current block
             x = self.blocks[i](x)
-            # classifier module forward
+            # Extract features using the classifier's convolutional layers
             phi = self.classifier[i].m(x[-1])
+            # Flatten the features for the linear layer
             phi = phi.view(phi.size(0), -1)
+            # Store both:
             res.append(self.classifier[i].linear(phi))
             phi_out.append(phi)
         return res, phi_out
+'''
+Feature Extraction:
+    The learned intermediate features phi are crucial for LA because they're used to compute the posterior distribution
+    By storing phi, we can later: Compute uncertainty estimates, Sample from the posterior over weights, and Calculate confidence scores
+Monte Carlo integration of LA:
+    The stored features (phi_out) allow for MC sampling
+    Multiple forward passes can be performed with different weight samples
+    This helps estimate the posterior predictive distribution
+'''
         
     def predict_until(self, x, until_block):
         """
@@ -516,3 +528,16 @@ class MSDNet(nn.Module):
             phi_out.append(phi)
         return res, phi_out
 
+    def compute_confidence_scores(self, x):
+        """Compute confidence scores for each exit"""
+        res = []
+        confidences = []
+        
+        for i in range(self.nBlocks):
+            x = self.blocks[i](x)
+            logits = self.classifier[i](x)
+            confidence = compute_max_softmax_confidence(logits)
+            res.append(logits)
+            confidences.append(confidence)
+            
+        return res, confidences

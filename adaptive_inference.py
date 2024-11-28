@@ -101,7 +101,8 @@ def calculate_ECE(confs, corrs):
 
 def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     tester = Tester(model, args)
-    
+    tester.confidence_thresholds = [0.7, 0.8, 0.9, 0.95]  # FOR THE PROBES
+        
     # Expected computational cost of each block for the whole dataset             
     flops = torch.load(os.path.join(args.save, 'flops.pth'))
     print(flops)
@@ -115,6 +116,28 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     fname_ending += '_optvar' if args.optimize_var0 else ''
     
     ###########################################################################
+
+    # if args.softmax_confidence:
+    #     tester.confidence_thresholds = [0.7, 0.8, 0.9, 0.95]  # FOR THE PROBES
+    #     results = []
+    #     with torch.no_grad():
+    #         for i, (input, target) in enumerate(test_loader):
+    #             input = input.cuda()
+    #             target = target.cuda()
+                
+    #             # Get logits using existing predict method
+    #             logits, _ = model.predict(input)  # We only need logits, not phi_out
+                
+    #             # Convert logits to tensor format expected by dynamic_eval_with_softmax
+    #             logits_tensor = torch.stack([torch.tensor(l) for l in logits])
+                
+    #             # Evaluate using softmax confidence
+    #             acc, exp_flops, ECE, prec5 = tester.dynamic_eval_with_softmax(
+    #                 logits_tensor, target, flops, confidence_thresholds
+    #             )
+    #             results.append((acc, exp_flops, ECE, prec5))
+        
+    #     return results
 
     # Optimize the temperature scaling parameters
     if args.optimize_temperature:
@@ -215,9 +238,23 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     val_var, test_var are predicted class variances, shape (n_blocks, n_samples)
     '''
     if not args.laplace:
-        filename = os.path.join(args.save, 'dynamic%s.txt' % (fname_ending))
-        val_pred, val_target = tester.calc_logit(val_loader, temperature=vanilla_temps)
-        test_pred, test_target = tester.calc_logit(test_loader, temperature=vanilla_temps)  
+        # filename = os.path.join(args.save, 'dynamic%s.txt' % (fname_ending))
+        # val_pred, val_target = tester.calc_logit(val_loader, temperature=vanilla_temps)
+        # test_pred, test_target = tester.calc_logit(test_loader, temperature=vanilla_temps)  
+        # Use softmax confidence-based evaluation
+        filename = os.path.join(args.save, 'dynamic_softmax%s.txt' % (fname_ending))
+        
+        val_logits, val_confidences, val_targets = tester.calc_softmax_confidence(val_loader)
+        test_logits, test_confidences, test_targets = tester.calc_softmax_confidence(test_loader)
+        
+        # Use for early exit decisions
+        val_metrics = tester.dynamic_eval_with_softmax(
+            val_logits, val_targets, flops, tester.confidence_thresholds
+        )
+        test_metrics = tester.dynamic_eval_with_softmax(
+            test_logits, test_targets, flops, tester.confidence_thresholds
+        )
+        
     else:
         if args.optimize_temperature and args.optimize_var0:
             filename = os.path.join(args.save, 'dynamic_la_mc%03d%s.txt' % (args.n_mc_samples, fname_ending))
@@ -269,6 +306,104 @@ class Tester(object):
         self.args = args
         self.model = model
         self.softmax = nn.Softmax(dim=1).cuda()
+
+    # def test(self, model, test_loader):
+    #     '''
+    #     The function:
+    #     1. Sets model to evaluation mode
+    #     2. Processes each batch of inputs through the model
+    #     3. For each sample:
+    #        - Computes predictions and confidence scores at each exit
+    #        - Determines earliest exit point where confidence exceeds threshold
+    #        - Records accuracy and computational cost metrics
+    #     4. Prints summary statistics including:
+    #        - Overall accuracy
+    #        - Expected FLOPs (computational cost)
+    #        - Per-exit statistics (accuracy and number of samples)
+
+    #     The implementation assumes:
+    #     - Model has multiple exit points (classifiers)
+    #     - Each exit can compute confidence scores (e.g. max softmax probability)
+    #     - Pre-defined confidence thresholds exist for each exit
+    #     - FLOPs are tracked for computational cost analysis
+    #     '''
+    #     model.eval()
+    #     n_exits = len(model.module.classifier)
+        
+    #     with torch.no_grad():
+    #         for i, (input, target) in enumerate(test_loader):
+    #             input = input.cuda()
+    #             target = target.cuda()
+                
+    #             # Get predictions and confidences
+    #             logits, confidences = model.module.compute_confidence_scores(input)
+                
+    #             # Dynamic evaluation
+    #             acc, exp_flops, acc_rec, exp, preds, confs = self.dynamic_eval_with_softmax(
+    #                 logits, target, self.flops, self.confidence_thresholds
+    #             )
+                
+    #             # Log results
+    #             print(f'Accuracy: {acc:.4f}, Expected FLOPs: {exp_flops:.2e}')
+    #             for k in range(n_exits):
+    #                 if exp[k] > 0:
+    #                     print(f'Exit {k}: {acc_rec[k]/exp[k]:.4f} ({exp[k]} samples)')
+
+    def calc_softmax_confidence(self, dataloader):
+        """
+        This function collects:
+        - logits from each exit
+        - confidence scores from each exit
+        - targets
+        """
+        
+        self.model.eval()
+        n_exit = self.args.nBlocks
+        
+        logits = [[] for _ in range(n_exit)]
+        confidences = [[] for _ in range(n_exit)]
+        targets = []
+        
+        start_time = time.time()
+        for i, (input, target) in enumerate(dataloader):
+            targets.append(target)
+            with torch.no_grad():
+                input_var = torch.autograd.Variable(input).cuda()
+                
+                # Get both logits and confidence scores using our new method
+                output, confs = self.model.module.compute_confidence_scores(input_var)
+                
+                if not isinstance(output, list):
+                    output = [output]
+                    
+                # Store logits and confidences
+                for b in range(n_exit):
+                    logits[b].append(output[b])
+                    confidences[b].append(confs[b])
+
+            if i % self.args.print_freq == 0:
+                print('Generate Softmax Confidence: [{0}/{1}]'.format(i, len(dataloader)))
+
+        # Format outputs similar to calc_logit
+        for b in range(n_exit):
+            logits[b] = torch.cat(logits[b], dim=0)
+            confidences[b] = torch.cat(confidences[b], dim=0)
+
+        # Create tensors of appropriate size
+        size = (n_exit, logits[0].size(0), logits[0].size(1))
+        ts_logits = torch.Tensor().resize_(size).zero_()
+        ts_confidences = torch.Tensor(n_exit, logits[0].size(0)).zero_()
+        
+        for b in range(n_exit):
+            ts_logits[b].copy_(logits[b])
+            ts_confidences[b].copy_(confidences[b])
+
+        targets = torch.cat(targets, dim=0)
+        ts_targets = torch.Tensor().resize_(size[1]).copy_(targets)
+        
+        print('Confidence calculation time: {}'.format(time.time() - start_time))
+
+        return ts_logits, ts_confidences, ts_targets
 
     def calc_logit(self, dataloader, temperature=None, until=None):
         self.model.eval()
@@ -500,3 +635,78 @@ class Tester(object):
 
         return acc * 100.0 / n_sample, expected_flops, nlpd / n_sample, ECE, prec5[0]
         
+    def compute_max_softmax_confidence(logits):
+        """Compute maximum softmax probability for each sample."""
+        softmax_probs = torch.nn.functional.softmax(logits, dim=1)
+        max_probs, _ = torch.max(softmax_probs, dim=1)
+        return max_probs
+
+
+    def dynamic_eval_with_softmax(self, logits, targets, flops, confidence_thresholds):
+        """
+        Dynamic evaluation using maximum softmax probability as confidence measure
+        Args:
+            logits: predictions from each exit (n_exits x batch_size x n_classes)
+            targets: ground truth labels
+            flops: computational cost for each exit
+            confidence_thresholds: list of confidence thresholds for each exit
+
+        Characteristics:
+        - Uses maximum softmax probability as confidence measure
+        - Each exit has its own confidence threshold
+        - Early exits when confidence exceeds threshold
+        - Tracks accuracy and ECE
+        """
+        n_exit, n_sample, n_class = logits.size()
+        acc_rec, exp = torch.zeros(n_exit), torch.zeros(n_exit)
+        acc, expected_flops = 0, 0
+        
+        final_preds = torch.zeros(n_sample)
+        final_confs = torch.zeros(n_sample)
+        final_corrs = torch.zeros(n_sample)  # Added for ECE calculation
+        final_logits = torch.zeros(n_sample, n_class)  # Added for top-5 accuracy
+    
+        for i in range(n_sample):
+            gold_label = targets[i]
+            for k in range(n_exit):
+                # 1. Compute confidence as maximum softmax probability
+                current_logits = logits[k, i].unsqueeze(0)
+                confidence = compute_max_softmax_confidence(current_logits)
+                
+                # 2. Check if confidence meets threshold
+                if confidence >= confidence_thresholds[k]:
+                    pred = current_logits.max(1)[1]
+                    final_preds[i] = pred
+                    final_confs[i] = confidence
+                    final_logits[i,:] = logits[k,i,:]
+                    
+                    # 3. Update metrics
+                    if pred == gold_label:
+                        final_corrs[i] = 1  # For ECE calculation
+                        acc += 1
+                        acc_rec[k] += 1
+                    exp[k] += 1
+                    expected_flops += flops[k]
+                    break
+                    
+                # 4. If we've reached the last exit, use it regardless of confidence
+                if k == n_exit - 1:
+                    pred = current_logits.max(1)[1]
+                    final_preds[i] = pred
+                    final_confs[i] = confidence
+                    final_logits[i,:] = logits[k,i,:]
+
+                    if pred == gold_label:
+                        final_corrs[i] = 1 
+                        acc += 1
+                        acc_rec[k] += 1
+                    exp[k] += 1
+                    expected_flops += flops[k]
+                
+        # Calculate ECE
+        ECE = calculate_ECE(final_confs.numpy(), final_corrs.numpy())
+        
+        # Calculate top-5 accuracy
+        prec5 = accuracy(final_logits, targets, topk=(5,))
+        
+        return acc * 100.0 / n_sample, expected_flops, ECE, prec5[0]

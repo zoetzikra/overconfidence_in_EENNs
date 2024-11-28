@@ -83,11 +83,7 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
-    probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
-                           lr=0.001,  # Fixed smaller learning rate
-                           momentum=args.momentum,
-                           weight_decay=args.weight_decay)
-
+    
     if args.resume:
         checkpoint = load_checkpoint(args)
         if checkpoint is not None:
@@ -164,19 +160,32 @@ def main():
         print(f"Split sizes - Train: {len(train_final)}, Val: {len(val_final)}")
 
         # Train and validate probes
+        temperatures = [1.0, 2.0, 5.0, 10.0]
+        best_temp = None
         best_val_acc = 0
         num_probe_epochs = 10
-        for epoch in range(num_probe_epochs):
-            train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch)
-            val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion)
-            
-            print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
-            
-            # Track best validation accuracy
-            if val_acc > best_val_acc:
-                best_val_acc = val_acc
-                print(f"New best validation accuracy: {best_val_acc:.4f}")
 
+        for temp in temperatures:
+            print(f"\nTrying temperature: {temp}")
+            reinitialize_probes(model)
+                    
+            probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+                           lr=0.001,  # Fixed smaller learning rate
+                           momentum=args.momentum,
+                           weight_decay=args.weight_decay)
+
+            for epoch in range(num_probe_epochs):
+                train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temp)
+                val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion, temperature=temp)
+                print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
+                
+                # Track best validation accuracy
+                if val_acc > best_val_acc:
+                    best_val_acc = val_acc
+                    best_temp = temp
+                    print(f"New best validation accuracy: {best_val_acc:.4f}")
+        
+        print(f"\nBest temperature: {best_temp} with validation accuracy: {best_val_acc:.4f}")
         
     # Load the best model
     model_dir = os.path.join(args.save, 'save_models')
@@ -195,6 +204,33 @@ def main():
     compute_laplace_efficient(args, model, train_loader)
     print('Laplace computation time: {}'.format(time.time() - start_time))
     return   
+
+def reinitialize_probes(model):
+    """Reinitialize probes using MSDNet's existing architecture"""
+    new_probes = nn.ModuleList()
+    
+    # Iterate through existing probes and create new ones with same architecture
+    for i, old_probe in enumerate(model.module.probes):
+        # Get the input channels from the first conv layer of the existing probe
+        first_conv = old_probe.m[0].net[0]  # Access the first conv layer
+        in_channels = first_conv.in_channels
+        
+        if model.module.args.data.startswith('cifar100'):
+            new_probe = model.module._build_probe_cifar(in_channels, 100)
+        elif model.module.args.data.startswith('cifar10'):
+            new_probe = model.module._build_probe_cifar(in_channels, 10)
+            
+        # Initialize weights
+        if hasattr(new_probe, '__iter__'):
+            for _m in new_probe:
+                model.module._init_weights(_m)
+        else:
+            model.module._init_weights(new_probe)
+            
+        new_probes.append(new_probe)
+    
+    # Replace old probes with new ones
+    model.module.probes = new_probes.to(next(model.parameters()).device)
 
 def compute_laplace_efficient(args, model, dset_loader):
     # compute the laplace approximations
@@ -355,12 +391,17 @@ def train(train_loader, model, criterion, optimizer, epoch):
 
 def distillation_loss(student_output, teacher_output, temperature=1.0):
     """Compute the knowledge-distillation (KD) loss."""
+    # 1. Soften the teacher's predictions, using probability distributions instead of one-hot labels
     soft_targets = torch.nn.functional.softmax(teacher_output / temperature, dim=1)
+    # 2. Soften the student's predictions (in log space)
     student_log_softmax = torch.nn.functional.log_softmax(student_output / temperature, dim=1)
+    # 3. Compute KL divergence between soft predictions
+    # -(soft_targets * student_log_softmax) is the cross-entropy 
     loss = -(soft_targets * student_log_softmax).sum(dim=1).mean()
+    # 4. Scale the loss by temperature squared
     return loss * (temperature ** 2)
 
-def train_probes(intermediate_data, final_data, model, criterion, optimizer, epoch):
+def train_probes(intermediate_data, final_data, model, criterion, optimizer, epoch, temperature):
     """Train probes for one epoch"""
     batch_time = AverageMeter()
     data_time = AverageMeter()
@@ -427,11 +468,12 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
         # Forward pass through probes
         total_loss = 0.0
         num_probes = len(model.module.probes)
+        temp = temperature
         for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
             probe_out = probe(intermed_out)
             # total_loss += criterion(probe_out, batch_final)
             # ALT: Add distillation loss
-            total_loss += distillation_loss(probe_out, batch_final, temperature=2.0)
+            total_loss += distillation_loss(probe_out, batch_final, temperature=temp)
             
             # Calculate accuracy
             prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
@@ -476,7 +518,7 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
     return losses.avg, epoch_acc
 
 
-def validate_probes(val_intermediate_data, val_final_data, model, criterion):
+def validate_probes(val_intermediate_data, val_final_data, model, criterion, temperature):
     """Validate probes for one epoch"""
     batch_time = AverageMeter()
     losses = AverageMeter()
@@ -506,9 +548,10 @@ def validate_probes(val_intermediate_data, val_final_data, model, criterion):
             
             # Forward pass through probes
             total_loss = 0
+            temp = temperature
             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
                 probe_out = probe(intermed_out)
-                total_loss += distillation_loss(probe_out, batch_final, temperature=2.0)
+                total_loss += distillation_loss(probe_out, batch_final, temperature=temp)
                 
                 # Calculate accuracy
                 prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
