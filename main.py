@@ -486,7 +486,7 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
         optimizer.zero_grad()
         total_loss.backward()
         # Add gradient clipping
-        torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
+        # torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
         optimizer.step()
 
         # Measure elapsed time

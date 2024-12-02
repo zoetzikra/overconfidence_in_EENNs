@@ -247,6 +247,12 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         val_logits, val_confidences, val_targets = tester.calc_softmax_confidence(val_loader)
         test_logits, test_confidences, test_targets = tester.calc_softmax_confidence(test_loader)
         
+        # Convert logits to predictions using softmax
+        val_pred = torch.nn.functional.softmax(val_logits, dim=2)
+        test_pred = torch.nn.functional.softmax(test_logits, dim=2)
+        val_target = val_targets
+        test_target = test_targets
+
         # Use for early exit decisions
         val_metrics = tester.dynamic_eval_with_softmax(
             val_logits, val_targets, flops, tester.confidence_thresholds
@@ -283,11 +289,16 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     print('')
     
     with open(filename, 'w') as fout:
+        exit_distributions = []  # List to store exit distributions for each budget
         for p in range(1, 40): # Loop over 40 different computational budget levels
             print("*********************")
+            exit_counts = torch.zeros(args.nBlocks)  # Counter for each exit point
+            total_samples = 0
+
             _p = torch.FloatTensor(1).fill_(p * 1.0 / 20) # 'Heaviness level' of the current computational budget
             probs = torch.exp(torch.log(_p) * torch.arange(1, args.nBlocks+1)) # Calculate proportions of computation for each DNN block
             probs /= probs.sum() # normalize
+            
             val_t_metric_values, _ = val_pred.max(dim=2, keepdim=False) #predicted class confidences
             test_t_metric_values, _ = test_pred.max(dim=2, keepdim=False)
         
@@ -298,8 +309,36 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
             acc_test, exp_flops, nlpd, ECE, acc5 = tester.dynamic_eval_threshold(test_pred, test_target, flops, T, test_t_metric_values, p)
                 
             print('valid acc: {:.3f}, test acc: {:.3f}, test top5 acc: {:.3f} nlpd: {:.3f}, ECE: {:.3f}, test flops: {:.2f}'.format(acc_val, acc_test, acc5, nlpd, ECE, exp_flops / 1e6))
-            fout.write('{}\t{}\t{}\t{}\t{}\n'.format(acc_test, nlpd, ECE, acc5, exp_flops.item()))       
+
+            # During evaluation of each sample
+            for i in range(args.nBlocks):
+                # mask = confidences[i] >= confidence_thresholds[i]
+                # exit_counts[i] += mask.sum().item()
+
+                t_metric_values = test_t_metric_values[i]
+                exit_mask = t_metric_values >= T[i] if i == 0 else (t_metric_values >= T[i]) & (test_t_metric_values[i-1] < T[i-1])
+                # For first exit (i=0), only check if current metric exceeds threshold
+                if i == 0: # For first exit, only check if metric value exceeds threshold No need to check previous thresholds since this is the first exit
+                    exit_mask = (t_metric_values >= T[i])  # True if sample should exit at first block
+                else: # For later exits (i>0), check two conditions: 1. Current metric exceeds current threshold 2. Previous metric was below previous threshold
+                    current_exceeds_threshold = t_metric_values >= T[i]
+                    prev_below_threshold = test_t_metric_values[i-1] < T[i-1]
+                    exit_mask = current_exceeds_threshold & prev_below_threshold
                     
+                exit_counts[i] = exit_mask.sum().item()
+                            
+            # Calculate distribution
+            total_samples = len(test_target)
+            exit_distribution = exit_counts / total_samples
+            exit_distributions.append(exit_distribution)
+            
+            print(f"\nBudget level {p}/39 (FLOPs: {exp_flops/1e6:.2f}M)")
+            print("Exit point distribution:")
+            for i, pct in enumerate(exit_distribution):
+                print(f"Exit {i+1}: {pct*100:.1f}%")
+
+            fout.write('{}\t{}\t{}\t{}\t{}\n'.format(acc_test, nlpd, ECE, acc5, exp_flops.item()))       
+
 
 class Tester(object):
     def __init__(self, model, args=None):
@@ -501,7 +540,7 @@ class Tester(object):
 
                         else:
                             py = (output1[j] + torch.sqrt(s[j])*Lz[j][mc_sample].unsqueeze(0)) / self.args.laplace_temperature[0]
-                        py_ += self.softmax(py)
+                        py_ += self.softmax(py) # HERE SOFTMAX IS APPLIED TO EACH MC SAMPLE
                     py_ /= self.args.n_mc_samples
                     
                     output_mc.append(py_)
@@ -525,7 +564,7 @@ class Tester(object):
         ts_targets = torch.Tensor().resize_(size[1]).copy_(targets)
         print('Laplace logits calculation time: {}'.format(time.time() - start_time))
         
-        return ts_logits, targets, var0
+        return ts_logits, targets, var0 # NOT REALLY LOGITS BUT PREDICTIONS
         
 
     def dynamic_find_threshold(self, logits, targets, t_metric_values, p, flops):
@@ -635,12 +674,6 @@ class Tester(object):
 
         return acc * 100.0 / n_sample, expected_flops, nlpd / n_sample, ECE, prec5[0]
         
-    def compute_max_softmax_confidence(logits):
-        """Compute maximum softmax probability for each sample."""
-        softmax_probs = torch.nn.functional.softmax(logits, dim=1)
-        max_probs, _ = torch.max(softmax_probs, dim=1)
-        return max_probs
-
 
     def dynamic_eval_with_softmax(self, logits, targets, flops, confidence_thresholds):
         """
@@ -671,7 +704,7 @@ class Tester(object):
             for k in range(n_exit):
                 # 1. Compute confidence as maximum softmax probability
                 current_logits = logits[k, i].unsqueeze(0)
-                confidence = compute_max_softmax_confidence(current_logits)
+                confidence = self.model.module.compute_max_softmax_confidence(current_logits)
                 
                 # 2. Check if confidence meets threshold
                 if confidence >= confidence_thresholds[k]:

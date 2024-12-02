@@ -502,15 +502,15 @@ class MSDNet(nn.Module):
             res.append(self.classifier[i].linear(phi))
             phi_out.append(phi)
         return res, phi_out
-'''
-Feature Extraction:
-    The learned intermediate features phi are crucial for LA because they're used to compute the posterior distribution
-    By storing phi, we can later: Compute uncertainty estimates, Sample from the posterior over weights, and Calculate confidence scores
-Monte Carlo integration of LA:
-    The stored features (phi_out) allow for MC sampling
-    Multiple forward passes can be performed with different weight samples
-    This helps estimate the posterior predictive distribution
-'''
+    '''
+    Feature Extraction:
+        The learned intermediate features phi are crucial for LA because they're used to compute the posterior distribution
+        By storing phi, we can later: Compute uncertainty estimates, Sample from the posterior over weights, and Calculate confidence scores
+    Monte Carlo integration of LA:
+        The stored features (phi_out) allow for MC sampling
+        Multiple forward passes can be performed with different weight samples
+        This helps estimate the posterior predictive distribution
+    '''
         
     def predict_until(self, x, until_block):
         """
@@ -528,6 +528,15 @@ Monte Carlo integration of LA:
             phi_out.append(phi)
         return res, phi_out
 
+
+    def compute_max_softmax_confidence(self, logits):
+        """Compute maximum softmax probability for each sample."""
+        softmax_probs = torch.nn.functional.softmax(logits, dim=1)
+        max_probs, _ = torch.max(softmax_probs, dim=1)
+        
+        return max_probs
+
+
     def compute_confidence_scores(self, x):
         """Compute confidence scores for each exit"""
         res = []
@@ -536,7 +545,7 @@ Monte Carlo integration of LA:
         for i in range(self.nBlocks):
             x = self.blocks[i](x)
             logits = self.classifier[i](x)
-            confidence = compute_max_softmax_confidence(logits)
+            confidence = self.compute_max_softmax_confidence(logits)
             res.append(logits)
             confidences.append(confidence)
             
