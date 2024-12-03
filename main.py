@@ -111,7 +111,9 @@ def main():
 
     if not args.compute_only_laplace:
         initial_time = time.time()
-
+        # Track last saved checkpoint number
+        last_checkpoint_num = args.epochs - 1  # This will be the last classifier checkpoint number
+        
         for epoch in range(args.start_epoch, args.epochs):
         
             model_filename = 'checkpoint_%03d.pth.tar' % epoch
@@ -135,7 +137,7 @@ def main():
                 'state_dict': model.state_dict(),
                 'best_prec1': best_prec1,
                 'optimizer': optimizer.state_dict(),
-            }, args, is_best, model_filename, scores)
+            }, args, is_best, model_filename, scores, is_probe=False)
 
         print('Best val_prec1: {:.4f} at epoch {}'.format(best_prec1, best_epoch))
         print('Total training time: {}'.format(time.time() - initial_time))
@@ -160,32 +162,45 @@ def main():
         print(f"Split sizes - Train: {len(train_final)}, Val: {len(val_final)}")
 
         # Train and validate probes
-        temperatures = [1.0, 2.0, 5.0, 10.0]
-        best_temp = None
-        best_val_acc = 0
-        num_probe_epochs = 10
+        temperature = 10.0
+        best_probe_acc = 0.0
+        num_probe_epochs = 300
 
-        for temp in temperatures:
-            print(f"\nTrying temperature: {temp}")
-            reinitialize_probes(model)
+        probe_scores = ['epoch\tlr\ttrain_loss\tval_loss\ttrain_acc\tval_acc']
+        
+        reinitialize_probes(model)
                     
-            probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+        probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
                            lr=0.001,  # Fixed smaller learning rate
                            momentum=args.momentum,
                            weight_decay=args.weight_decay)
 
-            for epoch in range(num_probe_epochs):
-                train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temp)
-                val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion, temperature=temp)
-                print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
-                
-                # Track best validation accuracy
-                if val_acc > best_val_acc:
-                    best_val_acc = val_acc
-                    best_temp = temp
-                    print(f"New best validation accuracy: {best_val_acc:.4f}")
-        
-        print(f"\nBest temperature: {best_temp} with validation accuracy: {best_val_acc:.4f}")
+        for epoch in range(num_probe_epochs):
+            last_checkpoint_num += 1 
+            model_filename = 'checkpoint_%03d.pth.tar' % last_checkpoint_num
+
+            train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temperature)
+            val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion, temperature=temperature)
+            print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
+            # Update probe scores
+            probe_scores.append(('{}\t{:.3f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}').format(
+                last_checkpoint_num, args.lr, train_loss, val_loss, train_acc, val_acc))
+            
+            # Check if this is the best probe accuracy
+            is_best = val_acc > best_probe_acc
+            if is_best:
+                best_probe_acc = val_acc
+                print(f'New best probe validation accuracy: {best_probe_acc:.4f}')
+            
+            # Save probe checkpoint
+            save_checkpoint({
+                'epoch': last_checkpoint_num,
+                'arch': args.arch,
+                'state_dict': model.state_dict(),
+                'best_probe_acc': best_probe_acc,
+                'optimizer': optimizer.state_dict(),
+                'probe_scores': probe_scores
+            }, args, is_best, model_filename, probe_scores, is_probe=True)
         
     # Load the best model
     model_dir = os.path.join(args.save, 'save_models')
@@ -636,18 +651,24 @@ def validate(val_loader, model, criterion):
 
     return losses.avg, top1[-1].avg, top5[-1].avg
     
-def save_checkpoint(state, args, is_best, filename, result):
+def save_checkpoint(state, args, is_best, filename, result, is_probe=False):
     print(args)
-    result_filename = os.path.join(args.save, 'scores.tsv')
     model_dir = os.path.join(args.save, 'save_models')
     latest_filename = os.path.join(model_dir, 'latest.txt')
     model_filename = os.path.join(model_dir, filename)
-    best_filename = os.path.join(model_dir, 'model_best_acc.pth.tar')
+
+    # Use different best model filename for probes
+    if is_probe:
+        best_filename = os.path.join(model_dir, 'model_best_probe_acc.pth.tar')
+        result_filename = os.path.join(args.save, 'probe_scores.tsv')
+    else:
+        best_filename = os.path.join(model_dir, 'model_best_acc.pth.tar')
+        result_filename = os.path.join(args.save, 'scores.tsv')
 
     os.makedirs(args.save, exist_ok=True)
     os.makedirs(model_dir, exist_ok=True)
-    print("=> saving checkpoint '{}'".format(model_filename))
 
+    print("=> saving checkpoint '{}'".format(model_filename))
     torch.save(state, model_filename)
 
     with open(result_filename, 'w') as f:
@@ -655,6 +676,7 @@ def save_checkpoint(state, args, is_best, filename, result):
 
     with open(latest_filename, 'w') as fout:
         fout.write(model_filename)
+
     if is_best:
         shutil.copyfile(model_filename, best_filename)
 
