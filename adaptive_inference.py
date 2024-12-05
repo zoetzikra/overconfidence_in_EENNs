@@ -98,6 +98,24 @@ def calculate_ECE(confs, corrs):
 
     return ECE
 
+def calculate_signed_ECE(confidences, corrects, n_bins=15):
+    """
+    Calculate the signed Expected Calibration Error (ECE).
+    """
+    bin_boundaries = np.linspace(0, 1, n_bins + 1)
+    bin_lowers = bin_boundaries[:-1]
+    bin_uppers = bin_boundaries[1:]
+    
+    ece = 0.0
+    for bin_lower, bin_upper in zip(bin_lowers, bin_uppers):
+        in_bin = (confidences > bin_lower) & (confidences <= bin_upper)
+        prop_in_bin = in_bin.mean()
+        if prop_in_bin > 0:
+            accuracy_in_bin = corrects[in_bin].mean()
+            avg_confidence_in_bin = confidences[in_bin].mean()
+            ece += prop_in_bin * (avg_confidence_in_bin - accuracy_in_bin)
+    
+    return ece
 
 def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     tester = Tester(model, args)
@@ -257,13 +275,52 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         val_target = val_targets
         test_target = test_targets
 
-        # Use for early exit decisions
-        val_metrics = tester.dynamic_eval_with_softmax(
-            val_logits, val_targets, flops, tester.confidence_thresholds
-        )
-        test_metrics = tester.dynamic_eval_with_softmax(
+        # Initialize exit counts
+        exit_counts = torch.zeros(args.nBlocks)
+
+        # Calculate exit distribution
+        for i in range(len(test_targets)):
+            for k in range(args.nBlocks):
+                confidence = test_confidences[k][i]
+                if confidence >= tester.confidence_thresholds[k]:
+                    exit_counts[k] += 1
+                    break
+                if k == args.nBlocks - 1:  # If reached last exit
+                    exit_counts[k] += 1
+
+        # Calculate and print exit distribution
+        exit_distribution = exit_counts / len(test_targets) * 100  # Convert to percentages
+        print("\nExit Distribution with Fixed Confidence Thresholds:")
+        print("Thresholds:", tester.confidence_thresholds)
+        for i, (pct, threshold) in enumerate(zip(exit_distribution, tester.confidence_thresholds)):
+            print(f"Exit {i+1} (conf ≥ {threshold:.2f}): {pct:.1f}%")
+
+        # Calculate validation and test set accuracies for each block
+        _, argmax_val = val_pred.max(dim=2, keepdim=False)
+        maxpred_test, argmax_test = test_pred.max(dim=2, keepdim=False)
+        print('Val acc      Test acc')
+        for e in range(val_pred.shape[0]):
+            val_acc = (argmax_val[e,:] == val_target).sum()/val_pred.shape[1]
+            test_acc = (argmax_test[e,:] == test_target).sum()/test_pred.shape[1]
+            print('{:.3f}       {:.3f}'.format(val_acc, test_acc))
+        print('')
+
+        # Use fixed confidence thresholds for early exit decisions
+        acc_test, exp_flops, nlpd, ECE, signed_ECE, acc5 = tester.dynamic_eval_with_softmax(
             test_logits, test_targets, flops, tester.confidence_thresholds
         )
+
+        # Write results to file
+        with open(filename, 'w') as fout:
+            fout.write(f"Accuracy:  {acc_test}\n")
+            fout.write(f"NLPD:      {nlpd}\n")
+            fout.write(f"ECE:       {ECE}\n")
+            fout.write(f"Signed ECE: {signed_ECE}\n")
+            fout.write(f"Top-5 Acc: {acc5}\n")
+            fout.write(f"FLOPs:     {exp_flops}\n")
+
+        return acc_test, nlpd, ECE, acc5, exp_flops
+
         
     else:
         if args.optimize_temperature and args.optimize_var0:
@@ -283,7 +340,7 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         test_pred = calc_ensemble_logits(test_pred, flop_weights)          
                 
     # Calculate validation and test set accuracies for each block
-    _, argmax_val = val_pred.max(dim=2, keepdim=False) #predicted class confidences
+    maxpred_val, argmax_val = val_pred.max(dim=2, keepdim=False) #predicted class confidences
     maxpred_test, argmax_test = test_pred.max(dim=2, keepdim=False)
     print('Val acc      Test acc')
     for e in range(val_pred.shape[0]):
@@ -676,6 +733,9 @@ class Tester(object):
         acc_rec, exp = torch.zeros(n_exit), torch.zeros(n_exit)
         acc, expected_flops = 0, 0
         
+        # Track exits
+        exit_counts = torch.zeros(n_exit)
+        
         final_preds = torch.zeros(n_sample)
         final_confs = torch.zeros(n_sample)
         final_corrs = torch.zeros(n_sample)  # Added for ECE calculation
@@ -688,6 +748,9 @@ class Tester(object):
                 current_logits = logits[k, i].unsqueeze(0)
                 confidence = self.model.module.compute_max_softmax_confidence(current_logits)
                 
+                # Debugging: Print confidence values
+                print(f"Sample {i}, Exit {k+1}, Confidence: {confidence.item():.4f}")
+
                 # 2. Check if confidence meets threshold
                 if confidence >= confidence_thresholds[k]:
                     pred = current_logits.max(1)[1]
@@ -717,11 +780,16 @@ class Tester(object):
                         acc_rec[k] += 1
                     exp[k] += 1
                     expected_flops += flops[k]
-                
+        
         # Calculate ECE
         ECE = calculate_ECE(final_confs.numpy(), final_corrs.numpy())
-        
+        # Calculate signed ECE
+        signed_ECE = calculate_signed_ECE(final_confs.numpy(), final_corrs.numpy())
         # Calculate top-5 accuracy
         prec5 = accuracy(final_logits, targets, topk=(5,))
+        # Calculate the nlpd, Convert indices to long tensor
+        idx = torch.arange(n_sample, dtype=torch.long)
+        targets_long = targets.long()
+        nlpd = -1 * torch.sum(final_logits[idx, targets_long])
         
-        return acc * 100.0 / n_sample, expected_flops, ECE, prec5[0]
+        return acc * 100.0 / n_sample, expected_flops, nlpd, ECE, signed_ECE, prec5[0]
