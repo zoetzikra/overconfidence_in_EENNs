@@ -599,10 +599,17 @@ def validate(val_loader, model, criterion):
     confs = torch.zeros(args.nBlocks,n)
     corrs = torch.zeros(args.nBlocks,n)
 
-    model.eval()
+    '''Addition for uncertainty and exit point computation'''
+    # # Matrix to store uncertainty scores for each layer and sample
+    # uncertainties = torch.zeros(args.nBlocks, n)
+    # # Arrays to store which exit was used and if prediction was correct
+    # exit_points = torch.zeros(n, dtype=torch.long)
+    # correct_predictions = torch.zeros(n, dtype=torch.bool)
 
+    model.eval()
     end = time.time()
     sample_ind = 0
+
     with torch.no_grad():
         for i, (input, target) in enumerate(val_loader):
             batch_size = input.shape[0]
@@ -615,10 +622,19 @@ def validate(val_loader, model, criterion):
             data_time.update(time.time() - end)
 
             # output = model(input_var)
-            output, probe_outputs = model(input_var, collect_intermediate=True)  # Changed: Explicitly request intermediate outputs
+            output, _ = model(input_var, collect_intermediate=True)  # Changed: Explicitly request intermediate outputs
+            '''Addition for uncertainty and exit point computation'''
+            # # NEW: ALSO COMPUTE CONFIDENCE SCORES
+            # outputs, confidences = model.compute_confidence_scores(input_var)
+            
             if not isinstance(output, list):
                 output = [output]
 
+            '''Addition for uncertainty and exit point computation'''
+            # # Store uncertainties (1 - confidence) for each layer
+            # for j in range(args.nBlocks):
+            #     uncertainties[j, sample_ind:sample_ind+batch_size] = 1 - confidences[j]
+            
             loss = 0.0
             for j in range(len(output)):
                 loss += criterion(output[j], target_var)
@@ -629,6 +645,16 @@ def validate(val_loader, model, criterion):
                 prec1, prec5 = accuracy(output[j].data, target, topk=(1, 5))
                 top1[j].update(prec1.item(), input.size(0))
                 top5[j].update(prec5.item(), input.size(0))
+
+                '''Addition for uncertainty and exit point computation'''
+                # # Store correctness for each sample at this exit
+                # for sample in range(batch_size):
+                #     pred = output[j][sample].argmax().item()
+                #     if pred == target[sample].item():
+                #         correct_predictions[sample_ind + sample] = True
+                #         if exit_points[sample_ind + sample] == 0:  # If exit point not yet set
+                #             exit_points[sample_ind + sample] = j
+
 
             # measure elapsed time
             batch_time.update(time.time() - end)
@@ -648,6 +674,21 @@ def validate(val_loader, model, criterion):
     
     for j in range(args.nBlocks):
         print(' * prec@1 {top1.avg:.3f} prec@5 {top5.avg:.3f}'.format(top1=top1[j], top5=top5[j]))
+
+    '''Addition for uncertainty and exit point computation'''
+    # # Save results
+    # results_dir = os.path.join(args.save, 'test_results')
+    # os.makedirs(results_dir, exist_ok=True)
+    # # Save matrices
+    # np.save(os.path.join(results_dir, 'uncertainties.npy'), uncertainties.cpu().numpy())
+    # np.save(os.path.join(results_dir, 'exit_points.npy'), exit_points.cpu().numpy())
+    # np.save(os.path.join(results_dir, 'correct_predictions.npy'), correct_predictions.cpu().numpy())
+    # # Save human-readable summary
+    # with open(os.path.join(results_dir, 'test_results.txt'), 'w') as f:
+    #     f.write('Sample\tExit_Point\tCorrect\tUncertainties\n')
+    #     for i in range(n):
+    #         uncertainties_str = '\t'.join([f'{u:.4f}' for u in uncertainties[:, i]])
+    #         f.write(f'{i}\t{exit_points[i]}\t{int(correct_predictions[i])}\t{uncertainties_str}\n')
 
     return losses.avg, top1[-1].avg, top5[-1].avg
     

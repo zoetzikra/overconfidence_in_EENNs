@@ -1,0 +1,237 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+---------------------
+FLOPs: 6.86M, Params: 0.30M
+---------------------
+FLOPs: 9.09M, Params: 0.56M
+---------------------
+FLOPs: 16.58M, Params: 0.91M
+---------------------
+FLOPs: 19.69M, Params: 1.23M
+---------------------
+FLOPs: 31.47M, Params: 1.60M
+---------------------
+FLOPs: 34.21M, Params: 1.90M
+---------------------
+FLOPs: 46.13M, Params: 2.29M
+---------------------
+FLOPs: 48.87M, Params: 2.59M
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+Files already downloaded and verified
+Files already downloaded and verified
+Number of training samples:  50000
+Number of test samples:  10000
+!!!!!! Load train_set_index !!!!!!
+
+--> FLOPS DISTRIBUTION:
+[6859876.0, 9087688.0, 16577836.0, 19690384.0, 31467764.0, 34211672.0, 46127036.0, 48870944.0]
+[0.14036717 0.18595278 0.33921661  0.40290574  0.64389515  0.70004115  0.943854    1.        ]
+
+
+Generate Softmax Confidence: [0/79]
+Generate Softmax Confidence: [10/79]
+Generate Softmax Confidence: [20/79]
+Generate Softmax Confidence: [30/79]
+Generate Softmax Confidence: [40/79]
+Generate Softmax Confidence: [50/79]
+Generate Softmax Confidence: [60/79]
+Generate Softmax Confidence: [70/79]            --> 79 Validation Batches
+Confidence calculation time: 2.4439496994018555
+Generate Softmax Confidence: [0/157]
+Generate Softmax Confidence: [10/157]
+Generate Softmax Confidence: [20/157]
+Generate Softmax Confidence: [30/157]
+Generate Softmax Confidence: [40/157]
+Generate Softmax Confidence: [50/157]
+Generate Softmax Confidence: [60/157]
+Generate Softmax Confidence: [70/157]
+Generate Softmax Confidence: [80/157]
+Generate Softmax Confidence: [90/157]
+Generate Softmax Confidence: [100/157]
+Generate Softmax Confidence: [110/157]
+Generate Softmax Confidence: [120/157]
+Generate Softmax Confidence: [130/157]
+Generate Softmax Confidence: [140/157]
+Generate Softmax Confidence: [150/157]          --> 157 Test Batches
+Confidence calculation time: 1.707160234451294
+
+############## 
+The initial accuracies are the raw accuracies for each of the 4 exit points 
+when used independently.
+############## 
+
+Val acc      Test acc
+0.142       0.149
+0.156       0.160
+0.163       0.166
+0.153       0.161
+
+############## 
+The following 39 evaluations are different because they use an adaptive exit strategy:
+1. Each evaluation uses a different computational budget (p/20 where p goes from 1 to 39)
+2. For each budget, it calculates different thresholds for when to exit early
+3. The network can choose different exit points for different samples based on confidence
+Comment: The FLOPs value (15.78M) shows this is using a specific computational budget, and the accuracy (16.610%) 
+        is the result of adaptively choosing exit points, rather than using a single exit point like in the initial accuracies.
+############## 
+
+*********************
+valid acc: 14.480, test acc: 14.960, test top5 acc: 40.830 nlpd: 3.549, ECE: 0.039, test flops: 6.93
+*********************
+valid acc: 14.540, test acc: 15.070, test top5 acc: 40.960 nlpd: 3.546, ECE: 0.039, test flops: 7.01
+*********************
+valid acc: 14.580, test acc: 15.080, test top5 acc: 41.080 nlpd: 3.544, ECE: 0.039, test flops: 7.15
+*********************
+valid acc: 14.620, test acc: 15.180, test top5 acc: 41.180 nlpd: 3.542, ECE: 0.039, test flops: 7.30
+*********************
+valid acc: 14.580, test acc: 15.290, test top5 acc: 41.400 nlpd: 3.537, ECE: 0.038, test flops: 7.49
+*********************
+valid acc: 14.520, test acc: 15.250, test top5 acc: 41.560 nlpd: 3.534, ECE: 0.040, test flops: 7.71
+*********************
+valid acc: 14.700, test acc: 15.230, test top5 acc: 41.630 nlpd: 3.533, ECE: 0.041, test flops: 7.96
+*********************
+valid acc: 14.700, test acc: 15.360, test top5 acc: 41.650 nlpd: 3.530, ECE: 0.040, test flops: 8.26
+*********************
+valid acc: 14.580, test acc: 15.460, test top5 acc: 41.650 nlpd: 3.528, ECE: 0.040, test flops: 8.52
+*********************
+valid acc: 14.840, test acc: 15.540, test top5 acc: 41.830 nlpd: 3.525, ECE: 0.040, test flops: 8.84
+*********************
+valid acc: 14.940, test acc: 15.560, test top5 acc: 41.980 nlpd: 3.522, ECE: 0.041, test flops: 9.18
+*********************
+valid acc: 15.020, test acc: 15.760, test top5 acc: 42.090 nlpd: 3.517, ECE: 0.039, test flops: 9.49
+*********************
+valid acc: 15.020, test acc: 15.830, test top5 acc: 42.130 nlpd: 3.516, ECE: 0.039, test flops: 9.80
+*********************
+valid acc: 15.100, test acc: 15.940, test top5 acc: 42.440 nlpd: 3.513, ECE: 0.039, test flops: 10.15
+*********************
+valid acc: 15.300, test acc: 15.950, test top5 acc: 42.520 nlpd: 3.511, ECE: 0.040, test flops: 10.46
+*********************
+valid acc: 15.440, test acc: 15.910, test top5 acc: 42.660 nlpd: 3.509, ECE: 0.041, test flops: 10.77
+*********************
+valid acc: 15.420, test acc: 15.920, test top5 acc: 42.800 nlpd: 3.507, ECE: 0.042, test flops: 11.09
+*********************
+valid acc: 15.440, test acc: 15.950, test top5 acc: 42.700 nlpd: 3.507, ECE: 0.042, test flops: 11.43
+*********************
+valid acc: 15.580, test acc: 16.050, test top5 acc: 42.880 nlpd: 3.505, ECE: 0.042, test flops: 11.79
+*********************
+valid acc: 15.660, test acc: 16.120, test top5 acc: 42.950 nlpd: 3.505, ECE: 0.042, test flops: 12.12
+*********************
+valid acc: 15.820, test acc: 16.170, test top5 acc: 42.910 nlpd: 3.505, ECE: 0.042, test flops: 12.44
+*********************
+valid acc: 15.840, test acc: 16.250, test top5 acc: 43.000 nlpd: 3.502, ECE: 0.041, test flops: 12.71
+*********************
+valid acc: 15.900, test acc: 16.130, test top5 acc: 43.060 nlpd: 3.501, ECE: 0.043, test flops: 12.97
+*********************
+valid acc: 15.840, test acc: 16.120, test top5 acc: 43.070 nlpd: 3.501, ECE: 0.043, test flops: 13.21
+*********************
+valid acc: 15.800, test acc: 16.190, test top5 acc: 43.100 nlpd: 3.501, ECE: 0.043, test flops: 13.40
+*********************
+valid acc: 15.840, test acc: 16.320, test top5 acc: 43.190 nlpd: 3.499, ECE: 0.042, test flops: 13.62
+*********************
+valid acc: 15.780, test acc: 16.340, test top5 acc: 43.180 nlpd: 3.498, ECE: 0.042, test flops: 13.84
+*********************
+valid acc: 15.660, test acc: 16.470, test top5 acc: 43.240 nlpd: 3.497, ECE: 0.041, test flops: 14.08
+*********************
+valid acc: 15.620, test acc: 16.540, test top5 acc: 43.340 nlpd: 3.497, ECE: 0.040, test flops: 14.25
+*********************
+valid acc: 15.620, test acc: 16.440, test top5 acc: 43.320 nlpd: 3.496, ECE: 0.041, test flops: 14.45
+*********************
+valid acc: 15.740, test acc: 16.440, test top5 acc: 43.340 nlpd: 3.497, ECE: 0.042, test flops: 14.63
+*********************
+valid acc: 15.720, test acc: 16.420, test top5 acc: 43.270 nlpd: 3.498, ECE: 0.042, test flops: 14.79
+*********************
+valid acc: 15.720, test acc: 16.430, test top5 acc: 43.290 nlpd: 3.498, ECE: 0.042, test flops: 14.96
+*********************
+valid acc: 15.760, test acc: 16.490, test top5 acc: 43.270 nlpd: 3.499, ECE: 0.042, test flops: 15.12
+*********************
+valid acc: 15.740, test acc: 16.570, test top5 acc: 43.230 nlpd: 3.499, ECE: 0.041, test flops: 15.26
+*********************
+valid acc: 15.740, test acc: 16.630, test top5 acc: 43.180 nlpd: 3.499, ECE: 0.040, test flops: 15.39
+*********************
+valid acc: 15.720, test acc: 16.630, test top5 acc: 43.210 nlpd: 3.499, ECE: 0.040, test flops: 15.51
+*********************
+valid acc: 15.760, test acc: 16.600, test top5 acc: 43.180 nlpd: 3.500, ECE: 0.041, test flops: 15.65
+*********************
+valid acc: 15.720, test acc: 16.610, test top5 acc: 43.180 nlpd: 3.500, ECE: 0.041, test flops: 15.78
+
+JOB STATISTICS
+==============
+Job ID: 8834411
+Cluster: snellius
+User/Group: scur2884/scur2884
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:01:11
+CPU Efficiency: 5.56% of 00:21:18 core-walltime
+Job Wall-clock time: 00:01:11
+Memory Utilized: 3.69 GB
+Memory Efficiency: 3.07% of 120.00 GB

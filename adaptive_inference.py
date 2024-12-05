@@ -139,6 +139,13 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         
     #     return results
 
+    '''Addition for uncertainty and exit point computation'''
+    # Initialize matrices for tracking uncertainties, exit points, and correctness
+    n_test = len(test_loader.sampler)
+    uncertainties = torch.zeros(args.nBlocks, n_test)
+    exit_points = torch.zeros(n_test, dtype=torch.long)
+    correct_predictions = torch.zeros(n_test, dtype=torch.bool)
+
     # Optimize the temperature scaling parameters
     if args.optimize_temperature:
         print('******* Optimizing temperatures scales ********')
@@ -238,9 +245,6 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     val_var, test_var are predicted class variances, shape (n_blocks, n_samples)
     '''
     if not args.laplace:
-        # filename = os.path.join(args.save, 'dynamic%s.txt' % (fname_ending))
-        # val_pred, val_target = tester.calc_logit(val_loader, temperature=vanilla_temps)
-        # test_pred, test_target = tester.calc_logit(test_loader, temperature=vanilla_temps)  
         # Use softmax confidence-based evaluation
         filename = os.path.join(args.save, 'dynamic_softmax%s.txt' % (fname_ending))
         
@@ -312,9 +316,6 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
 
             # During evaluation of each sample
             for i in range(args.nBlocks):
-                # mask = confidences[i] >= confidence_thresholds[i]
-                # exit_counts[i] += mask.sum().item()
-
                 t_metric_values = test_t_metric_values[i]
                 exit_mask = t_metric_values >= T[i] if i == 0 else (t_metric_values >= T[i]) & (test_t_metric_values[i-1] < T[i-1])
                 # For first exit (i=0), only check if current metric exceeds threshold
@@ -326,6 +327,15 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
                     exit_mask = current_exceeds_threshold & prev_below_threshold
                     
                 exit_counts[i] = exit_mask.sum().item()
+
+                '''Addition for uncertainty and exit point computation'''
+                # Record uncertainties, exit points, and correctness
+                for sample in range(test_pred.shape[1]):
+                    if exit_mask[sample]:
+                        exit_points[sample] = i
+                        pred = test_pred[i, sample].argmax().item()
+                        correct_predictions[sample] = (pred == test_target[sample].item())
+                        uncertainties[i, sample] = 1 - test_t_metric_values[i, sample]
                             
             # Calculate distribution
             total_samples = len(test_target)
@@ -339,54 +349,26 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
 
             fout.write('{}\t{}\t{}\t{}\t{}\n'.format(acc_test, nlpd, ECE, acc5, exp_flops.item()))       
 
+    '''Addition for uncertainty and exit point computation'''
+    # Save results
+    results_dir = os.path.join(args.save, 'test_results')
+    os.makedirs(results_dir, exist_ok=True)
+    # Save matrices
+    np.save(os.path.join(results_dir, 'uncertainties.npy'), uncertainties.cpu().numpy())
+    np.save(os.path.join(results_dir, 'exit_points.npy'), exit_points.cpu().numpy())
+    np.save(os.path.join(results_dir, 'correct_predictions.npy'), correct_predictions.cpu().numpy())
+    # Save human-readable summary
+    with open(os.path.join(results_dir, 'test_results.txt'), 'w') as f:
+        f.write('Sample\tExit_Point\tCorrect\tUncertainties\n')
+        for i in range(n_test):
+            uncertainties_str = '\t'.join([f'{u:.4f}' for u in uncertainties[:, i]])
+            f.write(f'{i}\t{exit_points[i]}\t{int(correct_predictions[i])}\t{uncertainties_str}\n')
 
 class Tester(object):
     def __init__(self, model, args=None):
         self.args = args
         self.model = model
         self.softmax = nn.Softmax(dim=1).cuda()
-
-    # def test(self, model, test_loader):
-    #     '''
-    #     The function:
-    #     1. Sets model to evaluation mode
-    #     2. Processes each batch of inputs through the model
-    #     3. For each sample:
-    #        - Computes predictions and confidence scores at each exit
-    #        - Determines earliest exit point where confidence exceeds threshold
-    #        - Records accuracy and computational cost metrics
-    #     4. Prints summary statistics including:
-    #        - Overall accuracy
-    #        - Expected FLOPs (computational cost)
-    #        - Per-exit statistics (accuracy and number of samples)
-
-    #     The implementation assumes:
-    #     - Model has multiple exit points (classifiers)
-    #     - Each exit can compute confidence scores (e.g. max softmax probability)
-    #     - Pre-defined confidence thresholds exist for each exit
-    #     - FLOPs are tracked for computational cost analysis
-    #     '''
-    #     model.eval()
-    #     n_exits = len(model.module.classifier)
-        
-    #     with torch.no_grad():
-    #         for i, (input, target) in enumerate(test_loader):
-    #             input = input.cuda()
-    #             target = target.cuda()
-                
-    #             # Get predictions and confidences
-    #             logits, confidences = model.module.compute_confidence_scores(input)
-                
-    #             # Dynamic evaluation
-    #             acc, exp_flops, acc_rec, exp, preds, confs = self.dynamic_eval_with_softmax(
-    #                 logits, target, self.flops, self.confidence_thresholds
-    #             )
-                
-    #             # Log results
-    #             print(f'Accuracy: {acc:.4f}, Expected FLOPs: {exp_flops:.2e}')
-    #             for k in range(n_exits):
-    #                 if exp[k] > 0:
-    #                     print(f'Exit {k}: {acc_rec[k]/exp[k]:.4f} ({exp[k]} samples)')
 
     def calc_softmax_confidence(self, dataloader):
         """

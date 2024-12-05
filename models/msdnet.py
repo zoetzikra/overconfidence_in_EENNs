@@ -544,8 +544,8 @@ class MSDNet(nn.Module):
         
         for i in range(self.nBlocks):
             x = self.blocks[i](x)
-            # logits = self.classifier[i](x)
-            logits = self.probes[i](x)
+            logits = self.classifier[i](x)
+            # logits = self.probes[i](x)
             confidence = self.compute_max_softmax_confidence(logits)
             res.append(logits)
             confidences.append(confidence)
