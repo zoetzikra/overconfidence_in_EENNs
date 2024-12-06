@@ -135,28 +135,6 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     
     ###########################################################################
 
-    # if args.softmax_confidence:
-    #     tester.confidence_thresholds = [0.7, 0.8, 0.9, 0.95]  # FOR THE PROBES
-    #     results = []
-    #     with torch.no_grad():
-    #         for i, (input, target) in enumerate(test_loader):
-    #             input = input.cuda()
-    #             target = target.cuda()
-                
-    #             # Get logits using existing predict method
-    #             logits, _ = model.predict(input)  # We only need logits, not phi_out
-                
-    #             # Convert logits to tensor format expected by dynamic_eval_with_softmax
-    #             logits_tensor = torch.stack([torch.tensor(l) for l in logits])
-                
-    #             # Evaluate using softmax confidence
-    #             acc, exp_flops, ECE, prec5 = tester.dynamic_eval_with_softmax(
-    #                 logits_tensor, target, flops, confidence_thresholds
-    #             )
-    #             results.append((acc, exp_flops, ECE, prec5))
-        
-    #     return results
-
     '''Addition for uncertainty and exit point computation'''
     # Initialize matrices for tracking uncertainties, exit points, and correctness
     n_test = len(test_loader.sampler)
@@ -275,6 +253,38 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         val_target = val_targets
         test_target = test_targets
 
+        '''Addition for exit point correctness computation'''
+        # Add the new code here to track per-exit confidence and correctness
+        n_samples = len(test_targets)
+        n_exits = args.nBlocks
+        
+        # Calculate correctness for each exit
+        _, predictions = test_pred.max(dim=2)
+        correctness = torch.zeros((n_exits, n_samples))
+        for i in range(n_exits):
+            correctness[i] = (predictions[i] == test_targets).float()
+        
+        # Save detailed confidence and correctness results
+        with open(os.path.join(args.save, 'confidence_correctness.txt'), 'w') as f:
+            # Write header
+            f.write('Sample')
+            for i in range(n_exits):
+                f.write(f'\tConf_Exit_{i+1}')
+            for i in range(n_exits):
+                f.write(f'\tCorrect_Exit_{i+1}')
+            f.write('\n')
+            
+            # Write data
+            for i in range(n_samples):
+                f.write(f'{i}')
+                # Write confidences
+                for j in range(n_exits):
+                    f.write(f'\t{test_confidences[j][i]:.4f}')
+                # Write correctness
+                for j in range(n_exits):
+                    f.write(f'\t{int(correctness[j][i])}')
+                f.write('\n')
+
         # Initialize exit counts
         exit_counts = torch.zeros(args.nBlocks)
 
@@ -309,6 +319,22 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         acc_test, exp_flops, nlpd, ECE, signed_ECE, acc5 = tester.dynamic_eval_with_softmax(
             test_logits, test_targets, flops, tester.confidence_thresholds
         )
+
+        # After running with classifiers
+        # After running with probes
+        probe_targets = test_targets.cpu().numpy()
+        np.save(os.path.join(args.save, 'test_results', 'probe_targets.npy'), probe_targets)
+        # classifier_targets = test_targets.cpu().numpy()
+        # np.save(os.path.join(args.save, 'test_results', 'classifier_targets.npy'), classifier_targets)
+        # Then compare: take the np array of probe_targets and compare with the one of classifier_targets
+        # you need to load the two np arrays first
+        probe_targets = np.load(os.path.join(args.save, 'test_results', 'probe_targets.npy'))
+        classifier_targets = np.load(os.path.join('./MSDNet/cifar100_4/tested-classifiers', 'test_results', 'classifier_targets.npy'))
+        if np.array_equal(probe_targets, classifier_targets):
+            print("Data points are in the same order")
+        else:
+            print("Warning: Data points are shuffled!")
+        
 
         # Write results to file
         with open(filename, 'w') as fout:
