@@ -1,0 +1,17 @@
+Total samples analyzed: 1684
+
+Classifier Exit Distribution:
+Exit 1: 419 (24.9%)
+Exit 2: 340 (20.2%)
+Exit 3: 288 (17.1%)
+Exit 4: 637 (37.8%)
+
+Probe Exit Distribution:
+Exit 1: 471 (28.0%)
+Exit 2: 345 (20.5%)
+Exit 3: 278 (16.5%)
+Exit 4: 590 (35.0%)
+
+Decision Maker Distribution:
+Classifier: 177 (10.5%)
+Probe: 256 (15.2%)
