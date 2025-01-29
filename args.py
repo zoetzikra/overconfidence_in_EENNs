@@ -16,6 +16,9 @@ exp_group.add_argument('--save', default='save/default-{}'.format(time.time()),
 exp_group.add_argument('--resume', default=None, type=str, help='Name of latest checkpoint (default: none)')
 exp_group.add_argument('--evalmode', default=None, choices=['anytime', 'dynamic'], help='which mode to evaluate')
 exp_group.add_argument('--evaluate-from', default=None, type=str, metavar='PATH', help='path to saved checkpoint (default: none)')
+exp_group.add_argument('--evaluate-probe-from', default='', type=str, metavar='PATH',
+                    help='path to probe checkpoint for evaluation')
+
 exp_group.add_argument('--print-freq', '-p', default=10, type=int,
                        metavar='N', help='print frequency (default: 100)')
 exp_group.add_argument('--seed', default=0, type=int,
@@ -94,6 +97,14 @@ arg_parser.add_argument('--MIE', action='store_true', default=False, help='Use m
 
 arg_parser.add_argument('--optimize_temperature', action='store_true', default=False, help='Use the validation set to optimize temperature scaling individually for each block')
 arg_parser.add_argument('--optimize_var0', action='store_true', default=False, help='Use the validation set to optimize Laplace prior variance individually for each block')
+
+arg_parser.add_argument('--fixed-threshold-eval', action='store_true',
+                    help='Evaluate model with fixed thresholds for visualization')
+arg_parser.add_argument('--classifier-threshold', type=float, default=0.9,
+                    help='Fixed threshold for classifier heads')
+arg_parser.add_argument('--eval-budget-level', type=int, default=38,
+                    help='Budget level to use for evaluation (1-39)')
+
 
 # Laplace arguments
 arg_parser.add_argument('--compute_only_laplace', action='store_true', default=False, help='skip training and only fit laplace approximation')

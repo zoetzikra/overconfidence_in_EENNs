@@ -100,6 +100,16 @@ def main():
         state_dict = torch.load(args.evaluate_from)['state_dict']
         model.load_state_dict(state_dict)
 
+        # Load probe checkpoint if provided
+        if args.evaluate_probe_from:
+            probe_state = torch.load(args.evaluate_probe_from)['state_dict']
+            current_state = model.state_dict()
+            # Only load probe weights
+            for k, v in probe_state.items():
+                if 'probe' in k:
+                    current_state[k] = v
+            model.load_state_dict(current_state)
+
         if args.evalmode == 'anytime':
             validate(test_loader, model, criterion)
         else:
@@ -109,20 +119,114 @@ def main():
     scores = ['epoch\tlr\ttrain_loss\tval_loss\ttrain_prec1'
               '\tval_prec1\ttrain_prec5\tval_prec5']
 
+    # if not args.compute_only_laplace:
+    #     initial_time = time.time()
+    #     # Track last saved checkpoint number
+    #     last_checkpoint_num = args.epochs - 1  # This will be the last classifier checkpoint number
+        
+    #     for epoch in range(args.start_epoch, args.epochs):
+        
+    #         model_filename = 'checkpoint_%03d.pth.tar' % epoch
+    #         # Train and validate main model 
+    #         train_loss, train_prec1, train_prec5, lr = train(train_loader, model, criterion, optimizer, epoch)
+    #         val_loss, val_prec1, val_prec5 = validate(val_loader, model, criterion)
+    #         # Update scores
+    #         scores.append(('{}\t{:.3f}' + '\t{:.4f}' * 6).format(epoch, lr, train_loss, val_loss, train_prec1, val_prec1, train_prec5, val_prec5))
+            
+    #         is_best = val_prec1 > best_prec1
+    #         if is_best:
+    #             best_prec1 = val_prec1
+    #             best_epoch = epoch
+    #             print('New best validation last_bloc_accuracy {}'.format(best_prec1))
+    #         else:
+    #             print('Current best validation last_bloc_accuracy {}'.format(best_prec1))
+                    
+    #         save_checkpoint({
+    #             'epoch': epoch,
+    #             'arch': args.arch,
+    #             'state_dict': model.state_dict(),
+    #             'best_prec1': best_prec1,
+    #             'optimizer': optimizer.state_dict(),
+    #         }, args, is_best, model_filename, scores, is_probe=False)
+
+    #     print('Best val_prec1: {:.4f} at epoch {}'.format(best_prec1, best_epoch))
+    #     print('Total training time: {}'.format(time.time() - initial_time))
+
+    #     # NEW:
+    #     # Collect intermediate predictions after main model training
+    #     intermed_data, final_data = collect_validation_predictions(model, val_loader)
+    #     print("New validationdataset has been collected")
+
+    #     # Split data into train and validation sets
+    #     train_size = int(0.9 * len(final_data))  # 90-10 split
+    #     indices = torch.randperm(len(final_data)) # Shuffle indices
+
+    #     train_indices = indices[:train_size]
+    #     val_indices = indices[train_size:]
+
+    #     # Split intermediate data
+    #     train_intermediate = [data[train_indices] for data in intermed_data]
+    #     val_intermediate = [data[val_indices] for data in intermed_data]
+    #     train_final = final_data[train_indices]
+    #     val_final = final_data[val_indices]
+    #     print(f"Split sizes - Train: {len(train_final)}, Val: {len(val_final)}")
+
+    #     # Train and validate probes
+    #     temperature = 10.0
+    #     best_probe_acc = 0.0
+    #     num_probe_epochs = 300
+
+    #     probe_scores = ['epoch\tlr\ttrain_loss\tval_loss\ttrain_acc\tval_acc']
+        
+    #     reinitialize_probes(model)
+                    
+    #     probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
+    #                        lr=0.001,  # Fixed smaller learning rate
+    #                        momentum=args.momentum,
+    #                        weight_decay=args.weight_decay)
+
+    #     for epoch in range(num_probe_epochs):
+    #         last_checkpoint_num += 1 
+    #         model_filename = 'checkpoint_%03d.pth.tar' % last_checkpoint_num
+
+    #         train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temperature)
+    #         val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion, temperature=temperature)
+    #         print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
+    #         # Update probe scores
+    #         probe_scores.append(('{}\t{:.3f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}').format(
+    #             last_checkpoint_num, args.lr, train_loss, val_loss, train_acc, val_acc))
+            
+    #         # Check if this is the best probe accuracy
+    #         is_best = val_acc > best_probe_acc
+    #         if is_best:
+    #             best_probe_acc = val_acc
+    #             print(f'New best probe validation accuracy: {best_probe_acc:.4f}')
+            
+    #         # Save probe checkpoint
+    #         save_checkpoint({
+    #             'epoch': last_checkpoint_num,
+    #             'arch': args.arch,
+    #             'state_dict': model.state_dict(),
+    #             'best_probe_acc': best_probe_acc,
+    #             'optimizer': optimizer.state_dict(),
+    #             'probe_scores': probe_scores
+    #         }, args, is_best, model_filename, probe_scores, is_probe=True)
+
     if not args.compute_only_laplace:
         initial_time = time.time()
         # Track last saved checkpoint number
         last_checkpoint_num = args.epochs - 1  # This will be the last classifier checkpoint number
         
+        # 1. First complete model training as before
         for epoch in range(args.start_epoch, args.epochs):
-        
+
             model_filename = 'checkpoint_%03d.pth.tar' % epoch
             # Train and validate main model 
             train_loss, train_prec1, train_prec5, lr = train(train_loader, model, criterion, optimizer, epoch)
             val_loss, val_prec1, val_prec5 = validate(val_loader, model, criterion)
             # Update scores
             scores.append(('{}\t{:.3f}' + '\t{:.4f}' * 6).format(epoch, lr, train_loss, val_loss, train_prec1, val_prec1, train_prec5, val_prec5))
-            
+
             is_best = val_prec1 > best_prec1
             if is_best:
                 best_prec1 = val_prec1
@@ -130,7 +234,7 @@ def main():
                 print('New best validation last_bloc_accuracy {}'.format(best_prec1))
             else:
                 print('Current best validation last_bloc_accuracy {}'.format(best_prec1))
-                    
+
             save_checkpoint({
                 'epoch': epoch,
                 'arch': args.arch,
@@ -138,69 +242,73 @@ def main():
                 'best_prec1': best_prec1,
                 'optimizer': optimizer.state_dict(),
             }, args, is_best, model_filename, scores, is_probe=False)
-
+        
         print('Best val_prec1: {:.4f} at epoch {}'.format(best_prec1, best_epoch))
         print('Total training time: {}'.format(time.time() - initial_time))
 
-        # NEW:
-        # Collect intermediate predictions after main model training
-        intermed_data, final_data = collect_intermediate_predictions(model, train_loader)
-        print("New dataset has been collected")
+        print("Main model training completed. Starting probe training on validation data...")
+        
+        # 2. Collect validation predictions after model is fully trained
+        val_intermediate_data, val_predictions = collect_validation_predictions(model, val_loader)
+        print("Validation predictions collected")
 
-        # Split data into train and validation sets
-        train_size = int(0.9 * len(final_data))  # 90-10 split
-        indices = torch.randperm(len(final_data)) # Shuffle indices
+        # 3.Split data into train and validation sets
+        train_size = int(0.9 * len(val_predictions))  # 90-10 split
+        indices = torch.randperm(len(val_predictions)) # Shuffle indices
 
         train_indices = indices[:train_size]
         val_indices = indices[train_size:]
 
         # Split intermediate data
-        train_intermediate = [data[train_indices] for data in intermed_data]
-        val_intermediate = [data[val_indices] for data in intermed_data]
-        train_final = final_data[train_indices]
-        val_final = final_data[val_indices]
+        train_intermediate = [data[train_indices] for data in val_intermediate_data]
+        val_intermediate = [data[val_indices] for data in val_intermediate_data]
+        train_final = val_predictions[train_indices]
+        val_final = val_predictions[val_indices]
         print(f"Split sizes - Train: {len(train_final)}, Val: {len(val_final)}")
 
-        # Train and validate probes
-        temperature = 10.0
+
+        # 4. Train probes using validation data
+        temperature = 10.0  # Can be tuned
         best_probe_acc = 0.0
         num_probe_epochs = 300
 
         probe_scores = ['epoch\tlr\ttrain_loss\tval_loss\ttrain_acc\tval_acc']
-        
-        reinitialize_probes(model)
-                    
-        probe_optimizer = torch.optim.SGD([param for probe in model.module.probes for param in probe.parameters()],
-                           lr=0.001,  # Fixed smaller learning rate
-                           momentum=args.momentum,
-                           weight_decay=args.weight_decay)
 
-        for epoch in range(num_probe_epochs):
+        reinitialize_probes(model)
+
+        probe_optimizer = torch.optim.SGD(
+            [param for probe in model.module.probes for param in probe.parameters()],
+            lr=0.001,
+            momentum=args.momentum,
+            weight_decay=args.weight_decay
+        )
+
+        for epoch in range(num_probe_epochs):  # You might want to add probe_epochs to args
             last_checkpoint_num += 1 
             model_filename = 'checkpoint_%03d.pth.tar' % last_checkpoint_num
-
-            train_loss, train_acc = train_probes(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temperature)
+            
+            train_loss, train_acc = train_probes_on_val(train_intermediate, train_final, model, criterion, probe_optimizer, epoch, temperature=temperature)
             val_loss, val_acc = validate_probes(val_intermediate, val_final, model, criterion, temperature=temperature)
             print(f"Probe Training Epoch: {epoch}\tTrain Loss: {train_loss:.4f}\tTrain Acc: {train_acc:.4f}\tVal Loss: {val_loss:.4f}\tVal Acc: {val_acc:.4f}")
             # Update probe scores
             probe_scores.append(('{}\t{:.3f}\t{:.4f}\t{:.4f}\t{:.4f}\t{:.4f}').format(
                 last_checkpoint_num, args.lr, train_loss, val_loss, train_acc, val_acc))
             
-            # Check if this is the best probe accuracy
+            # Save checkpoint if best accuracy
             is_best = val_acc > best_probe_acc
             if is_best:
                 best_probe_acc = val_acc
                 print(f'New best probe validation accuracy: {best_probe_acc:.4f}')
             
-            # Save probe checkpoint
             save_checkpoint({
-                'epoch': last_checkpoint_num,
+                'epoch': epoch,
                 'arch': args.arch,
                 'state_dict': model.state_dict(),
                 'best_probe_acc': best_probe_acc,
-                'optimizer': optimizer.state_dict(),
+                'optimizer': probe_optimizer.state_dict(),
                 'probe_scores': probe_scores
             }, args, is_best, model_filename, probe_scores, is_probe=True)
+
         
     # Load the best model
     model_dir = os.path.join(args.save, 'save_models')
@@ -255,60 +363,91 @@ def compute_laplace_efficient(args, model, dset_loader):
                         [U[i].detach().cpu().numpy() for i in range(len(U))], \
                         [V[i].detach().cpu().numpy() for i in range(len(V))]
     np.save(os.path.join(args.save, "effL_llla.npy"), [M_W, U, V])
+    
+
+# def collect_intermediate_predictions(model, data_loader):
+#     """
+#     Collects predictions from each intermediate layer and the final layer to construct
+#     the computational uncertainty dataset.
+
+#     Returns data in a format compatible with the existing classifier training structure.
+#     """
+#     model.eval()
+#     intermediate_data = [[] for _ in range(len(model.module.blocks))]  # Initialize directly
+#     final_data = []
+
+#     with torch.no_grad():
+#         for i, (input, target) in enumerate(data_loader):
+#             input = input.cuda()
+
+#             # Initialize lists if it's the first batch
+#             if i == 0:
+#                 print("\nDebug: Feature collection")
+#                 print(f"Input shape: {input.shape}")
+
+#             # Process through blocks and collect features
+#             x = input
+#             for j in range(len(model.module.blocks)):
+#                 x = model.module.blocks[j](x)
+#                 intermediate_data[j].append(x[-1])  # Store the feature map that would go to classifier
+                
+#                 # Debug feature shapes on first batch
+#                 if i == 0:
+#                     print(f"Block {j} feature shape: {x[-1].shape}")
+                
+#             # Store final predictions (for training targets)
+#             output = model.module.classifier[-1](x)  # Use last classifier's output
+#             final_data.append(output)
+        
+#             if i % 100 == 0:
+#                 print(f'Collected data from {i} batches')
+
+#     # Concatenate intermediate predictions from all batches
+#     final_data = torch.cat(final_data, dim=0)
+#     intermediate_data = [torch.cat(block_data, dim=0) for block_data in intermediate_data]
+#     # SAME AS:
+#     # for j in range(len(probe_outputs)):
+#     #     intermediate_data[j] = torch.cat(intermediate_data[j], dim=0)
+    
+#     print("\nFinal collected shapes:")
+#     for i, data in enumerate(intermediate_data):
+#         print(f"Block {i} features shape: {data.shape}")
+#     print(f"Final data shape: {final_data.shape}")
+
+#     return intermediate_data, final_data
 
 
-def collect_intermediate_predictions(model, data_loader):
+# (pretty much same as above but cleaner)
+def collect_validation_predictions(model, val_loader):
     """
-    Collects predictions from each intermediate layer and the final layer to construct
-    the computational uncertainty dataset.
-
-    Returns data in a format compatible with the existing classifier training structure.
+    Collects intermediate features and final predictions from validation data
     """
     model.eval()
-    intermediate_data = [[] for _ in range(len(model.module.blocks))]  # Initialize directly
-    final_data = []
+    intermediate_data = [[] for _ in range(len(model.module.blocks))]
+    final_predictions = []  # Store model's predictions, not true labels
 
     with torch.no_grad():
-        for i, (input, target) in enumerate(data_loader):
+        for i, (input, _) in enumerate(val_loader):  # Note: we ignore true labels
             input = input.cuda()
-
-            # Initialize lists if it's the first batch
-            if i == 0:
-                print("\nDebug: Feature collection")
-                print(f"Input shape: {input.shape}")
-
+            
             # Process through blocks and collect features
             x = input
             for j in range(len(model.module.blocks)):
                 x = model.module.blocks[j](x)
-                intermediate_data[j].append(x[-1])  # Store the feature map that would go to classifier
+                intermediate_data[j].append(x[-1])
                 
-                # Debug feature shapes on first batch
-                if i == 0:
-                    print(f"Block {j} feature shape: {x[-1].shape}")
-                
-            # Store final predictions (for training targets)
+            # Store final predictions
             output = model.module.classifier[-1](x)  # Use last classifier's output
-            final_data.append(output)
-        
+            final_predictions.append(output)  # Store raw logits
+            
             if i % 100 == 0:
-                print(f'Collected data from {i} batches')
+                print(f'Collected validation data from {i} batches')
 
-    # Concatenate intermediate predictions from all batches
-    final_data = torch.cat(final_data, dim=0)
+    # Concatenate all batches
+    final_predictions = torch.cat(final_predictions, dim=0)
     intermediate_data = [torch.cat(block_data, dim=0) for block_data in intermediate_data]
-    # SAME AS:
-    # for j in range(len(probe_outputs)):
-    #     intermediate_data[j] = torch.cat(intermediate_data[j], dim=0)
     
-    print("\nFinal collected shapes:")
-    for i, data in enumerate(intermediate_data):
-        print(f"Block {i} features shape: {data.shape}")
-    print(f"Final data shape: {final_data.shape}")
-
-    return intermediate_data, final_data
-
-
+    return intermediate_data, final_predictions
 
 def train(train_loader, model, criterion, optimizer, epoch):
     global args
@@ -416,8 +555,128 @@ def distillation_loss(student_output, teacher_output, temperature=1.0):
     # 4. Scale the loss by temperature squared
     return loss * (temperature ** 2)
 
-def train_probes(intermediate_data, final_data, model, criterion, optimizer, epoch, temperature):
-    """Train probes for one epoch"""
+# def train_probes(intermediate_data, final_data, model, criterion, optimizer, epoch, temperature):
+#     """
+#     Train probes for one epoch
+#     """
+#     batch_time = AverageMeter()
+#     data_time = AverageMeter()
+#     losses = AverageMeter()
+#     top1, top5 = [], []
+#     for i in range(len(model.module.probes)):
+#         top1.append(AverageMeter())
+#         top5.append(AverageMeter())
+
+#     # switch to train mode
+#     for probe in model.module.probes:
+#         probe.train()
+    
+#     end = time.time()
+#     running_lr = None
+#     batch_size = 64
+#     num_samples = final_data.size(0)
+#     num_batches = (num_samples + batch_size - 1) // batch_size
+
+#     if epoch == 0:  # Only print debug info in first epoch
+#         print("\nProbe Training Debug Info:")
+#         print(f"Number of probes: {len(model.module.probes)}")
+#         for i, data in enumerate(intermediate_data):
+#             print(f"Shape of intermediate_data[{i}]: {data.shape}")
+#         print(f"Shape of final_data: {final_data.shape}")
+
+
+#     for batch_idx, start_idx in enumerate(range(0, num_samples, batch_size)):
+#         end_idx = min(start_idx + batch_size, num_samples)
+#         data_time.update(time.time() - end)
+
+#         # Adjust learning rate
+#         lr = adjust_learning_rate(optimizer, epoch, args, 
+#                                 batch=batch_idx,
+#                                 nBatch=num_batches, 
+#                                 method=args.lr_type)
+#         if running_lr is None:
+#             running_lr = lr
+
+#         # Get mini-batch of data
+#         batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in intermediate_data]
+#         # Only take the corresponding samples from final_data
+#         batch_final = final_data[start_idx:end_idx].cuda()
+        
+#         # Debug first batch of first epoch
+#         if epoch == 0 and start_idx == 0:
+#             print("\nFirst Batch Debug Info:")
+#             print("\nBatch shapes:")
+#             for i, data in enumerate(batch_intermed):
+#                 print(f"Block {i} intermediate batch shape: {data[0].shape}")
+#             print(f"Final batch shape: {batch_final.shape}")
+            
+#             print("\nProbe processing shapes:")
+#             for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+#                 print(f"\nBlock {i} Probe:")
+#                 print(f"  Input shape: {intermed_out[0].shape}")
+#                 with torch.no_grad():
+#                     probe_out = probe(intermed_out)
+#                     print(f"  Output shape: {probe_out.shape}")
+
+#         # Convert final predictions to class indices for accuracy computation
+#         _, batch_final_indices = batch_final.max(1)
+        
+#         # Forward pass through probes
+#         total_loss = 0.0
+#         num_probes = len(model.module.probes)
+#         temp = temperature
+#         for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
+#             probe_out = probe(intermed_out)
+#             # total_loss += criterion(probe_out, batch_final)
+#             # ALT: Add distillation loss
+#             total_loss += distillation_loss(probe_out, batch_final, temperature=temp)
+            
+#             # Calculate accuracy
+#             prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
+#             top1[i].update(prec1.item(), batch_size)
+#             top5[i].update(prec5.item(), batch_size)
+
+#         losses.update(total_loss.item(), batch_size)
+
+#         # Compute gradient and do SGD step
+#         optimizer.zero_grad()
+#         total_loss.backward()
+#         # Add gradient clipping
+#         # torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
+#         optimizer.step()
+
+#         # Measure elapsed time
+#         batch_time.update(time.time() - end)
+#         end = time.time()
+
+#         # Print statistics
+#         if batch_idx % args.print_freq == 0:
+#             print('Training: [{0}/{1}]\t'
+#                   'Time {batch_time.avg:.3f}\t'
+#                   'Data {data_time.avg:.3f}\t'
+#                   'Loss {loss.val:.4f}\t'
+#                   'Avg Acc@1 {top1:.3f}\t'
+#                   'Avg Acc@5 {top5:.3f}'.format(
+#                     batch_idx + 1, num_batches,
+#                     batch_time=batch_time,
+#                     data_time=data_time,
+#                     loss=losses,
+#                     top1=sum(m.avg for m in top1)/len(top1),
+#                     top5=sum(m.avg for m in top5)/len(top5),
+#                     lr=running_lr))
+
+#     # Print epoch summary
+#     epoch_acc = sum(m.avg for m in top1)/len(top1)
+#     print(f'\nProbe Training Epoch: {epoch}\t'
+#             f'Loss: {losses.avg:.4f}\t'
+#             f'Acc: {epoch_acc:.4f}')
+    
+#     return losses.avg, epoch_acc
+
+def train_probes_on_val(intermediate_data, final_predictions, model, criterion, optimizer, epoch, temperature):
+    """
+    Train probes using validation data, with model predictions as targets
+    """
     batch_time = AverageMeter()
     data_time = AverageMeter()
     losses = AverageMeter()
@@ -426,23 +685,23 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
         top1.append(AverageMeter())
         top5.append(AverageMeter())
 
-    # switch to train mode
+    # switch to train mode for probes
     for probe in model.module.probes:
         probe.train()
     
-    end = time.time()
-    running_lr = None
     batch_size = 64
-    num_samples = final_data.size(0)
+    num_samples = final_predictions.size(0)
     num_batches = (num_samples + batch_size - 1) // batch_size
 
-    if epoch == 0:  # Only print debug info in first epoch
-        print("\nProbe Training Debug Info:")
+    if epoch == 0:
+        print("\nProbe Training on Validation Data Debug Info:")
         print(f"Number of probes: {len(model.module.probes)}")
         for i, data in enumerate(intermediate_data):
             print(f"Shape of intermediate_data[{i}]: {data.shape}")
-        print(f"Shape of final_data: {final_data.shape}")
+        print(f"Shape of final_predictions: {final_predictions.shape}")
 
+    # Initialize end time before the loop
+    end = time.time()
 
     for batch_idx, start_idx in enumerate(range(0, num_samples, batch_size)):
         end_idx = min(start_idx + batch_size, num_samples)
@@ -453,45 +712,25 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
                                 batch=batch_idx,
                                 nBatch=num_batches, 
                                 method=args.lr_type)
-        if running_lr is None:
-            running_lr = lr
 
-        # Get mini-batch of data
+        # Get mini-batch of validation data
         batch_intermed = [[intermed[start_idx:end_idx].cuda()] for intermed in intermediate_data]
-        # Only take the corresponding samples from final_data
-        batch_final = final_data[start_idx:end_idx].cuda()
+        batch_predictions = final_predictions[start_idx:end_idx].cuda()
         
-        # Debug first batch of first epoch
-        if epoch == 0 and start_idx == 0:
-            print("\nFirst Batch Debug Info:")
-            print("\nBatch shapes:")
-            for i, data in enumerate(batch_intermed):
-                print(f"Block {i} intermediate batch shape: {data[0].shape}")
-            print(f"Final batch shape: {batch_final.shape}")
-            
-            print("\nProbe processing shapes:")
-            for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
-                print(f"\nBlock {i} Probe:")
-                print(f"  Input shape: {intermed_out[0].shape}")
-                with torch.no_grad():
-                    probe_out = probe(intermed_out)
-                    print(f"  Output shape: {probe_out.shape}")
-
-        # Convert final predictions to class indices for accuracy computation
-        _, batch_final_indices = batch_final.max(1)
+        # Get class indices for accuracy computation
+        _, batch_pred_indices = batch_predictions.max(1)
         
         # Forward pass through probes
         total_loss = 0.0
-        num_probes = len(model.module.probes)
-        temp = temperature
         for i, (probe, intermed_out) in enumerate(zip(model.module.probes, batch_intermed)):
             probe_out = probe(intermed_out)
             # total_loss += criterion(probe_out, batch_final)
             # ALT: Add distillation loss
-            total_loss += distillation_loss(probe_out, batch_final, temperature=temp)
+            # Use distillation loss to match model's predictions
+            total_loss += distillation_loss(probe_out, batch_predictions, temperature=temperature)
             
-            # Calculate accuracy
-            prec1, prec5 = accuracy(probe_out.data, batch_final_indices, topk=(1, 5))
+            # Calculate accuracy (compared to model's predictions)
+            prec1, prec5 = accuracy(probe_out.data, batch_pred_indices, topk=(1, 5))
             top1[i].update(prec1.item(), batch_size)
             top5[i].update(prec5.item(), batch_size)
 
@@ -500,38 +739,20 @@ def train_probes(intermediate_data, final_data, model, criterion, optimizer, epo
         # Compute gradient and do SGD step
         optimizer.zero_grad()
         total_loss.backward()
-        # Add gradient clipping
-        # torch.nn.utils.clip_grad_norm_([p for probe in model.module.probes for p in probe.parameters()], max_norm=1.0)
         optimizer.step()
 
         # Measure elapsed time
         batch_time.update(time.time() - end)
         end = time.time()
 
-        # Print statistics
+        epoch_acc = sum(m.avg for m in top1)/len(top1)
+
         if batch_idx % args.print_freq == 0:
-            print('Training: [{0}/{1}]\t'
-                  'Time {batch_time.avg:.3f}\t'
-                  'Data {data_time.avg:.3f}\t'
-                  'Loss {loss.val:.4f}\t'
-                  'Avg Acc@1 {top1:.3f}\t'
-                  'Avg Acc@5 {top5:.3f}'.format(
-                    batch_idx + 1, num_batches,
-                    batch_time=batch_time,
-                    data_time=data_time,
-                    loss=losses,
-                    top1=sum(m.avg for m in top1)/len(top1),
-                    top5=sum(m.avg for m in top5)/len(top5),
-                    lr=running_lr))
+            print(f'Validation Probe Training: [{batch_idx}/{num_batches}]\t'
+                  f'Loss {losses.val:.4f} ({losses.avg:.4f})\t'
+                  f'Avg Acc@1 {epoch_acc:.4f}')
 
-    # Print epoch summary
-    epoch_acc = sum(m.avg for m in top1)/len(top1)
-    print(f'\nProbe Training Epoch: {epoch}\t'
-            f'Loss: {losses.avg:.4f}\t'
-            f'Acc: {epoch_acc:.4f}')
-    
     return losses.avg, epoch_acc
-
 
 def validate_probes(val_intermediate_data, val_final_data, model, criterion, temperature):
     """Validate probes for one epoch"""

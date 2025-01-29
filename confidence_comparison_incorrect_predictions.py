@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 
 # Read the data files
-classifier_df = pd.read_csv('./MSDNet/cifar100_4/tested-classifiers/confidence_correctness.txt', sep='\t')
-probe_df = pd.read_csv('./MSDNet/cifar100_4/tested-probes/confidence_correctness.txt', sep='\t')
+classifier_df = pd.read_csv('./confidence_correctness_classifiers.txt', sep='\t')
+probe_df = pd.read_csv('./confidence_correctness_probes.txt', sep='\t')
 # Set confidence thresholds
-classifier_threshold = 0.75
-probe_threshold = 0.75
+classifier_threshold = 0.85
+probe_threshold = 0.70
 
 # Find indices where all exits were incorrect in classifier predictions
 all_wrong_mask = (classifier_df['Correct_Exit_1'] == 0) & \
@@ -28,7 +28,7 @@ def get_exit_point(row, threshold):
     return 4  # Default to last exit if no confidence exceeds threshold
 
 # Create output file
-with open('exit_analysis.txt', 'w') as f:
+with open('exit_analysis_70-85.txt', 'w') as f:
     f.write('Sample\tClassifier_Exit\tProbe_Exit\tMin_Exit\tDecision_Maker\n')
     
     for idx in wrong_indices:
@@ -52,7 +52,7 @@ with open('exit_analysis.txt', 'w') as f:
         f.write(f'{idx}\t{classifier_exit}\t{probe_exit}\t{min_exit}\t{decision_maker}\n')
 
 # Print summary statistics
-with open('exit_analysis_summary.txt', 'w') as f:
+with open('exit_analysis_summary_70-85.txt', 'w') as f:
     total_samples = len(wrong_indices)
     f.write(f'Total samples analyzed: {total_samples}\n\n')
     
@@ -80,3 +80,27 @@ with open('exit_analysis_summary.txt', 'w') as f:
     f.write('\nDecision Maker Distribution:\n')
     f.write(f'Classifier: {classifier_decisions} ({(classifier_decisions/total_samples)*100:.1f}%)\n')
     f.write(f'Probe: {probe_decisions} ({(probe_decisions/total_samples)*100:.1f}%)\n')
+
+    # Initialize accumulators
+    total_classifier_exit = 0
+    total_probe_exit = 0
+
+    for idx in wrong_indices:
+        classifier_row = classifier_df.loc[idx]
+        probe_row = probe_df.loc[idx]
+        
+        # Get exit points
+        classifier_exit = get_exit_point(classifier_row, classifier_threshold)
+        probe_exit = get_exit_point(probe_row, probe_threshold)
+        
+        # Accumulate exit indices
+        total_classifier_exit += classifier_exit
+        total_probe_exit += probe_exit
+        
+    # Calculate averages
+    average_classifier_exit = total_classifier_exit / total_samples
+    average_probe_exit = total_probe_exit / total_samples
+
+    f.write(f'Total incorrect samples analyzed: {total_samples}\n\n')
+    f.write(f'Average Classifier Exit Index: {average_classifier_exit:.2f}\n')
+    f.write(f'Average Probe Exit Index: {average_probe_exit:.2f}\n')

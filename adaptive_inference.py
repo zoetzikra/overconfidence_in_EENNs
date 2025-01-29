@@ -119,7 +119,7 @@ def calculate_signed_ECE(confidences, corrects, n_bins=15):
 
 def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     tester = Tester(model, args)
-    tester.confidence_thresholds = [0.7, 0.8, 0.9, 0.95]  # FOR THE PROBES
+    tester.confidence_thresholds = [0.7, 0.8, 0.9, 0.95]  # FOR THE PROBES # NOT USED IN THE BUDGETED CLASSIFICATION EXPERIMENTS
         
     # Expected computational cost of each block for the whole dataset             
     flops = torch.load(os.path.join(args.save, 'flops.pth'))
@@ -242,8 +242,9 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
     '''
     if not args.laplace:
         # Use softmax confidence-based evaluation
-        filename = os.path.join(args.save, 'dynamic_softmax%s.txt' % (fname_ending))
+        filename = os.path.join(args.save, 'actual_dynamic_softmax%s.txt' % (fname_ending))
         
+        # Calculate confidences using softmax
         val_logits, val_confidences, val_targets = tester.calc_softmax_confidence(val_loader)
         test_logits, test_confidences, test_targets = tester.calc_softmax_confidence(test_loader)
         
@@ -253,59 +254,8 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
         val_target = val_targets
         test_target = test_targets
 
-        '''Addition for exit point correctness computation'''
-        # Add the new code here to track per-exit confidence and correctness
-        n_samples = len(test_targets)
-        n_exits = args.nBlocks
-        
-        # Calculate correctness for each exit
-        _, predictions = test_pred.max(dim=2)
-        correctness = torch.zeros((n_exits, n_samples))
-        for i in range(n_exits):
-            correctness[i] = (predictions[i] == test_targets).float()
-        
-        # Save detailed confidence and correctness results
-        with open(os.path.join(args.save, 'confidence_correctness.txt'), 'w') as f:
-            # Write header
-            f.write('Sample')
-            for i in range(n_exits):
-                f.write(f'\tConf_Exit_{i+1}')
-            for i in range(n_exits):
-                f.write(f'\tCorrect_Exit_{i+1}')
-            f.write('\n')
-            
-            # Write data
-            for i in range(n_samples):
-                f.write(f'{i}')
-                # Write confidences
-                for j in range(n_exits):
-                    f.write(f'\t{test_confidences[j][i]:.4f}')
-                # Write correctness
-                for j in range(n_exits):
-                    f.write(f'\t{int(correctness[j][i])}')
-                f.write('\n')
-
-        # Initialize exit counts
-        exit_counts = torch.zeros(args.nBlocks)
-
-        # Calculate exit distribution
-        for i in range(len(test_targets)):
-            for k in range(args.nBlocks):
-                confidence = test_confidences[k][i]
-                if confidence >= tester.confidence_thresholds[k]:
-                    exit_counts[k] += 1
-                    break
-                if k == args.nBlocks - 1:  # If reached last exit
-                    exit_counts[k] += 1
-
-        # Calculate and print exit distribution
-        exit_distribution = exit_counts / len(test_targets) * 100  # Convert to percentages
-        print("\nExit Distribution with Fixed Confidence Thresholds:")
-        print("Thresholds:", tester.confidence_thresholds)
-        for i, (pct, threshold) in enumerate(zip(exit_distribution, tester.confidence_thresholds)):
-            print(f"Exit {i+1} (conf ≥ {threshold:.2f}): {pct:.1f}%")
-
-        # Calculate validation and test set accuracies for each block
+        #THIS EXTRA ADDITION WAS MISSING AT FIRST BUT IT WAS PRESENT IN THE INITIAL VERSION
+        # Calculate validation and test set accuracies for each block (add this back)
         _, argmax_val = val_pred.max(dim=2, keepdim=False)
         maxpred_test, argmax_test = test_pred.max(dim=2, keepdim=False)
         print('Val acc      Test acc')
@@ -315,35 +265,183 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
             print('{:.3f}       {:.3f}'.format(val_acc, test_acc))
         print('')
 
-        # Use fixed confidence thresholds for early exit decisions
-        acc_test, exp_flops, nlpd, ECE, signed_ECE, acc5 = tester.dynamic_eval_with_softmax(
-            test_logits, test_targets, flops, tester.confidence_thresholds
-        )
-
-        # After running with classifiers
-        # After running with probes
-        probe_targets = test_targets.cpu().numpy()
-        np.save(os.path.join(args.save, 'test_results', 'probe_targets.npy'), probe_targets)
-        # classifier_targets = test_targets.cpu().numpy()
-        # np.save(os.path.join(args.save, 'test_results', 'classifier_targets.npy'), classifier_targets)
-        # Then compare: take the np array of probe_targets and compare with the one of classifier_targets
-        # you need to load the two np arrays first
-        probe_targets = np.load(os.path.join(args.save, 'test_results', 'probe_targets.npy'))
-        classifier_targets = np.load(os.path.join('./MSDNet/cifar100_4/tested-classifiers', 'test_results', 'classifier_targets.npy'))
-        if np.array_equal(probe_targets, classifier_targets):
-            print("Data points are in the same order")
-        else:
-            print("Warning: Data points are shuffled!")
+        # Initialize matrices for tracking
+        n_samples = len(test_targets)
+        n_exits = args.nBlocks
+        # the next 3 are new:
+        uncertainties = torch.zeros((n_exits, n_samples))
+        exit_points = torch.zeros(n_samples, dtype=torch.long)
+        correct_predictions = torch.zeros(n_samples, dtype=torch.bool)
         
+        # Calculate base correctness for each exit
+        _, predictions = test_pred.max(dim=2)
+        correctness = torch.zeros((n_exits, n_samples))
+        for i in range(n_exits):
+            correctness[i] = (predictions[i] == test_targets).float()
 
-        # Write results to file
-        with open(filename, 'w') as fout:
-            fout.write(f"Accuracy:  {acc_test}\n")
-            fout.write(f"NLPD:      {nlpd}\n")
-            fout.write(f"ECE:       {ECE}\n")
-            fout.write(f"Signed ECE: {signed_ECE}\n")
-            fout.write(f"Top-5 Acc: {acc5}\n")
-            fout.write(f"FLOPs:     {exp_flops}\n")
+        # Open file for detailed results
+        with open(os.path.join(args.save, 'confidence_correctness.txt'), 'w') as f:
+            # Write header
+            f.write('Sample\tBudget')
+            for i in range(n_exits):
+                f.write(f'\tConf_Exit_{i+1}')
+            for i in range(n_exits):
+                f.write(f'\tCorrect_Exit_{i+1}')
+            f.write('\tActual_Exit\tActual_FLOPs\n')
+                
+            # Iterate over different budget levels
+            for p in range(1, 40):
+                print(f"\n{'*'*20} Budget Level {p}/39 {'*'*20}")
+
+                _p = torch.FloatTensor(1).fill_(p * 1.0 / 20)
+                probs = torch.exp(torch.log(_p) * torch.arange(1, args.nBlocks+1))
+                probs /= probs.sum()
+                
+                # Find dynamic thresholds
+                acc_val, _, T = tester.dynamic_find_threshold(val_pred, val_target, val_confidences, probs, flops)
+                
+                # Print dynamic thresholds for this budget level (new addition)
+                print(f"\nDynamic Thresholds and Accuracy for Budget Level {p}/39:")
+                print(f"Dynamic Val Accuracy: {acc_val:.3f}")  # Accuracy with early-exit strategy
+                print("Exit thresholds:")
+                for i, threshold in enumerate(T):
+                    print(f"Exit {i+1}: {threshold:.3f}")
+
+                # For each sample
+                for i in range(n_samples):
+                    f.write(f'{i}\t{p}')
+                    # Write confidences
+                    for j in range(n_exits):
+                        f.write(f'\t{test_confidences[j][i]:.4f}')
+                    # Write correctness
+                    for j in range(n_exits):
+                        f.write(f'\t{int(correctness[j][i])}')
+                    
+                    # Determine exit point using dynamic thresholds
+                    actual_exit = None
+                    for k in range(n_exits):
+                        if test_confidences[k][i] >= T[k]:
+                            actual_exit = k
+                            break
+                    if actual_exit is None:
+                        actual_exit = n_exits - 1
+                    
+                    # Calculate FLOPs and record exit point
+                    actual_flops = sum(flops[:actual_exit + 1])
+                    exit_points[i] = actual_exit
+                    correct_predictions[i] = correctness[actual_exit][i]
+                    uncertainties[:, i] = 1 - test_confidences[:, i]
+                    
+                    f.write(f'\t{actual_exit + 1}\t{actual_flops:.0f}\n')
+                
+                # Calculate and evaluate with these thresholds
+                acc_test, exp_flops, nlpd, ECE, acc5 = tester.dynamic_eval_threshold(
+                    test_pred, test_target, flops, T, test_confidences, p)
+                
+                # Calculate exit distribution for this budget level
+                exit_counts = torch.zeros(n_exits)
+                for i in range(n_samples):
+                    exit_counts[int(exit_points[i])] += 1
+                exit_distribution = exit_counts / n_samples * 100
+                
+                print(f"\nBudget level {p}/39 (FLOPs: {exp_flops/1e6:.2f}M)")
+                print("Exit point distribution:")
+                for i, pct in enumerate(exit_distribution):
+                    print(f"Exit {i+1}: {pct:.1f}%")
+                print(f"Accuracy: {acc_test:.3f}, ECE: {ECE:.3f}, NLPD: {nlpd:.3f}")
+
+        # Save results
+        results_dir = os.path.join(args.save, 'test_results')
+        os.makedirs(results_dir, exist_ok=True)
+        np.save(os.path.join(results_dir, 'uncertainties.npy'), uncertainties.cpu().numpy())
+        np.save(os.path.join(results_dir, 'exit_points.npy'), exit_points.cpu().numpy())
+        np.save(os.path.join(results_dir, 'correct_predictions.npy'), correct_predictions.cpu().numpy())
+        
+        # Save final summary
+        with open(os.path.join(results_dir, 'test_results.txt'), 'w') as f:
+            f.write('Sample\tExit_Point\tCorrect\tConfidences\n')
+            for i in range(n_samples):
+                confidences_str = '\t'.join([f'{c:.4f}' for c in test_confidences[:, i]])
+                f.write(f'{i}\t{exit_points[i]}\t{int(correct_predictions[i])}\t{confidences_str}\n')
+
+
+        # if args.fixed_threshold_eval: 
+        #     print("\nEvaluating with fixed thresholds for visualization...")
+        #     print(f"Using classifier threshold: {args.classifier_threshold}")
+            
+        #     # Fixed thresholds setup
+        #     probe_thresholds = np.linspace(0.1, 1.0, 10)  # 10 different thresholds for probes
+            
+        #     results = []
+        #     n_samples = len(test_loader.dataset)
+        #     n_exits = args.nBlocks
+
+        #     # For each probe threshold
+        #     for probe_thresh in probe_thresholds:
+        #         print(f"\nEvaluating with probe threshold: {probe_thresh:.2f}")
+        #         exit_points = torch.zeros(n_samples)
+        #         correct_predictions = torch.zeros(n_samples, dtype=torch.bool)
+        #         sample_idx = 0
+
+        #         for i, (input, target) in enumerate(test_loader):
+        #             input = input.cuda()
+        #             target = target.cuda()
+        #             batch_size = input.size(0)
+
+        #             # Get classifier and probe confidences separately
+        #             classifier_outputs, classifier_confidences = model.module.compute_confidence_scores_classifier(input)
+        #             probe_outputs, probe_confidences = model.module.compute_confidence_scores_probe(input)
+
+
+        #             # For each sample in batch
+        #             for j in range(batch_size):
+        #                 # Find earliest exit that meets either threshold
+        #                 exit_found = False
+        #                 for exit in range(n_exits):
+        #                     cls_conf = classifier_confidences[exit][j]
+        #                     probe_conf = probe_confidences[exit][j]
+
+        #                     if cls_conf >= args.classifier_threshold:
+        #                         exit_points[sample_idx + j] = exit
+        #                         # But ALWAYS use classifier output for the actual prediction
+        #                         pred = classifier_outputs[exit][j].argmax()  # Use classifier prediction
+        #                         correct_predictions[sample_idx + j] = (pred == target[j])
+        #                         exit_found = True
+        #                         break
+                            
+        #                     elif probe_conf >= probe_thresh:
+        #                         exit_points[sample_idx + j] = exit
+        #                         pred = probe_outputs[exit][j].argmax()  # Use probe prediction
+        #                         correct_predictions[sample_idx + j] = (pred == target[j])
+        #                         exit_found = True
+        #                         break
+
+        #                 # If no exit found, use last exit with classifier output
+        #                 if not exit_found:
+        #                     exit_points[sample_idx + j] = n_exits - 1
+        #                     pred = classifier_outputs[-1][j].argmax()
+        #                     correct_predictions[sample_idx + j] = (pred == target[j])
+
+        #             sample_idx += batch_size
+
+        #         # Calculate metrics
+        #         avg_exit = exit_points.float().mean().item() + 1  # +1 for 1-based indexing
+        #         accuracy = correct_predictions.float().mean().item() * 100
+
+        #         results.append({
+        #             'probe_threshold': probe_thresh,
+        #             'avg_exit': avg_exit,
+        #             'accuracy': accuracy,
+        #             'classifier_threshold': args.classifier_threshold
+        #         })
+
+        #         print(f"Average Exit: {avg_exit:.2f}, Accuracy: {accuracy:.2f}%")
+
+        #     # Save results for plotting
+        #     results_path = os.path.join(args.save, 'fixed_threshold_results.json')
+        #     import json
+        #     with open(results_path, 'w') as f:
+        #         json.dump(results, f)
 
         return acc_test, nlpd, ECE, acc5, exp_flops
 
@@ -474,9 +572,17 @@ class Tester(object):
             with torch.no_grad():
                 input_var = torch.autograd.Variable(input).cuda()
                 
-                # Get both logits and confidence scores using our new method
-                output, confs = self.model.module.compute_confidence_scores(input_var)
-                
+                # Choose confidence computation method based on whether probes are being used
+                if self.args.evaluate_probe_from:
+                    output, confs = self.model.module.compute_combined_confidence_scores(input_var)
+                    confidence_type = "Combined"
+                elif "model_best_probe_acc.pth.tar" in self.args.evaluate_from:
+                    output, confs = self.model.module.compute_confidence_scores_probe(input_var)
+                    confidence_type = "Probe"
+                else:
+                    output, confs = self.model.module.compute_confidence_scores_classifier(input_var)
+                    confidence_type = "Classifier"
+            
                 if not isinstance(output, list):
                     output = [output]
                     
@@ -486,8 +592,8 @@ class Tester(object):
                     confidences[b].append(confs[b])
 
             if i % self.args.print_freq == 0:
-                print('Generate Softmax Confidence: [{0}/{1}]'.format(i, len(dataloader)))
-
+                print(f'Generate {confidence_type} Confidence: [{i}/{len(dataloader)}]')
+    
         # Format outputs similar to calc_logit
         for b in range(n_exit):
             logits[b] = torch.cat(logits[b], dim=0)
@@ -505,7 +611,7 @@ class Tester(object):
         targets = torch.cat(targets, dim=0)
         ts_targets = torch.Tensor().resize_(size[1]).copy_(targets)
         
-        print('Confidence calculation time: {}'.format(time.time() - start_time))
+        print(f'{confidence_type} confidence calculation time: {time.time() - start_time}')
 
         return ts_logits, ts_confidences, ts_targets
 
@@ -740,6 +846,7 @@ class Tester(object):
         return acc * 100.0 / n_sample, expected_flops, nlpd / n_sample, ECE, prec5[0]
         
 
+    # NOT USED IN THE BUDGETED CLASSIFICATION EXPERIMENTS
     def dynamic_eval_with_softmax(self, logits, targets, flops, confidence_thresholds):
         """
         Dynamic evaluation using maximum softmax probability as confidence measure
