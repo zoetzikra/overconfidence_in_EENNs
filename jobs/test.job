@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_a100
+#SBATCH --gpus=1
+#SBATCH --gpus-per-node=1
+#SBATCH --job-name=RunMethod
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=00:10:00
+#SBATCH --output=RunMethod_%A_TestCIFAR_dynamic_softmax_combined.out
+
+module purge
+module load 2023
+module load Anaconda3/2023.07-2
+
+# Activate your environment
+source activate MSDNet
+
+python main.py --data-root ./CIFAR100/ --data cifar100 --save ./MSDNet/cifar100_4/new-tested-combined \
+    --arch msdnet --batch-size 64 --epochs 300 --nBlocks 4 --stepmode lin_grow --step 1 --base 1 \
+    --nChannels 16 --use-valid -j 1 --evalmode dynamic \
+    --evaluate-from ./MSDNet/cifar100_4/val_probes/save_models/model_best_acc.pth.tar \
+    --evaluate-probe-from ./MSDNet/cifar100_4/val_probes/save_models/model_best_probe_acc.pth.tar \
+    --fixed-threshold-eval \
+    --classifier-threshold 0.95 \
+    --eval-budget-level 38

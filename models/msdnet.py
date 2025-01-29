@@ -537,7 +537,7 @@ class MSDNet(nn.Module):
         return max_probs
 
 
-    def compute_confidence_scores(self, x):
+    def compute_confidence_scores_classifier(self, x):
         """Compute confidence scores for each exit"""
         res = []
         confidences = []
@@ -545,9 +545,47 @@ class MSDNet(nn.Module):
         for i in range(self.nBlocks):
             x = self.blocks[i](x)
             logits = self.classifier[i](x)
-            # logits = self.probes[i](x)
             confidence = self.compute_max_softmax_confidence(logits)
             res.append(logits)
             confidences.append(confidence)
+            
+        return res, confidences
+        
+    def compute_confidence_scores_probe(self, x):
+        """Compute confidence scores for each exit"""
+        res = []
+        confidences = []
+        
+        for i in range(self.nBlocks):
+            x = self.blocks[i](x)
+            logits = self.probes[i](x)
+            confidence = self.compute_max_softmax_confidence(logits)
+            res.append(logits)
+            confidences.append(confidence)
+            
+        return res, confidences
+
+    def compute_combined_confidence_scores(self, x):
+        """Compute combined confidence scores using both classifier and probe heads"""
+        res = []
+        confidences = []
+        
+        for i in range(self.nBlocks):
+            x = self.blocks[i](x)
+            
+            # Get classifier confidence
+            classifier_logits = self.classifier[i](x)
+            classifier_conf = self.compute_max_softmax_confidence(classifier_logits)
+            
+            # Get probe confidence
+            probe_logits = self.probes[i](x)
+            probe_conf = self.compute_max_softmax_confidence(probe_logits)
+            
+            # Take maximum of the two confidences
+            combined_conf = torch.maximum(classifier_conf, probe_conf)
+            
+            # Store classifier logits (or you could choose probe logits or combine them)
+            res.append(classifier_logits)
+            confidences.append(combined_conf)
             
         return res, confidences
