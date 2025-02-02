@@ -104,6 +104,8 @@ arg_parser.add_argument('--classifier-threshold', type=float, default=0.9,
                     help='Fixed threshold for classifier heads')
 arg_parser.add_argument('--eval-budget-level', type=int, default=38,
                     help='Budget level to use for evaluation (1-39)')
+arg_parser.add_argument('--confidence-type', type=str, default='combined',
+                    help='Type of confidence to use for evaluation (combined, probe, classifier)')
 
 
 # Laplace arguments

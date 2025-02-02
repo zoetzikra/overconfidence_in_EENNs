@@ -364,84 +364,124 @@ def dynamic_evaluate(model, test_loader, val_loader, args, prints = False):
                 confidences_str = '\t'.join([f'{c:.4f}' for c in test_confidences[:, i]])
                 f.write(f'{i}\t{exit_points[i]}\t{int(correct_predictions[i])}\t{confidences_str}\n')
 
-
-        # if args.fixed_threshold_eval: 
-        #     print("\nEvaluating with fixed thresholds for visualization...")
-        #     print(f"Using classifier threshold: {args.classifier_threshold}")
+        if args.fixed_threshold_eval: 
+            print("\nEvaluating with fixed thresholds for visualization...")
+            print(f"Using classifier threshold: {args.classifier_threshold}")
             
-        #     # Fixed thresholds setup
-        #     probe_thresholds = np.linspace(0.1, 1.0, 10)  # 10 different thresholds for probes
+            results = []
+            n_samples = len(test_loader.dataset)
+            n_exits = args.nBlocks
+
+            print("\nEvaluating classifier-only model...")
+            exit_points = torch.zeros(n_samples)
+            correct_predictions = torch.zeros(n_samples, dtype=torch.bool)
+            sample_idx = 0
+
+            for i, (input, target) in enumerate(test_loader):
+                input = input.cuda()
+                target = target.cuda()
+                batch_size = input.size(0)
+
+                # Get classifier confidences
+                classifier_outputs, classifier_confidences = model.module.compute_confidence_scores_classifier(input)
+
+                # For each sample in batch
+                for j in range(batch_size):
+                    exit_found = False
+                    for exit in range(n_exits):
+                        cls_conf = classifier_confidences[exit][j]
+                        
+                        if cls_conf >= args.classifier_threshold:
+                            exit_points[sample_idx + j] = exit
+                            pred = classifier_outputs[exit][j].argmax()
+                            correct_predictions[sample_idx + j] = (pred == target[j])
+                            exit_found = True
+                            break
+
+                    if not exit_found:
+                        exit_points[sample_idx + j] = n_exits - 1
+                        pred = classifier_outputs[-1][j].argmax()
+                        correct_predictions[sample_idx + j] = (pred == target[j])
+
+                sample_idx += batch_size
+
+            # Calculate metrics for classifier
+            avg_exit = exit_points.float().mean().item() + 1
+            accuracy = correct_predictions.float().mean().item() * 100
+
+            results.append({
+                'probe_threshold': None,  # Indicates this is classifier-only
+                'avg_exit': avg_exit,
+                'accuracy': accuracy,
+                'classifier_threshold': args.classifier_threshold
+            })
+
+            print(f"Classifier-only - Average Exit: {avg_exit:.2f}, Accuracy: {accuracy:.2f}%")
+
+            # Fixed thresholds setup
+            probe_thresholds = np.linspace(0.1, 1.0, 10)  # 10 different thresholds for probes
             
-        #     results = []
-        #     n_samples = len(test_loader.dataset)
-        #     n_exits = args.nBlocks
+            # For each probe threshold
+            for probe_thresh in probe_thresholds:
+                print(f"\nEvaluating with probe threshold: {probe_thresh:.2f}")
+                exit_points = torch.zeros(n_samples)
+                correct_predictions = torch.zeros(n_samples, dtype=torch.bool)
+                sample_idx = 0
 
-        #     # For each probe threshold
-        #     for probe_thresh in probe_thresholds:
-        #         print(f"\nEvaluating with probe threshold: {probe_thresh:.2f}")
-        #         exit_points = torch.zeros(n_samples)
-        #         correct_predictions = torch.zeros(n_samples, dtype=torch.bool)
-        #         sample_idx = 0
+                for i, (input, target) in enumerate(test_loader):
+                    input = input.cuda()
+                    target = target.cuda()
+                    batch_size = input.size(0)
 
-        #         for i, (input, target) in enumerate(test_loader):
-        #             input = input.cuda()
-        #             target = target.cuda()
-        #             batch_size = input.size(0)
-
-        #             # Get classifier and probe confidences separately
-        #             classifier_outputs, classifier_confidences = model.module.compute_confidence_scores_classifier(input)
-        #             probe_outputs, probe_confidences = model.module.compute_confidence_scores_probe(input)
+                    # Get classifier and probe confidences separately
+                    classifier_outputs, classifier_confidences = model.module.compute_confidence_scores_classifier(input)
+                    _, probe_confidences = model.module.compute_confidence_scores_probe(input)
 
 
-        #             # For each sample in batch
-        #             for j in range(batch_size):
-        #                 # Find earliest exit that meets either threshold
-        #                 exit_found = False
-        #                 for exit in range(n_exits):
-        #                     cls_conf = classifier_confidences[exit][j]
-        #                     probe_conf = probe_confidences[exit][j]
+                    # For each sample in batch
+                    for j in range(batch_size):
+                        # Find earliest exit that meets either threshold
+                        exit_found = False
+                        for exit in range(n_exits):
+                            cls_conf = classifier_confidences[exit][j]
+                            probe_conf = probe_confidences[exit][j]
 
-        #                     if cls_conf >= args.classifier_threshold:
-        #                         exit_points[sample_idx + j] = exit
-        #                         # But ALWAYS use classifier output for the actual prediction
-        #                         pred = classifier_outputs[exit][j].argmax()  # Use classifier prediction
-        #                         correct_predictions[sample_idx + j] = (pred == target[j])
-        #                         exit_found = True
-        #                         break
-                            
-        #                     elif probe_conf >= probe_thresh:
-        #                         exit_points[sample_idx + j] = exit
-        #                         pred = probe_outputs[exit][j].argmax()  # Use probe prediction
-        #                         correct_predictions[sample_idx + j] = (pred == target[j])
-        #                         exit_found = True
-        #                         break
+                            if cls_conf >= args.classifier_threshold or probe_conf >= probe_thresh:
+                            # if probe_conf >= probe_thresh:
+                                exit_points[sample_idx + j] = exit
+                                # But ALWAYS use classifier output for the actual prediction
+                                pred = classifier_outputs[exit][j].argmax()  # Use classifier prediction
+                                correct_predictions[sample_idx + j] = (pred == target[j])
+                                exit_found = True
+                                break
 
-        #                 # If no exit found, use last exit with classifier output
-        #                 if not exit_found:
-        #                     exit_points[sample_idx + j] = n_exits - 1
-        #                     pred = classifier_outputs[-1][j].argmax()
-        #                     correct_predictions[sample_idx + j] = (pred == target[j])
 
-        #             sample_idx += batch_size
+                        # If no exit found, use last exit with classifier output
+                        if not exit_found:
+                            exit_points[sample_idx + j] = n_exits - 1
+                            pred = classifier_outputs[-1][j].argmax()
+                            correct_predictions[sample_idx + j] = (pred == target[j])
 
-        #         # Calculate metrics
-        #         avg_exit = exit_points.float().mean().item() + 1  # +1 for 1-based indexing
-        #         accuracy = correct_predictions.float().mean().item() * 100
+                    sample_idx += batch_size
 
-        #         results.append({
-        #             'probe_threshold': probe_thresh,
-        #             'avg_exit': avg_exit,
-        #             'accuracy': accuracy,
-        #             'classifier_threshold': args.classifier_threshold
-        #         })
+                # Calculate metrics
+                avg_exit = exit_points.float().mean().item() + 1  # +1 for 1-based indexing
+                accuracy = correct_predictions.float().mean().item() * 100
 
-        #         print(f"Average Exit: {avg_exit:.2f}, Accuracy: {accuracy:.2f}%")
+                results.append({
+                    'probe_threshold': probe_thresh,
+                    'avg_exit': avg_exit,
+                    'accuracy': accuracy,
+                    'classifier_threshold': args.classifier_threshold
+                })
 
-        #     # Save results for plotting
-        #     results_path = os.path.join(args.save, 'fixed_threshold_results.json')
-        #     import json
-        #     with open(results_path, 'w') as f:
-        #         json.dump(results, f)
+                print(f"Average Exit: {avg_exit:.2f}, Accuracy: {accuracy:.2f}%")
+
+            # Save results for plotting
+            results_path = os.path.join(args.save, 'fixed_threshold_results.json')
+            import json
+            with open(results_path, 'w') as f:
+                json.dump(results, f)
 
         return acc_test, nlpd, ECE, acc5, exp_flops
 
@@ -557,6 +597,8 @@ class Tester(object):
         - logits from each exit
         - confidence scores from each exit
         - targets
+        
+        * Modified to always use classifier predictions but optionally use probe confidences
         """
         
         self.model.eval()
@@ -572,38 +614,45 @@ class Tester(object):
             with torch.no_grad():
                 input_var = torch.autograd.Variable(input).cuda()
                 
-                # Choose confidence computation method based on whether probes are being used
-                if self.args.evaluate_probe_from:
-                    output, confs = self.model.module.compute_combined_confidence_scores(input_var)
-                    confidence_type = "Combined"
-                elif "model_best_probe_acc.pth.tar" in self.args.evaluate_from:
-                    output, confs = self.model.module.compute_confidence_scores_probe(input_var)
+                # Always get classifier logits for predictions
+                classifier_output, _ = self.model.module.compute_confidence_scores_classifier(input_var)
+
+                # Choose confidence computation method
+                if self.args.confidence_type == "probe":
+                    # Use probe confidences for early-exit decisions
+                    _, probe_confidences = self.model.module.compute_confidence_scores_probe(input_var)
                     confidence_type = "Probe"
-                else:
-                    output, confs = self.model.module.compute_confidence_scores_classifier(input_var)
+                    confs = probe_confidences
+                elif self.args.confidence_type == "classifier":
+                    # Use classifier confidences
+                    _, classifier_confidences = self.model.module.compute_confidence_scores_classifier(input_var)
                     confidence_type = "Classifier"
-            
-                if not isinstance(output, list):
-                    output = [output]
+                    confs = classifier_confidences
+                elif self.args.confidence_type == "combined":
+                    # Use combined confidences
+                    _, combined_confidences = self.model.module.compute_combined_confidence_scores(input_var)
+                    confidence_type = "Combined"
+                    confs = combined_confidences
                     
-                # Store logits and confidences
+                # Store classifier logits and chosen confidences
                 for b in range(n_exit):
-                    logits[b].append(output[b])
+                    logits[b].append(classifier_output[b])  # Always use classifier logits
                     confidences[b].append(confs[b])
 
             if i % self.args.print_freq == 0:
                 print(f'Generate {confidence_type} Confidence: [{i}/{len(dataloader)}]')
-    
-        # Format outputs similar to calc_logit
+        
+        # Concatenate all batches for each exit
         for b in range(n_exit):
             logits[b] = torch.cat(logits[b], dim=0)
             confidences[b] = torch.cat(confidences[b], dim=0)
-
+        
         # Create tensors of appropriate size
         size = (n_exit, logits[0].size(0), logits[0].size(1))
         ts_logits = torch.Tensor().resize_(size).zero_()
         ts_confidences = torch.Tensor(n_exit, logits[0].size(0)).zero_()
-        
+
+        # Copy data to output tensors
         for b in range(n_exit):
             ts_logits[b].copy_(logits[b])
             ts_confidences[b].copy_(confidences[b])

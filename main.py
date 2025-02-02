@@ -101,7 +101,7 @@ def main():
         model.load_state_dict(state_dict)
 
         # Load probe checkpoint if provided
-        if args.evaluate_probe_from:
+        if args.confidence_type == "probe" or args.confidence_type == "combined": # if the confidence type is classifier, we don't need to load the probe checkpoint even if it is provided
             probe_state = torch.load(args.evaluate_probe_from)['state_dict']
             current_state = model.state_dict()
             # Only load probe weights
