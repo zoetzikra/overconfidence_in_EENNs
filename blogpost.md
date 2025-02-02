@@ -163,6 +163,9 @@ We evaluate model performance using multiple metrics. Accuracy metrics such as t
 
 **Accuracy-Computation Trade-off**
 
+![Figure 1: Accuracy vs Computational Cost (FLOPs) for different uncertainty estimation approaches](./plots_budgeted_task/trained_on_val_fixed/combined_cost_accuracy_tradeoff.png)
+
+
 Figure 1 illustrates the relationship between computational cost (measured in FLOPs) and classification accuracy.
 All approaches show diminishing returns in accuracy as computational cost increases.
 The classifier-based approach shows rapid initial accuracy gains, reaching approximately 70% accuracy at 20M FLOPs, but exhibits diminishing returns thereafter. This behavior suggests that traditional confidence-based exit decisions effectively identify "easy" samples that can be classified correctly with minimal computation.
@@ -174,16 +177,40 @@ The combined approach presents an interesting middle ground, initially tracking 
 
 **Calibration Performance**
 
+![Figure 2: Expected Calibration Error (ECE) across computational budgets for different uncertainty estimation approaches](./plots_budgeted_task/trained_on_val_fixed/combined_calibration_cost.png)
+
 Figure 2 provides insights about the calibration properties of each approach through their Expected Calibration Error (ECE) curves. The probe-based method maintains the lowest ECE across the computational budgets and shows relatively stable behavior. This suggests that computational uncertainty estimates from probes provide more reliable confidence scores, and it seems that the probes are better at knowing "when they don't know”.
 The classifier-based approach shows the highest calibration error, with a tendency toward overconfidence in its predictions. This aligns with known limitations of softmax-based confidence estimates in neural networks. The combined approach achieves intermediate calibration performance, suggesting that incorporating probe information helps with calibration.
 
 **Exit Behavior Analysis**
 
-To understand how different uncertainty estimation methods behave under varying computational constraints, we analyze the exit patterns at two distinct budget levels: Budget Level 2 (low-resource) and Budget Level 39 (high-resource).
+<!-- <div style="display: flex; justify-content: space-between;">
+    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_correct.png" alt="Consistently correct predictions" width="48%"/>
+    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_incorrect.png" alt="Consistently incorrect predictions" width="48%"/>
+</div> -->
+
+![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_correct.png)
+![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_incorrect.png)
+
+*Figure 3: Exit patterns and confidence distributions for consistently predicted samples (on all 4 exit points) for a low-resource scenario (Budget Level 2). Up: Correctly Classified data piints. Down: Incorrectly Classified data points.*
+
+
+To understand how different uncertainty estimation methods behave under varying computational constraints, we analyze the exit patterns at two distinct budget levels: Budget Level 2 (Figure 3) and Budget Level 39 (Figure 4).
 
 **Low-Resource Scenario (Budget Level 2)**
 For correctly classified samples, the combined approach shows the highest average confidence (0.962) with minimal computational overhead (avg. exit: 1.02). The classifier-based method exhibits similar behavior (conf: 0.939, avg. exit: 1.01) with strong preference for early exits. Probe-based approach demonstrates more conservative behavior (conf: 0.852, avg. exit: 1.11) with a broader distribution of exit points.
 For incorrect predictions, all methods show markedly lower confidence (0.652-0.778). Exit patterns concentrate primarily in the first two exit points. The probe-based approach shows slightly higher average exit points (1.23) compared to classifiers (1.16). The combined approach achieves better balance between confidence and exit point distribution.
+
+<!-- <div style="display: flex; justify-content: space-between;">
+    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_correct.png" alt="Consistently correct predictions" width="48%"/>
+    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_incorrect.png" alt="Consistently incorrect predictions" width="48%"/>
+</div> -->
+
+![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_correct.png)
+![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_incorrect.png)
+
+*Figure 4: Exit patterns and confidence distributions for consistently predicted samples (on all 4 exit points) for a high-resource scenario (Budget Level 39). Left: Correctly Classified data points. Right: Incorrectly Classified data points.*
+
 
 **High-Resource Scenario (Budget Level 39)**
 For correct predictions, there is a significant shift toward later exits across all methods. The probe-based approach shows the highest average exit point (3.15) compared to classifiers (2.37). The combined method achieves intermediate behavior (avg. exit: 2.80). Confidence patterns remain similar to low-resource scenario but with more distinct exit point clusters.
@@ -253,3 +280,32 @@ Information Processing Systems, 2024.
 
 <a id="23">[23]</a> Malinin, A., & Gales, M. (2018). Predictive uncertainty estimation via prior networks. Advances in neural information processing systems, 31.
 
+
+
+
+# Appendix
+
+
+## A. Confidence Trajectories
+
+<div style="display: flex; justify-content: space-between;">
+    <img src="./classifiers_confidence_trajectories.png" alt="Subplot A" width="32%"/>
+    <img src="./probes_confidence_trajectories.png" alt="Subplot B" width="32%"/>
+    <img src="./combined_confidence_trajectories.png" alt="Subplot C" width="32%"/>
+</div>
+
+
+## B. Exit Distributions
+
+<div style="display: flex; justify-content: space-between;">
+    <img src="./plots_budgeted_task/trained_on_val_fixed/combined_exit_distribution.png" alt="Subplot A" width="32%"/>
+    <img src="./plots_budgeted_task/trained_on_val_fixed/classifiers_exit_distribution.png" alt="Subplot B" width="32%"/>
+    <img src="./plots_budgeted_task/trained_on_val_fixed/probes_exit_distribution.png" alt="Subplot C" width="32%"/>
+</div>
+
+
+## C. Fixed Threshold comparisons
+
+![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png)
+![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png)
+![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png)
