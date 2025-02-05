@@ -107,6 +107,7 @@ $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) \mathcal{N}(\mu_W^\top h_\ell, \sigma_\e
 
 A comparison between the standard predictive distribution $p\_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p\_\ell(y_L|x^\*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda\_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
 
+An extension to this framework presenting a more realistic implementation for applications is presented in Appendix A.
 
 # 4. Methodology
 
@@ -269,7 +270,7 @@ Information Processing Systems, 2024.
 
 ## A. Heteroscedastic formulation
 
-An extension to this framework involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
+An extension to the framework presented in Section 3.1 involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
 
 $p\_\ell(y_L|y, x^\*) = \mathcal{N}(y, \lambda_\ell^2(x^\*))$
 
@@ -279,11 +280,24 @@ Wanger et al. ([[14]](#14)) account for the computational uncertainty resulting 
 
 ## B. Confidence Trajectories
 
-<div style="display: flex; justify-content: space-between;">
-    <img src="./classifiers_confidence_trajectories.png" alt="Subplot A" width="32%"/>
-    <img src="./probes_confidence_trajectories.png" alt="Subplot B" width="32%"/>
-    <img src="./combined_confidence_trajectories.png" alt="Subplot C" width="32%"/>
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./classifiers_confidence_trajectories.png" alt="Classifiers" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(a) Classifiers</b>: Confidence trajectories of classifiers.</p>
+    </div>
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./probes_confidence_trajectories.png" alt="Probes" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(b) Probes</b>: Confidence trajectories of probes.</p>
+    </div>
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./combined_confidence_trajectories.png" alt="Combined" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(c) Combined</b>: Confidence trajectories of combined model that merges both confidences.</p>
+    </div>
 </div>
+
+The distinct trajectory patterns between classifiers and probes provide some evidence towards the hypothesis that the two approaches are capturing fundamentally different aspects of predictive uncertainty.
+The classifier's more smooth and relatively monotonic progression contrasts with the probes trajectories. The latter seem to be able to identify potential prediction instabilities, particularly evident at exit point 3. 
+These observed trends support the hypothesis that combining both approaches may provide a more comprehensive uncertainty quantification framework, potentially leading to more reliable early exit decisions in practical applications.
 
 
 ## C. Exit Distributions
@@ -297,6 +311,32 @@ Wanger et al. ([[14]](#14)) account for the computational uncertainty resulting 
 
 ## D. Fixed Threshold comparisons
 
-![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png)
+<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png" alt="Classifier Threshold 0.35" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(a) Classifier Thresh=0.35</b></p>
+    </div>
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png" alt="Classifier Threshold 0.65" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(b) Classifier Thresh=0.65</b></p>
+    </div>
+    <div style="width: 32%; margin-bottom: 10px;">
+        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png" alt="Classifier Threshold 0.95" style="width: 100%;"/>
+        <p style="text-align: center; font-size: smaller;"><b>(c) Classifier Thresh=0.95</b></p>
+    </div>
+</div>
+
+<!-- ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png)
 ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png)
-![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png)
+![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png) -->
+
+In this supplementary experiment, we substituted the budgeted classification task using dynamic thresholds with a simple classification task using fixed thresholds. Effectively, the full budget available is used, but by fixing the confidence thresholds at three distinct values in order to simulate low-, middle- and high-budget scenarios. The goal is to test whether, for a given classifier threshold, it is possible to surpass the accuracy or the efficiency of a classifier-only model (the red star point) by using a combined uncertainty model. For each of the three classifier thresholds, 10 combined models were tested using incrementally higher confidence thresholds in the range [0.1, 1].
+
+We observe that no model outperforms the classifier model. In fact, integrating computational uncertainty hurts performance almost in a linear way as the combined model's confidence threshold is reduced. 
+
+However in the "low-budget" simulated scenario we see that the performance losses are minimal, while the efficiency is greatly increased, as indicated by the smaller average exit point. 
+
+The relationship between accuracy degradation and computational efficiency gains is non-uniform across threshold regimes. Low-threshold scenarios present the most favorable trade-off, suggesting optimal deployment conditions for probe-based approaches.
+
+This also poses an interesting direction for future research, investigating whether it is possible to emulate the trends observed in figure (a) for higher classifier's confidence thresholds.
+
