@@ -1,3 +1,5 @@
+# Computational Uncertainty in Early-Exit Neural Networks: A Novel Framework for Efficient Inference
+
 # 1. Introduction
 
 The remarkable advancement of deep learning models has been largely attributed to the continuous scaling of neural architectures to unprecedented sizes, sometimes reaching billions of parameters [[3]](#3), [[4]](#4), [[5]](#5). While these models have achieved exceptional performance across various tasks, including natural language processing and computer vision, their deployment presents significant computational challenges [[6]](#6), [[5]](#5). The associated costs of inference, which accumulate with each instance of model deployment, have become a pressing concern in practical applications [[4]](#4).
@@ -68,6 +70,7 @@ If we implement a Bayesian predictive model at every exit, we obtain: $p_\ell(y|
 To capture the uncertainty due to $\hat{y}_\ell \approx \hat{y}_L$, we can define a distribution that captures our "beliefs about $\hat{y}_L$ at exit $\ell$" as $p_\ell(y_L|y)$. This leads to an expanded predictive model:
 
 $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
+<img src="https://latex.codecogs.com/svg.latex?p_%5Cell(y_L%7Cx^*,D)%20=%20%5Cint%20p_%5Cell(y_L%7Cy)%20p_%5Cell(y%7Cx^*,W_%5Cell)%20p(W_%5Cell%7CD)%20dW_%5Cell%20dy" alt="p_ℓ(y_L|x*,D) = ∫ p_ℓ(y_L|y) p_ℓ(y|x*,W_ℓ) p(W_ℓ|D) dW_ℓ dy"
 
 This formulation decomposes the total uncertainty into three components:
 -   Computational uncertainty: $p_\ell(y_L|y)$
@@ -103,17 +106,6 @@ $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) \mathcal{N}(\mu_W^\top h_\ell, \sigma_\e
 , where each term corresponds to computational, aleatoric, and epistemic uncertainty respectively.
 
 A comparison between the standard predictive distribution $ $p_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
-
-
-## 3.2 Heteroscedastic formulation
-
-An extension to this framework involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
-
-$p_\ell(y_L|y, x^*) = \mathcal{N}(y, \lambda_\ell^2(x^*))$
-
-This heteroscedastic extension aligns with the broader principle that uncertainty should be input-dependent when the difficulty of prediction varies across the input space. Just as heteroscedastic aleatoric uncertainty allows the model to express varying levels of observation noise for different inputs [[14]](#14) (like having higher uncertainty for poorly-lit images in computer vision tasks), heteroscedastic computational uncertainty enables the model to express varying levels of computational requirements. For instance, in image classification, a clear image of a common object might require less computation (and thus have lower computational uncertainty) than a blurry image of a rare object.
-
-Wanger et al. ([[14]](#14)) account for the computational uncertainty resulting from approximation errors by by providing a methodology on Gaussian Processes that iteratively refines an approximated result with incremental corrections of an initially intractable computation problem based on multiple intermediate solutions. This, in our context, could be conceptually represented as each intermediate classification of the dynamic neural network (which, when combined gives a richer predictive distribution that takes into account the fact that exiting at previous blocks might lead to a non perfect value of the current one, as is further explored and shown in our results). However, in EENNS the uncertainty we model isn't over any model weight approximation or parameters nor in the task definition, but is a representation of properties intrinsic of dynamic or adaptive architectures.
 
 
 # 4. Methodology
@@ -184,11 +176,6 @@ The classifier-based approach shows the highest calibration error, with a tenden
 
 **Exit Behavior Analysis**
 
-<!-- <div style="display: flex; justify-content: space-between;">
-    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_correct.png" alt="Consistently correct predictions" width="48%"/>
-    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_incorrect.png" alt="Consistently incorrect predictions" width="48%"/>
-</div> -->
-
 ![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_correct.png)
 ![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget2_incorrect.png)
 
@@ -200,11 +187,6 @@ To understand how different uncertainty estimation methods behave under varying 
 **Low-Resource Scenario (Budget Level 2)**
 For correctly classified samples, the combined approach shows the highest average confidence (0.962) with minimal computational overhead (avg. exit: 1.02). The classifier-based method exhibits similar behavior (conf: 0.939, avg. exit: 1.01) with strong preference for early exits. Probe-based approach demonstrates more conservative behavior (conf: 0.852, avg. exit: 1.11) with a broader distribution of exit points.
 For incorrect predictions, all methods show markedly lower confidence (0.652-0.778). Exit patterns concentrate primarily in the first two exit points. The probe-based approach shows slightly higher average exit points (1.23) compared to classifiers (1.16). The combined approach achieves better balance between confidence and exit point distribution.
-
-<!-- <div style="display: flex; justify-content: space-between;">
-    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_correct.png" alt="Consistently correct predictions" width="48%"/>
-    <img src="./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_incorrect.png" alt="Consistently incorrect predictions" width="48%"/>
-</div> -->
 
 ![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_correct.png)
 ![](./plots_budgeted_task/trained_on_val_fixed/exit_dist_single_budget_budget39_incorrect.png)
@@ -285,8 +267,17 @@ Information Processing Systems, 2024.
 
 # Appendix
 
+## A. Heteroscedastic formulation
 
-## A. Confidence Trajectories
+An extension to this framework involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
+
+$p_\ell(y_L|y, x^*) = \mathcal{N}(y, \lambda_\ell^2(x^*))$
+
+This heteroscedastic extension aligns with the broader principle that uncertainty should be input-dependent when the difficulty of prediction varies across the input space. Just as heteroscedastic aleatoric uncertainty allows the model to express varying levels of observation noise for different inputs [[14]](#14) (like having higher uncertainty for poorly-lit images in computer vision tasks), heteroscedastic computational uncertainty enables the model to express varying levels of computational requirements. For instance, in image classification, a clear image of a common object might require less computation (and thus have lower computational uncertainty) than a blurry image of a rare object.
+
+Wanger et al. ([[14]](#14)) account for the computational uncertainty resulting from approximation errors by by providing a methodology on Gaussian Processes that iteratively refines an approximated result with incremental corrections of an initially intractable computation problem based on multiple intermediate solutions. This, in our context, could be conceptually represented as each intermediate classification of the dynamic neural network (which, when combined gives a richer predictive distribution that takes into account the fact that exiting at previous blocks might lead to a non perfect value of the current one, as is further explored and shown in our results). However, in EENNS the uncertainty we model isn't over any model weight approximation or parameters nor in the task definition, but is a representation of properties intrinsic of dynamic or adaptive architectures.
+
+## B. Confidence Trajectories
 
 <div style="display: flex; justify-content: space-between;">
     <img src="./classifiers_confidence_trajectories.png" alt="Subplot A" width="32%"/>
@@ -295,7 +286,7 @@ Information Processing Systems, 2024.
 </div>
 
 
-## B. Exit Distributions
+## C. Exit Distributions
 
 <div style="display: flex; justify-content: space-between;">
     <img src="./plots_budgeted_task/trained_on_val_fixed/combined_exit_distribution.png" alt="Subplot A" width="32%"/>
@@ -304,7 +295,7 @@ Information Processing Systems, 2024.
 </div>
 
 
-## C. Fixed Threshold comparisons
+## D. Fixed Threshold comparisons
 
 ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png)
 ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png)
