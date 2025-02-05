@@ -280,20 +280,12 @@ Wanger et al. ([[14]](#14)) account for the computational uncertainty resulting 
 
 ## B. Confidence Trajectories
 
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
-    <div style="width: 32%; margin-bottom: 10px;">
-        <img src="./classifiers_confidence_trajectories.png" alt="Classifiers" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(a) Classifiers</b>: Confidence trajectories of classifiers.</p>
-    </div>
-    <div style="width: 32%; margin-bottom: 10px;">
-        <img src="./probes_confidence_trajectories.png" alt="Probes" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(b) Probes</b>: Confidence trajectories of probes.</p>
-    </div>
-    <div style="width: 32%; margin-bottom: 10px;">
-        <img src="./combined_confidence_trajectories.png" alt="Combined" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(c) Combined</b>: Confidence trajectories of combined model that merges both confidences.</p>
-    </div>
+<div style="display: flex; justify-content: space-between;">
+    <img src="./classifiers_confidence_trajectories.png" alt="Subplot A" width="32%"/>
+    <img src="/probes_confidence_trajectories.png" alt="Subplot B" width="32%"/>
+    <img src="./combined_confidence_trajectories.png" alt="Subplot C" width="32%"/>
 </div>
+<pre><b>(a) Classifiers</b>: Confidence trajectories of classifiers.   <b>(b) Probes</b>: Confidence trajectories of probes.   <b>(c) Combined</b>: Confidence trajectories of combined model that merges both confidences</pre>
 
 The distinct trajectory patterns between classifiers and probes provide some evidence towards the hypothesis that the two approaches are capturing fundamentally different aspects of predictive uncertainty.
 The classifier's more smooth and relatively monotonic progression contrasts with the probes trajectories. The latter seem to be able to identify potential prediction instabilities, particularly evident at exit point 3. 
@@ -308,6 +300,8 @@ These observed trends support the hypothesis that combining both approaches may 
     <img src="./plots_budgeted_task/trained_on_val_fixed/probes_exit_distribution.png" alt="Subplot C" width="32%"/>
 </div>
 
+<pre>Left:  Classifier model                    Middle: Probe model                    Right: Combined model</pre>
+
 
 ## D. Fixed Threshold comparisons
 
@@ -317,20 +311,7 @@ These observed trends support the hypothesis that combining both approaches may 
     <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png" alt="Subplot C" width="32%"/>
 </div>
 
-<div style="display: flex; justify-content: space-between;">
-    <div style="width: 30%; margin-bottom: 10px;">
-        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png" alt="Classifier Threshold 0.35" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(a) Classifier Thresh=0.35</b></p>
-    </div>
-    <div style="width: 30%; margin-bottom: 10px;">
-        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png" alt="Classifier Threshold 0.65" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(b) Classifier Thresh=0.65</b></p>
-    </div>
-    <div style="width: 30%; margin-bottom: 10px;">
-        <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png" alt="Classifier Threshold 0.95" style="width: 100%;"/>
-        <p style="text-align: center; font-size: smaller;"><b>(c) Classifier Thresh=0.95</b></p>
-    </div>
-</div>
+<pre>Left:  Classifier Thresh=0.35         Middle: Classifier Threshold 0.65            Right: Classifier Thresh=0.95</pre>
 
 <!-- ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png)
 ![](./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png)
