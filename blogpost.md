@@ -70,7 +70,6 @@ If we implement a Bayesian predictive model at every exit, we obtain: $p_\ell(y|
 To capture the uncertainty due to $\hat{y}_\ell \approx \hat{y}_L$, we can define a distribution that captures our "beliefs about $\hat{y}_L$ at exit $\ell$" as $p_\ell(y_L|y)$. This leads to an expanded predictive model:
 
 $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
-<img src="https://latex.codecogs.com/svg.latex?p_%5Cell(y_L%7Cx^*,D)%20=%20%5Cint%20p_%5Cell(y_L%7Cy)%20p_%5Cell(y%7Cx^*,W_%5Cell)%20p(W_%5Cell%7CD)%20dW_%5Cell%20dy" alt="p_ℓ(y_L|x*,D) = ∫ p_ℓ(y_L|y) p_ℓ(y|x*,W_ℓ) p(W_ℓ|D) dW_ℓ dy"
 
 This formulation decomposes the total uncertainty into three components:
 -   Computational uncertainty: $p_\ell(y_L|y)$
