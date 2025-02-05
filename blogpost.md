@@ -102,7 +102,7 @@ $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) \mathcal{N}(\mu_W^\top h_\ell, \sigma_\e
 
 , where each term corresponds to computational, aleatoric, and epistemic uncertainty respectively.
 
-A comparison between the standard predictive distribution $p_\ell(y|x^*,D)$ $p_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
+A comparison between the standard predictive distribution $ $p_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
 
 
 ## 3.2 Heteroscedastic formulation
@@ -110,6 +110,7 @@ A comparison between the standard predictive distribution $p_\ell(y|x^*,D)$ $p_\
 An extension to this framework involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
 
 $p_\ell(y_L|y, x^*) = \mathcal{N}(y, \lambda_\ell^2(x^*))$
+p_ℓ(y_L|y, x*) = N(y, λ_ℓ²(x*))
 
 This heteroscedastic extension aligns with the broader principle that uncertainty should be input-dependent when the difficulty of prediction varies across the input space. Just as heteroscedastic aleatoric uncertainty allows the model to express varying levels of observation noise for different inputs [[14]](#14) (like having higher uncertainty for poorly-lit images in computer vision tasks), heteroscedastic computational uncertainty enables the model to express varying levels of computational requirements. For instance, in image classification, a clear image of a common object might require less computation (and thus have lower computational uncertainty) than a blurry image of a rare object.
 
