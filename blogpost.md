@@ -67,7 +67,7 @@ For a given test point $x^*$, we have an adaptive model that yields $\hat{y}_1,.
 
 If we implement a Bayesian predictive model at every exit, we obtain: $p_\ell(y|x^*,D) = \int p_\ell(y|x^*,W_\ell)p(W_\ell|D)dW_\ell$, where the first term represents aleatoric uncertainty and the second term captures epistemic uncertainty. However, this formulation ignores the reality that each exit $\ell$ produces $\hat{y}_\ell$, which is an approximation of the full-model prediction $\hat{y}_L$. 
 
-To capture the uncertainty due to $\hat{y}_\ell \approx \hat{y}_L$, we can define a distribution that captures our "beliefs about $\hat{y}_L$ at exit $\ell$" as $p_\ell(y_L|y)$. This leads to an expanded predictive model:
+To capture the uncertainty due to $\hat{y}_L$, we can define a distribution that captures our "beliefs about $\hat{y}_L$ at exit $\ell$" as $p_\ell(y_L|y)$. This leads to an expanded predictive model:
 
 $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
 
@@ -75,6 +75,26 @@ This formulation decomposes the total uncertainty into three components:
 -   Computational uncertainty: $p_\ell(y_L|y)$
 -   Aleatoric uncertainty: $p_\ell(y|x^*,W_\ell)$
 -   Epistemic uncertainty: $p(W_\ell|D)$
+
+
+# 3. A Unified Treatment of Uncertainties in Early-Exit Neural Networks
+
+Early-Exit Neural Networks (EENNs) provide a setting where aleatoric, epistemic, and computational uncertainties naturally interact. For a test point $x^*$, we have an adaptive model yielding $\hat{y}_1,...,\hat{y}_L$ with $L$ exits. We assume marginal monotonicity across exits, where later exits provide more refined predictions.
+
+A Bayesian predictive model at each exit gives: 
+$p_\ell(y|x^*,D) = \int p_\ell(y|x^*,W_\ell)p(W_\ell|D)dW_\ell$
+
+Here, the first term represents aleatoric uncertainty and the second captures epistemic uncertainty. However, this ignores that each exit $\ell$ produces $\hat{y}_\ell$ as an approximation of the full-model prediction $\hat{y}_L$.
+
+To capture uncertainty from $\hat{y}_\ell \approx \hat{y}_L$, we define $p_\ell(y_L|y)$ as our "beliefs about $\hat{y}_L$ at exit $\ell$". This gives an expanded model:
+
+$p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
+
+This decomposes total uncertainty into:
+- Computational uncertainty: $p_\ell(y_L|y)$
+- Aleatoric uncertainty: $p_\ell(y|x^*,W_\ell)$
+- Epistemic uncertainty: $p(W_\ell|D)$
+
 
 ## 3.1 Practical Implementation in Linear Regression
 
