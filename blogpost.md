@@ -102,7 +102,7 @@ $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) \mathcal{N}(\mu_W^\top h_\ell, \sigma_\e
 
 , where each term corresponds to computational, aleatoric, and epistemic uncertainty respectively.
 
-A comparison between the standard predictive distribution $p_\ell(y|x^{*},D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
+A comparison between the standard predictive distribution $p_\ell(y|x^*,D)$ $p_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
 
 
 ## 3.2 Heteroscedastic formulation
