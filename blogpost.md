@@ -26,18 +26,18 @@ This report provides both theoretical foundations and empirical validation for i
 
 ## 2.1 Early-Exit Neural Networks
 
-Formally, an EENN can be defined as a sequence of probabilistic classifiers $p(y|x; \phi_\ell, \theta_\ell)$, where $\ell = 1,...,L$ enumerates the model's exit layers. Here, $\phi_\ell$ represents the parameters of the classification head at exit $\ell$, while $\theta_\ell$ denotes the parameters of the backbone architecture up to that exit. The nested nature of these parameters ($\theta_1 \subset \theta_2 \subset ... \subset \theta_L$) enables progressive computation, where each exit builds upon the computations of previous exits. Training of EENNs is typically accomplished through a joint optimization objective:
+Formally, an EENN can be defined as a sequence of probabilistic classifiers $$p(y|x; \phi_\ell, \theta_\ell)$$, where $$\ell = 1,...,L$$ enumerates the model's exit layers. Here, $$\phi_\ell$$ represents the parameters of the classification head at exit $$\ell$$, while $$\theta_\ell$$ denotes the parameters of the backbone architecture up to that exit. The nested nature of these parameters ($$\theta_1 \subset \theta_2 \subset ... \subset \theta_L$$) enables progressive computation, where each exit builds upon the computations of previous exits. Training of EENNs is typically accomplished through a joint optimization objective:
 
-$L(\phi_1,...,\phi_M; \theta_1,...,\theta_n; D) = -\sum_{i=1}^{N} \sum_{m=1}^{M} w_m \log p(y = y_n|x = x_n; \phi_m; \theta_m)$
+$$L(\phi_1,...,\phi_M; \theta_1,...,\theta_n; D) = -\sum_{i=1}^{N} \sum_{m=1}^{M} w_m \log p(y = y_n|x = x_n; \phi_m; \theta_m)$$
 
-where $w_m$ are weights controlling the contribution of each exit to the overall loss. This joint training ensures that all exits learn meaningful representations while maintaining computational efficiency.
+where $$w_m$$ are weights controlling the contribution of each exit to the overall loss. This joint training ensures that all exits learn meaningful representations while maintaining computational efficiency.
 
-At inference time, EENNs employ a confidence-based early stopping mechanism. For each exit $\ell$, the model computes both a predicted class label $\hat{y} = \text{argmax}_{y\in Y} p_\ell(y|x)$ and an associated confidence score $c_\ell \in [0,1]$. The most common confidence metric is the maximum class probability, though alternative measures exist. A key operational principle is the use of confidence thresholds $\lambda \in [0,1]$ to determine whether to halt computation at a given exit. The model terminates at the first exit where the confidence exceeds this threshold, leading to computational savings for "easy" inputs while reserving full network depth for more challenging cases. 
+At inference time, EENNs employ a confidence-based early stopping mechanism. For each exit $$\ell$$, the model computes both a predicted class label $\hat{y} = \text{argmax}\_{y\in Y} p\_\ell(y|x)$ and an associated confidence score $c\_\ell \in [0,1]$. The most common confidence metric is the maximum class probability, though alternative measures exist. A key operational principle is the use of confidence thresholds $\lambda \in [0,1]$ to determine whether to halt computation at a given exit. The model terminates at the first exit where the confidence exceeds this threshold, leading to computational savings for "easy" inputs while reserving full network depth for more challenging cases. 
 The framework can also be extended to serve as an anytime predictor, with the difference being that it is the envronment that instigates the exit, not the model [[18]](#18), [[19]](#19). 
 
 A crucial assumption underlying the effectiveness of EENNs is marginal monotonicity:
 
-$E_{(x,y)\sim P}[L(p_\ell(y|x), y)] \geq E_{(x,y)\sim P}[L(p_{\ell+1}(y|x), y)]  \quad \forall \ell=1,...,L-1$
+$$E_{(x,y)\sim P}[L(p_\ell(y|x), y)] \geq E_{(x,y)\sim P}[L(p_{\ell+1}(y|x), y)]  \quad \forall \ell=1,...,L-1$$
 
 This property ensures that, on average, prediction quality improves with network depth. However, this assumption can be violated in practice, particularly when confidence estimates are poorly calibrated [[15]](#15), [[16]](#16), [[17]](#17). This limitation has motivated research into more sophisticated exit criteria and uncertainty quantification methods, which we briefly mention in subsequent sections.
 
@@ -65,36 +65,17 @@ Early-Exit Neural Networks (EENNs) provide a setting where all three types of un
 
 For a given test point $x^*$, we have an adaptive model that yields $\hat{y}_1,...,\hat{y}_L$ with $L$ denoting the number of exits. We assume marginal monotonicity across exits, meaning later exits are expected to provide more refined predictions.
 
-If we implement a Bayesian predictive model at every exit, we obtain: $p_\ell(y|x^*,D) = \int p_\ell(y|x^*,W_\ell)p(W_\ell|D)dW_\ell$, where the first term represents aleatoric uncertainty and the second term captures epistemic uncertainty. However, this formulation ignores the reality that each exit $\ell$ produces $\hat{y}_\ell$, which is an approximation of the full-model prediction $\hat{y}_L$. 
+If we implement a Bayesian predictive model at every exit, we obtain: $p\_\ell(y|x^\*,D) = \int p\_\ell(y|x^\*,W\_\ell)p(W\_\ell|D)dW\_\ell$, where the first term represents aleatoric uncertainty and the second term captures epistemic uncertainty. However, this formulation ignores the reality that each exit $\ell$ produces $\hat{y}\_\ell$, which is an approximation of the full-model prediction $\hat{y}\_L$.
 
-To capture the uncertainty due to $\hat{y}_L$, we can define a distribution that captures our "beliefs about $\hat{y}_L$ at exit $\ell$" as $p_\ell(y_L|y)$. This leads to an expanded predictive model:
+To capture the uncertainty due to $\hat{y}\_L$, we can define a distribution that captures our "beliefs about $\hat{y}\_L$ at exit $\ell$" as $p\_\ell(y\_L|y)$. This leads to an expanded predictive model:
 
-$p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
+$$p\_\ell(y\_L|x^\*,D) = \int p\_\ell(y\_L|y) p\_\ell(y|x^\*,W\_\ell) p(W\_\ell|D) dW\_\ell dy$$
 
 This formulation decomposes the total uncertainty into three components:
--   Computational uncertainty: $p_\ell(y_L|y)$
--   Aleatoric uncertainty: $p_\ell(y|x^*,W_\ell)$
--   Epistemic uncertainty: $p(W_\ell|D)$
 
-
-# 3. A Unified Treatment of Uncertainties in Early-Exit Neural Networks
-
-Early-Exit Neural Networks (EENNs) provide a setting where aleatoric, epistemic, and computational uncertainties naturally interact. For a test point $x^*$, we have an adaptive model yielding $\hat{y}_1,...,\hat{y}_L$ with $L$ exits. We assume marginal monotonicity across exits, where later exits provide more refined predictions.
-
-A Bayesian predictive model at each exit gives: 
-$p_\ell(y|x^*,D) = \int p_\ell(y|x^*,W_\ell)p(W_\ell|D)dW_\ell$
-
-Here, the first term represents aleatoric uncertainty and the second captures epistemic uncertainty. However, this ignores that each exit $\ell$ produces $\hat{y}_\ell$ as an approximation of the full-model prediction $\hat{y}_L$.
-
-To capture uncertainty from $\hat{y}_\ell \approx \hat{y}_L$, we define $p_\ell(y_L|y)$ as our "beliefs about $\hat{y}_L$ at exit $\ell$". This gives an expanded model:
-
-$p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) p_\ell(y|x^*,W_\ell) p(W_\ell|D) dW_\ell dy$
-
-This decomposes total uncertainty into:
-- Computational uncertainty: $p_\ell(y_L|y)$
-- Aleatoric uncertainty: $p_\ell(y|x^*,W_\ell)$
-- Epistemic uncertainty: $p(W_\ell|D)$
-
+-   Computational uncertainty: $p\_\ell(y\_L|y)$
+-   Aleatoric uncertainty: $p\_\ell(y|x^*,W\_\ell)$
+-   Epistemic uncertainty: $p(W\_\ell|D)$
 
 ## 3.1 Practical Implementation in Linear Regression
 
@@ -110,13 +91,13 @@ Here, $h_\ell$ represents the EENN backbone parameters, maintaining Bayesian pro
 b) Parameter Posterior: $p(W_\ell|D) = \mathcal{N}(\mu_W, \Sigma_W)$ 
 This captures our epistemic uncertainty about model parameters after observing the data;   
 
-c) Posterior-Predictive Distribution: $p_\ell(y|x^*,D) = \int p(y|x^*, W_\ell, h_\ell)p(W_\ell|D)dW_\ell = \mathcal{N}(\mu_W^\top h_\ell, \sigma_\ell^2 + h_\ell^\top \Sigma_W h_\ell)$
-This combines both aleatoric uncertainty ($\sigma_\ell^2$) and epistemic uncertainty (the second term).
+c) Posterior-Predictive Distribution: $p\_\ell(y|x^\*,D) = \int p(y|x^\*, W\_\ell, h\_\ell)p(W\_\ell|D)dW\_\ell = \mathcal{N}(\mu\_W^\top h\_\ell, \sigma\_\ell^2 + h\_\ell^\top \Sigma\_W h\_\ell)$
+This combines both aleatoric uncertainty ($\sigma\_\ell^2$) and epistemic uncertainty (the second term).
 
 Now, to account for computational constraints in early exits, we introduce:
  
-$p_\ell(y_L|y) = \mathcal{N}(y, \lambda_\ell^2)$ , where $\lambda_\ell^2$ quantifies our uncertainty about how well the current layer's prediction approximates the full model's output. This uncertainty naturally decreases as we progress through the network, enforced by:
-$\lambda_\ell \geq \lambda_{\ell+1}$ , with $\lambda_L = 0$ at the final layer. This inequality captures the intuitive notion that each additional layer of computation should reduce our uncertainty about the final prediction.
+$p\_\ell(y_L|y) = \mathcal{N}(y, \lambda\_\ell^2)$ , where $\lambda\_\ell^2$ quantifies our uncertainty about how well the current layer's prediction approximates the full model's output. This uncertainty naturally decreases as we progress through the network, enforced by:
+$\lambda\_\ell \geq \lambda\_{\ell+1}$ , with $\lambda_L = 0$ at the final layer. This inequality captures the intuitive notion that each additional layer of computation should reduce our uncertainty about the final prediction.
 
 The final formulation effectively combines all three uncertainties:
    
@@ -124,7 +105,7 @@ $p_\ell(y_L|x^*,D) = \int p_\ell(y_L|y) \mathcal{N}(\mu_W^\top h_\ell, \sigma_\e
 
 , where each term corresponds to computational, aleatoric, and epistemic uncertainty respectively.
 
-A comparison between the standard predictive distribution $ $p_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p_\ell(y_L|x^*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
+A comparison between the standard predictive distribution $p\_\ell(y|x^*,D)$ and our computational uncertainty-aware distribution $p\_\ell(y_L|x^\*,D)$ reveals an important property: while the predictive mean remains unchanged, the variance increases by $\lambda\_\ell^2$. This additional variance term directly quantifies our uncertainty arising from limited computational resources - specifically, from evaluating only $\ell$ layers instead of the full $L$ layers of the network.
 
 
 # 4. Methodology
@@ -132,14 +113,14 @@ A comparison between the standard predictive distribution $ $p_\ell(y|x^*,D)$ an
 ## 4.1 Task Description
 
 Our research focuses on image classification under computational constraints, a scenario that closely mirrors real-world deployment challenges. 
-We adopt a budgeted batch classification framework, like Meronen et al. ([[17]](#17)), where the model is at first trained without computational restrictions on $D_{train}$, but during inference on the test set $D_{test} = \{(x_j, y_j)\}_{j=1}^{n_{test}}$, the model must operate under a fixed computational budget $B$, measured in floating-point operations (FLOPs) per input sample averaged across the batch. The challenge lies in dynamically deciding how much computation to allocate to each input while maintaining high overall accuracy within the given budget $B$.
+We adopt a budgeted batch classification framework, like Meronen et al. ([[17]](#17)), where the model is at first trained without computational restrictions on $D\_{train}$, but during inference on the test set $D\_{test} = \{(x_j, y_j)\}\_{j=1}^{n\_{test}}$, the model must operate under a fixed computational budget $B$, measured in floating-point operations (FLOPs) per input sample averaged across the batch. The challenge lies in dynamically deciding how much computation to allocate to each input while maintaining high overall accuracy within the given budget $B$.
 
-The problem is formally defined as follows. Given a labeled training dataset: $D_{train} = \{(x_i, y_i)\}_{i=1}^{n_{train}}$ where $x_i$ represents a d-dimensional input (specifically, RGB images with $d = 3 \times N_{pixels}$), and $y_i$ denotes c-dimensional one-hot encoded vectors indicating the true class labels. 
+The problem is formally defined as follows. Given a labeled training dataset: $D\_{train} = \{(x_i, y_i)\}\_{i=1}^{n\_{train}}$ where $x_i$ represents a d-dimensional input (specifically, RGB images with $d = 3 \times N\_{pixels}$), and $y_i$ denotes c-dimensional one-hot encoded vectors indicating the true class labels. 
 
-For our architecture with $n_{block}$ intermediate classifiers, each exit $k \in \{1, ..., n_{block}\}$ produces a predictive distribution $p_k(\hat{y}_i | x_i)$. This distribution is computed through a two-stage process:
+For our architecture with $n\_{block}$ intermediate classifiers, each exit $k \in \{1, ..., n_{block}\}$ produces a predictive distribution $p_k(\hat{y}_i | x_i)$. This distribution is computed through a two-stage process:
 
 *   **Feature Extraction:** Each classifier first computes a feature representation $\phi_{i,k} = f_k(x_i)$
-*   **Classification:** The features are then processed by a linear layer with parameters $\theta_k = \{W_k, b_k\}$ to produce logits: $p_k(\hat{y}_i | x_i) = \text{softmax}(z_{i,k})$ where $z_{i,k} = W_k \phi_{i,k} + b_k$. 
+*   **Classification:** The features are then processed by a linear layer with parameters $\theta_k = \{W_k, b_k\}$ to produce logits: $p_k(\hat{y}\_i | x\_i) = \text{softmax}(z_{i,k})$ where $z_{i,k} = W_k \phi_{i,k} + b_k$. 
 
 At each exit point k, a sample exits if its confidence score exceeds the pre-calculated threshold $t_k$.
 For a given computational budget $B$, we calculate exit thresholds $t_k$ for each exit point $k$ using the validation set predictions. The threshold calculation algorithm determines how many samples should exit at each point based on target proportions, sorts the validation samples by their confidence values, and sets the threshold as the confidence value of the $n^{th}$ sample (where $n$ is the target number of samples for this exit). 
@@ -290,7 +271,7 @@ Information Processing Systems, 2024.
 
 An extension to this framework involves making the computational uncertainty heteroscedastic. Instead of using a fixed $\lambda_\ell^2$, we can make it input-dependent:
 
-$p_\ell(y_L|y, x^*) = \mathcal{N}(y, \lambda_\ell^2(x^*))$
+$p\_\ell(y_L|y, x^\*) = \mathcal{N}(y, \lambda_\ell^2(x^\*))$
 
 This heteroscedastic extension aligns with the broader principle that uncertainty should be input-dependent when the difficulty of prediction varies across the input space. Just as heteroscedastic aleatoric uncertainty allows the model to express varying levels of observation noise for different inputs [[14]](#14) (like having higher uncertainty for poorly-lit images in computer vision tasks), heteroscedastic computational uncertainty enables the model to express varying levels of computational requirements. For instance, in image classification, a clear image of a common object might require less computation (and thus have lower computational uncertainty) than a blurry image of a rare object.
 
