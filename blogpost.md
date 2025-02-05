@@ -311,7 +311,7 @@ These observed trends support the hypothesis that combining both approaches may 
 
 ## D. Fixed Threshold comparisons
 
-<div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+<div style="display: flex; justify-content: space-between;">
     <div style="width: 32%; margin-bottom: 10px;">
         <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png" alt="Classifier Threshold 0.35" style="width: 100%;"/>
         <p style="text-align: center; font-size: smaller;"><b>(a) Classifier Thresh=0.35</b></p>
