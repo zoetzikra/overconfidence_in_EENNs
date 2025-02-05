@@ -312,15 +312,21 @@ These observed trends support the hypothesis that combining both approaches may 
 ## D. Fixed Threshold comparisons
 
 <div style="display: flex; justify-content: space-between;">
-    <div style="width: 32%; margin-bottom: 10px;">
+    <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png" alt="Subplot A" width="32%"/>
+    <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png" alt="Classifier Threshold 0.65" alt="Subplot B" width="32%"/>
+    <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png" alt="Subplot C" width="32%"/>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+    <div style="width: 30%; margin-bottom: 10px;">
         <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.35.png" alt="Classifier Threshold 0.35" style="width: 100%;"/>
         <p style="text-align: center; font-size: smaller;"><b>(a) Classifier Thresh=0.35</b></p>
     </div>
-    <div style="width: 32%; margin-bottom: 10px;">
+    <div style="width: 30%; margin-bottom: 10px;">
         <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.65.png" alt="Classifier Threshold 0.65" style="width: 100%;"/>
         <p style="text-align: center; font-size: smaller;"><b>(b) Classifier Thresh=0.65</b></p>
     </div>
-    <div style="width: 32%; margin-bottom: 10px;">
+    <div style="width: 30%; margin-bottom: 10px;">
         <img src="./plots_budgeted_task/fixed_threshold_comparisons/threshold_comparison_c0.95.png" alt="Classifier Threshold 0.95" style="width: 100%;"/>
         <p style="text-align: center; font-size: smaller;"><b>(c) Classifier Thresh=0.95</b></p>
     </div>
