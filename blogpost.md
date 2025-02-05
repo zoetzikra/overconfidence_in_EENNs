@@ -10,7 +10,7 @@ In response to the challenges of high inference costs, researchers have develope
 
 ## 1.1 The Uncertainty Challenge &  Computational Uncertainty: A New Perspective
 
-The effectiveness of EENNs heavily depends on their ability to make reliable decisions about when to exit the computation pipeline. Current approaches typically rely on confidence scores or gating mechanisms at individual exits. However, these methods face several critical limitations: a) Calibration issues in prediction confidence (Guo et al., 2017), b) Tendency toward overconfident predictions (Hein et al., 2019), c) Insufficient capture of epistemic uncertainty [[11]](#11).
+The effectiveness of EENNs heavily depends on their ability to make reliable decisions about when to exit the computation pipeline. Current approaches typically rely on confidence scores or gating mechanisms at individual exits. However, these methods face several critical limitations: a) Calibration issues in prediction confidence ([[9]](#9)), b) Tendency toward overconfident predictions ([[10]](#10)), c) Insufficient capture of epistemic uncertainty [[11]](#11).
 
 Meronen et al. ([[17]](#17)) introduce a probabilistic treatment for EENNs using a Bayesian formulation, combined with a computationally efficient post-hoc approach for uncertainty-aware decision-making using multiple last-layer Laplace approximations ([[12]](#12)). Their method incorporates epistemic uncertainty into the model’s estimate and demonstrates improved performance and calibration on image classification benchmark datasets. 
 
