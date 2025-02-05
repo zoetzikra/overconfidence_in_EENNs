@@ -1,0 +1,843 @@
+============================================================================================== 
+Warning! Mixing Conda and module environments may lead to corruption of the
+user environment. 
+We do not recommend users mixing those two environments unless absolutely
+necessary. Note that 
+SURF does not provide any support for Conda environment.
+For more information, please refer to our software policy page:
+https://servicedesk.surf.nl/wiki/display/WIKI/Software+policy+Snellius#SoftwarepolicySnellius-UseofAnacondaandMinicondaenvironmentsonSnellius 
+
+Remember that many packages have already been installed on the system and can
+be loaded using 
+the 'module load <package__name>' command. If you are uncertain if a package is
+already available 
+on the system, please use 'module avail' or 'module spider' to search for it.
+============================================================================================== 
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+---------------------
+FLOPs: 6.86M, Params: 0.30M
+---------------------
+FLOPs: 9.09M, Params: 0.56M
+---------------------
+FLOPs: 16.58M, Params: 0.91M
+---------------------
+FLOPs: 19.69M, Params: 1.23M
+---------------------
+FLOPs: 31.47M, Params: 1.60M
+---------------------
+FLOPs: 34.21M, Params: 1.90M
+---------------------
+FLOPs: 46.13M, Params: 2.29M
+---------------------
+FLOPs: 48.87M, Params: 2.59M
+building network of steps: 
+[1, 2, 3, 4] 10
+ ********************** Block 1  **********************
+|		inScales 3 outScales 3 inChannels 16 outChannels 6		|
+
+ ********************** Block 2  **********************
+|		inScales 3 outScales 3 inChannels 22 outChannels 6		|
+
+|		inScales 3 outScales 3 inChannels 28 outChannels 6		|
+
+ ********************** Block 3  **********************
+|		inScales 3 outScales 3 inChannels 34 outChannels 6		|
+
+|		inScales 3 outScales 2 inChannels 40 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 46, outChannels 23	|
+
+|		inScales 2 outScales 2 inChannels 23 outChannels 6		|
+
+ ********************** Block 4  **********************
+|		inScales 2 outScales 2 inChannels 29 outChannels 6		|
+
+|		inScales 2 outScales 2 inChannels 35 outChannels 6		|
+
+|		inScales 2 outScales 1 inChannels 41 outChannels 6		|
+|		Transition layer inserted! (max), inChannels 47, outChannels 23	|
+
+|		inScales 1 outScales 1 inChannels 23 outChannels 6		|
+
+Files already downloaded and verified
+Files already downloaded and verified
+Number of training samples:  50000
+Number of test samples:  10000
+!!!!!! Load train_set_index !!!!!!
+[6859876.0, 9087688.0, 16577836.0, 19690384.0, 31467764.0, 34211672.0, 46127036.0, 48870944.0]
+[0.14036717 0.18595278 0.33921661 0.40290574 0.64389515 0.70004115
+ 0.943854   1.        ]
+Generate Classifier Confidence: [0/79]
+Generate Classifier Confidence: [10/79]
+Generate Classifier Confidence: [20/79]
+Generate Classifier Confidence: [30/79]
+Generate Classifier Confidence: [40/79]
+Generate Classifier Confidence: [50/79]
+Generate Classifier Confidence: [60/79]
+Generate Classifier Confidence: [70/79]
+Classifier confidence calculation time: 2.7244272232055664
+Generate Classifier Confidence: [0/157]
+Generate Classifier Confidence: [10/157]
+Generate Classifier Confidence: [20/157]
+Generate Classifier Confidence: [30/157]
+Generate Classifier Confidence: [40/157]
+Generate Classifier Confidence: [50/157]
+Generate Classifier Confidence: [60/157]
+Generate Classifier Confidence: [70/157]
+Generate Classifier Confidence: [80/157]
+Generate Classifier Confidence: [90/157]
+Generate Classifier Confidence: [100/157]
+Generate Classifier Confidence: [110/157]
+Generate Classifier Confidence: [120/157]
+Generate Classifier Confidence: [130/157]
+Generate Classifier Confidence: [140/157]
+Generate Classifier Confidence: [150/157]
+Classifier confidence calculation time: 2.972545623779297
+Val acc      Test acc
+0.595       0.614
+0.640       0.649
+0.675       0.693
+0.696       0.705
+
+
+******************** Budget Level 1/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 1/39:
+Dynamic Val Accuracy: 60.440
+Exit thresholds:
+Exit 1: 0.253
+Exit 2: 0.205
+Exit 3: 0.408
+Exit 4: -100000000.000
+
+Budget level 1/39 (FLOPs: 6.94M)
+Exit point distribution:
+Exit 1: 96.9%
+Exit 2: 3.0%
+Exit 3: 0.1%
+Exit 4: 0.0%
+Accuracy: 61.820, ECE: 0.127, NLPD: 1.525
+
+******************** Budget Level 2/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 2/39:
+Dynamic Val Accuracy: 61.080
+Exit thresholds:
+Exit 1: 0.309
+Exit 2: 0.249
+Exit 3: 0.328
+Exit 4: -100000000.000
+
+Budget level 2/39 (FLOPs: 7.03M)
+Exit point distribution:
+Exit 1: 93.8%
+Exit 2: 5.8%
+Exit 3: 0.4%
+Exit 4: 0.1%
+Accuracy: 62.310, ECE: 0.133, NLPD: 1.524
+
+******************** Budget Level 3/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 3/39:
+Dynamic Val Accuracy: 61.760
+Exit thresholds:
+Exit 1: 0.365
+Exit 2: 0.292
+Exit 3: 0.334
+Exit 4: -100000000.000
+
+Budget level 3/39 (FLOPs: 7.19M)
+Exit point distribution:
+Exit 1: 89.7%
+Exit 2: 9.1%
+Exit 3: 1.0%
+Exit 4: 0.2%
+Accuracy: 62.950, ECE: 0.140, NLPD: 1.520
+
+******************** Budget Level 4/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 4/39:
+Dynamic Val Accuracy: 62.300
+Exit thresholds:
+Exit 1: 0.417
+Exit 2: 0.331
+Exit 3: 0.341
+Exit 4: -100000000.000
+
+Budget level 4/39 (FLOPs: 7.36M)
+Exit point distribution:
+Exit 1: 85.2%
+Exit 2: 12.7%
+Exit 3: 1.8%
+Exit 4: 0.3%
+Accuracy: 63.550, ECE: 0.149, NLPD: 1.517
+
+******************** Budget Level 5/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 5/39:
+Dynamic Val Accuracy: 63.320
+Exit thresholds:
+Exit 1: 0.463
+Exit 2: 0.380
+Exit 3: 0.368
+Exit 4: -100000000.000
+
+Budget level 5/39 (FLOPs: 7.58M)
+Exit point distribution:
+Exit 1: 81.4%
+Exit 2: 14.8%
+Exit 3: 3.2%
+Exit 4: 0.6%
+Accuracy: 64.290, ECE: 0.155, NLPD: 1.516
+
+******************** Budget Level 6/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 6/39:
+Dynamic Val Accuracy: 64.020
+Exit thresholds:
+Exit 1: 0.505
+Exit 2: 0.409
+Exit 3: 0.407
+Exit 4: -100000000.000
+
+Budget level 6/39 (FLOPs: 7.80M)
+Exit point distribution:
+Exit 1: 77.2%
+Exit 2: 17.5%
+Exit 3: 4.1%
+Exit 4: 1.2%
+Accuracy: 65.080, ECE: 0.160, NLPD: 1.513
+
+******************** Budget Level 7/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 7/39:
+Dynamic Val Accuracy: 64.860
+Exit thresholds:
+Exit 1: 0.546
+Exit 2: 0.444
+Exit 3: 0.443
+Exit 4: -100000000.000
+
+Budget level 7/39 (FLOPs: 8.04M)
+Exit point distribution:
+Exit 1: 73.2%
+Exit 2: 19.7%
+Exit 3: 5.4%
+Exit 4: 1.7%
+Accuracy: 65.790, ECE: 0.166, NLPD: 1.514
+
+******************** Budget Level 8/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 8/39:
+Dynamic Val Accuracy: 65.520
+Exit thresholds:
+Exit 1: 0.587
+Exit 2: 0.483
+Exit 3: 0.464
+Exit 4: -100000000.000
+
+Budget level 8/39 (FLOPs: 8.33M)
+Exit point distribution:
+Exit 1: 69.1%
+Exit 2: 21.5%
+Exit 3: 7.1%
+Exit 4: 2.3%
+Accuracy: 66.420, ECE: 0.174, NLPD: 1.511
+
+******************** Budget Level 9/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 9/39:
+Dynamic Val Accuracy: 66.500
+Exit thresholds:
+Exit 1: 0.635
+Exit 2: 0.511
+Exit 3: 0.492
+Exit 4: -100000000.000
+
+Budget level 9/39 (FLOPs: 8.63M)
+Exit point distribution:
+Exit 1: 64.7%
+Exit 2: 23.5%
+Exit 3: 8.6%
+Exit 4: 3.2%
+Accuracy: 67.060, ECE: 0.179, NLPD: 1.513
+
+******************** Budget Level 10/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 10/39:
+Dynamic Val Accuracy: 67.320
+Exit thresholds:
+Exit 1: 0.679
+Exit 2: 0.541
+Exit 3: 0.509
+Exit 4: -100000000.000
+
+Budget level 10/39 (FLOPs: 8.96M)
+Exit point distribution:
+Exit 1: 60.5%
+Exit 2: 25.0%
+Exit 3: 10.5%
+Exit 4: 4.1%
+Accuracy: 67.660, ECE: 0.184, NLPD: 1.509
+
+******************** Budget Level 11/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 11/39:
+Dynamic Val Accuracy: 67.820
+Exit thresholds:
+Exit 1: 0.720
+Exit 2: 0.578
+Exit 3: 0.526
+Exit 4: -100000000.000
+
+Budget level 11/39 (FLOPs: 9.28M)
+Exit point distribution:
+Exit 1: 56.8%
+Exit 2: 25.9%
+Exit 3: 12.3%
+Exit 4: 5.1%
+Accuracy: 68.130, ECE: 0.188, NLPD: 1.514
+
+******************** Budget Level 12/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 12/39:
+Dynamic Val Accuracy: 68.540
+Exit thresholds:
+Exit 1: 0.762
+Exit 2: 0.614
+Exit 3: 0.543
+Exit 4: -100000000.000
+
+Budget level 12/39 (FLOPs: 9.64M)
+Exit point distribution:
+Exit 1: 53.0%
+Exit 2: 26.4%
+Exit 3: 14.2%
+Exit 4: 6.3%
+Accuracy: 68.660, ECE: 0.191, NLPD: 1.519
+
+******************** Budget Level 13/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 13/39:
+Dynamic Val Accuracy: 69.080
+Exit thresholds:
+Exit 1: 0.800
+Exit 2: 0.646
+Exit 3: 0.568
+Exit 4: -100000000.000
+
+Budget level 13/39 (FLOPs: 9.93M)
+Exit point distribution:
+Exit 1: 50.1%
+Exit 2: 27.0%
+Exit 3: 15.4%
+Exit 4: 7.6%
+Accuracy: 69.120, ECE: 0.193, NLPD: 1.511
+
+******************** Budget Level 14/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 14/39:
+Dynamic Val Accuracy: 69.340
+Exit thresholds:
+Exit 1: 0.831
+Exit 2: 0.681
+Exit 3: 0.591
+Exit 4: -100000000.000
+
+Budget level 14/39 (FLOPs: 10.29M)
+Exit point distribution:
+Exit 1: 47.1%
+Exit 2: 26.7%
+Exit 3: 17.0%
+Exit 4: 9.2%
+Accuracy: 69.570, ECE: 0.194, NLPD: 1.513
+
+******************** Budget Level 15/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 15/39:
+Dynamic Val Accuracy: 69.820
+Exit thresholds:
+Exit 1: 0.860
+Exit 2: 0.712
+Exit 3: 0.609
+Exit 4: -100000000.000
+
+Budget level 15/39 (FLOPs: 10.60M)
+Exit point distribution:
+Exit 1: 44.2%
+Exit 2: 26.9%
+Exit 3: 18.4%
+Exit 4: 10.5%
+Accuracy: 69.760, ECE: 0.196, NLPD: 1.508
+
+******************** Budget Level 16/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 16/39:
+Dynamic Val Accuracy: 70.100
+Exit thresholds:
+Exit 1: 0.883
+Exit 2: 0.741
+Exit 3: 0.630
+Exit 4: -100000000.000
+
+Budget level 16/39 (FLOPs: 10.92M)
+Exit point distribution:
+Exit 1: 41.7%
+Exit 2: 26.6%
+Exit 3: 19.4%
+Exit 4: 12.3%
+Accuracy: 70.060, ECE: 0.196, NLPD: 1.509
+
+******************** Budget Level 17/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 17/39:
+Dynamic Val Accuracy: 70.080
+Exit thresholds:
+Exit 1: 0.904
+Exit 2: 0.769
+Exit 3: 0.655
+Exit 4: -100000000.000
+
+Budget level 17/39 (FLOPs: 11.22M)
+Exit point distribution:
+Exit 1: 39.3%
+Exit 2: 26.4%
+Exit 3: 20.2%
+Exit 4: 14.1%
+Accuracy: 70.220, ECE: 0.198, NLPD: 1.511
+
+******************** Budget Level 18/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 18/39:
+Dynamic Val Accuracy: 70.300
+Exit thresholds:
+Exit 1: 0.922
+Exit 2: 0.793
+Exit 3: 0.670
+Exit 4: -100000000.000
+
+Budget level 18/39 (FLOPs: 11.49M)
+Exit point distribution:
+Exit 1: 36.8%
+Exit 2: 26.5%
+Exit 3: 21.4%
+Exit 4: 15.3%
+Accuracy: 70.420, ECE: 0.197, NLPD: 1.504
+
+******************** Budget Level 19/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 19/39:
+Dynamic Val Accuracy: 70.660
+Exit thresholds:
+Exit 1: 0.936
+Exit 2: 0.822
+Exit 3: 0.687
+Exit 4: -100000000.000
+
+Budget level 19/39 (FLOPs: 11.82M)
+Exit point distribution:
+Exit 1: 34.4%
+Exit 2: 25.8%
+Exit 3: 22.9%
+Exit 4: 16.9%
+Accuracy: 70.730, ECE: 0.195, NLPD: 1.495
+
+******************** Budget Level 20/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 20/39:
+Dynamic Val Accuracy: 70.800
+Exit thresholds:
+Exit 1: 0.947
+Exit 2: 0.846
+Exit 3: 0.710
+Exit 4: -100000000.000
+
+Budget level 20/39 (FLOPs: 12.15M)
+Exit point distribution:
+Exit 1: 32.3%
+Exit 2: 25.2%
+Exit 3: 23.5%
+Exit 4: 19.1%
+Accuracy: 70.860, ECE: 0.194, NLPD: 1.490
+
+******************** Budget Level 21/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 21/39:
+Dynamic Val Accuracy: 70.900
+Exit thresholds:
+Exit 1: 0.957
+Exit 2: 0.865
+Exit 3: 0.734
+Exit 4: -100000000.000
+
+Budget level 21/39 (FLOPs: 12.39M)
+Exit point distribution:
+Exit 1: 30.6%
+Exit 2: 24.8%
+Exit 3: 23.9%
+Exit 4: 20.7%
+Accuracy: 70.850, ECE: 0.195, NLPD: 1.490
+
+******************** Budget Level 22/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 22/39:
+Dynamic Val Accuracy: 70.820
+Exit thresholds:
+Exit 1: 0.965
+Exit 2: 0.886
+Exit 3: 0.749
+Exit 4: -100000000.000
+
+Budget level 22/39 (FLOPs: 12.67M)
+Exit point distribution:
+Exit 1: 28.5%
+Exit 2: 24.4%
+Exit 3: 24.7%
+Exit 4: 22.3%
+Accuracy: 70.860, ECE: 0.194, NLPD: 1.490
+
+******************** Budget Level 23/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 23/39:
+Dynamic Val Accuracy: 70.720
+Exit thresholds:
+Exit 1: 0.971
+Exit 2: 0.903
+Exit 3: 0.763
+Exit 4: -100000000.000
+
+Budget level 23/39 (FLOPs: 12.91M)
+Exit point distribution:
+Exit 1: 26.9%
+Exit 2: 24.0%
+Exit 3: 25.4%
+Exit 4: 23.7%
+Accuracy: 70.870, ECE: 0.194, NLPD: 1.488
+
+******************** Budget Level 24/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 24/39:
+Dynamic Val Accuracy: 70.700
+Exit thresholds:
+Exit 1: 0.975
+Exit 2: 0.918
+Exit 3: 0.786
+Exit 4: -100000000.000
+
+Budget level 24/39 (FLOPs: 13.16M)
+Exit point distribution:
+Exit 1: 25.5%
+Exit 2: 23.3%
+Exit 3: 25.3%
+Exit 4: 25.9%
+Accuracy: 70.850, ECE: 0.193, NLPD: 1.485
+
+******************** Budget Level 25/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 25/39:
+Dynamic Val Accuracy: 70.740
+Exit thresholds:
+Exit 1: 0.980
+Exit 2: 0.932
+Exit 3: 0.804
+Exit 4: -100000000.000
+
+Budget level 25/39 (FLOPs: 13.41M)
+Exit point distribution:
+Exit 1: 24.2%
+Exit 2: 22.3%
+Exit 3: 25.9%
+Exit 4: 27.6%
+Accuracy: 70.980, ECE: 0.191, NLPD: 1.482
+
+******************** Budget Level 26/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 26/39:
+Dynamic Val Accuracy: 70.720
+Exit thresholds:
+Exit 1: 0.984
+Exit 2: 0.944
+Exit 3: 0.822
+Exit 4: -100000000.000
+
+Budget level 26/39 (FLOPs: 13.66M)
+Exit point distribution:
+Exit 1: 22.9%
+Exit 2: 21.5%
+Exit 3: 26.1%
+Exit 4: 29.5%
+Accuracy: 70.960, ECE: 0.190, NLPD: 1.484
+
+******************** Budget Level 27/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 27/39:
+Dynamic Val Accuracy: 70.840
+Exit thresholds:
+Exit 1: 0.986
+Exit 2: 0.952
+Exit 3: 0.840
+Exit 4: -100000000.000
+
+Budget level 27/39 (FLOPs: 13.87M)
+Exit point distribution:
+Exit 1: 21.6%
+Exit 2: 21.1%
+Exit 3: 26.1%
+Exit 4: 31.2%
+Accuracy: 71.020, ECE: 0.188, NLPD: 1.477
+
+******************** Budget Level 28/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 28/39:
+Dynamic Val Accuracy: 70.900
+Exit thresholds:
+Exit 1: 0.988
+Exit 2: 0.959
+Exit 3: 0.851
+Exit 4: -100000000.000
+
+Budget level 28/39 (FLOPs: 14.06M)
+Exit point distribution:
+Exit 1: 20.6%
+Exit 2: 20.4%
+Exit 3: 26.4%
+Exit 4: 32.6%
+Accuracy: 71.030, ECE: 0.187, NLPD: 1.477
+
+******************** Budget Level 29/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 29/39:
+Dynamic Val Accuracy: 70.820
+Exit thresholds:
+Exit 1: 0.990
+Exit 2: 0.966
+Exit 3: 0.863
+Exit 4: -100000000.000
+
+Budget level 29/39 (FLOPs: 14.27M)
+Exit point distribution:
+Exit 1: 19.3%
+Exit 2: 19.9%
+Exit 3: 26.8%
+Exit 4: 34.0%
+Accuracy: 71.030, ECE: 0.186, NLPD: 1.475
+
+******************** Budget Level 30/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 30/39:
+Dynamic Val Accuracy: 70.700
+Exit thresholds:
+Exit 1: 0.992
+Exit 2: 0.971
+Exit 3: 0.876
+Exit 4: -100000000.000
+
+Budget level 30/39 (FLOPs: 14.44M)
+Exit point distribution:
+Exit 1: 18.2%
+Exit 2: 19.6%
+Exit 3: 26.8%
+Exit 4: 35.3%
+Accuracy: 70.970, ECE: 0.186, NLPD: 1.470
+
+******************** Budget Level 31/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 31/39:
+Dynamic Val Accuracy: 70.560
+Exit thresholds:
+Exit 1: 0.993
+Exit 2: 0.974
+Exit 3: 0.888
+Exit 4: -100000000.000
+
+Budget level 31/39 (FLOPs: 14.59M)
+Exit point distribution:
+Exit 1: 17.4%
+Exit 2: 19.4%
+Exit 3: 26.3%
+Exit 4: 36.9%
+Accuracy: 70.910, ECE: 0.185, NLPD: 1.468
+
+******************** Budget Level 32/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 32/39:
+Dynamic Val Accuracy: 70.620
+Exit thresholds:
+Exit 1: 0.994
+Exit 2: 0.978
+Exit 3: 0.898
+Exit 4: -100000000.000
+
+Budget level 32/39 (FLOPs: 14.75M)
+Exit point distribution:
+Exit 1: 16.5%
+Exit 2: 18.9%
+Exit 3: 26.5%
+Exit 4: 38.1%
+Accuracy: 70.890, ECE: 0.184, NLPD: 1.465
+
+******************** Budget Level 33/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 33/39:
+Dynamic Val Accuracy: 70.580
+Exit thresholds:
+Exit 1: 0.995
+Exit 2: 0.981
+Exit 3: 0.906
+Exit 4: -100000000.000
+
+Budget level 33/39 (FLOPs: 14.90M)
+Exit point distribution:
+Exit 1: 15.6%
+Exit 2: 18.5%
+Exit 3: 26.6%
+Exit 4: 39.3%
+Accuracy: 70.860, ECE: 0.184, NLPD: 1.464
+
+******************** Budget Level 34/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 34/39:
+Dynamic Val Accuracy: 70.520
+Exit thresholds:
+Exit 1: 0.996
+Exit 2: 0.983
+Exit 3: 0.917
+Exit 4: -100000000.000
+
+Budget level 34/39 (FLOPs: 15.04M)
+Exit point distribution:
+Exit 1: 15.2%
+Exit 2: 17.8%
+Exit 3: 26.1%
+Exit 4: 40.9%
+Accuracy: 70.880, ECE: 0.182, NLPD: 1.461
+
+******************** Budget Level 35/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 35/39:
+Dynamic Val Accuracy: 70.540
+Exit thresholds:
+Exit 1: 0.996
+Exit 2: 0.986
+Exit 3: 0.924
+Exit 4: -100000000.000
+
+Budget level 35/39 (FLOPs: 15.20M)
+Exit point distribution:
+Exit 1: 14.3%
+Exit 2: 17.4%
+Exit 3: 26.2%
+Exit 4: 42.1%
+Accuracy: 70.810, ECE: 0.182, NLPD: 1.460
+
+******************** Budget Level 36/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 36/39:
+Dynamic Val Accuracy: 70.500
+Exit thresholds:
+Exit 1: 0.997
+Exit 2: 0.988
+Exit 3: 0.932
+Exit 4: -100000000.000
+
+Budget level 36/39 (FLOPs: 15.33M)
+Exit point distribution:
+Exit 1: 13.5%
+Exit 2: 17.1%
+Exit 3: 26.0%
+Exit 4: 43.4%
+Accuracy: 70.750, ECE: 0.181, NLPD: 1.461
+
+******************** Budget Level 37/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 37/39:
+Dynamic Val Accuracy: 70.540
+Exit thresholds:
+Exit 1: 0.997
+Exit 2: 0.989
+Exit 3: 0.938
+Exit 4: -100000000.000
+
+Budget level 37/39 (FLOPs: 15.46M)
+Exit point distribution:
+Exit 1: 12.9%
+Exit 2: 16.7%
+Exit 3: 26.1%
+Exit 4: 44.4%
+Accuracy: 70.820, ECE: 0.179, NLPD: 1.455
+
+******************** Budget Level 38/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 38/39:
+Dynamic Val Accuracy: 70.520
+Exit thresholds:
+Exit 1: 0.998
+Exit 2: 0.991
+Exit 3: 0.944
+Exit 4: -100000000.000
+
+Budget level 38/39 (FLOPs: 15.58M)
+Exit point distribution:
+Exit 1: 12.4%
+Exit 2: 16.1%
+Exit 3: 26.0%
+Exit 4: 45.5%
+Accuracy: 70.820, ECE: 0.177, NLPD: 1.449
+
+******************** Budget Level 39/39 ********************
+
+Dynamic Thresholds and Accuracy for Budget Level 39/39:
+Dynamic Val Accuracy: 70.440
+Exit thresholds:
+Exit 1: 0.998
+Exit 2: 0.992
+Exit 3: 0.949
+Exit 4: -100000000.000
+
+Budget level 39/39 (FLOPs: 15.71M)
+Exit point distribution:
+Exit 1: 11.9%
+Exit 2: 15.5%
+Exit 3: 26.0%
+Exit 4: 46.5%
+Accuracy: 70.790, ECE: 0.176, NLPD: 1.446
+
+JOB STATISTICS
+==============
+Job ID: 9669187
+Cluster: snellius
+User/Group: scur2884/scur2884
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:06:55
+CPU Efficiency: 21.55% of 00:32:06 core-walltime
+Job Wall-clock time: 00:01:47
+Memory Utilized: 4.10 GB
+Memory Efficiency: 3.42% of 120.00 GB
